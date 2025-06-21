@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Successful – Top Student</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #1E3A8A;
+      --accent: #10B981;
+      --text-dark: #1F2937;
+      --bg-light: #F3F4F6;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .container {
+      background: white;
+      padding: 3rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+      max-width: 480px;
+      width: 100%;
+    }
+
+    h1 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin: 0.8rem 0;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.5rem;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0f766e;
+    }
+
+    .login-link {
+      margin-top: 1.2rem;
+      display: block;
+      color: var(--primary);
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background: white;
+      margin: 10% auto;
+      padding: 2rem;
+      width: 90%;
+      max-width: 350px;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    .closeBtn {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 24px;
+      color: #888;
+      cursor: pointer;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button[type="submit"] {
+      background-color: #1E3A8A;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #153073;
+    }
+	
+	.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 96%;
+  padding: 10px 40px 10px 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #1f2937;
+}
+
+.toggle-password i {
+  font-size: 18px;
+}
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 2rem 1rem;
+      }
+      .modal-content {
+    padding: 1.5rem;
+    margin-top: 20%;
+  }
+  
+      input[type="email"],
+      input[type="password"],
+      .password-wrapper input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Payment Successful!</h1>
+    <p>Your payment has been received. Your account is being set up and will be ready shortly.</p>
+    <p>If you just paid, please allow a few minutes for your access to be activated.</p>
+    <p>You may return to the homepage or log in later.</p>
+
+    <a href="index.html" class="btn">Back to Home</a>
+    <span class="login-link" onclick="showLogin()">Click here to log in</span>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="closeBtn" onclick="closeLogin()">&times;</span>
+      <h2>Login</h2>
+      <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required><br>
+        <div class="password-wrapper">
+          <input type="password" id="loginPassword" placeholder="Password" required>
+          <span class="toggle-password">
+            <i id="togglePasswordIcon" class="fas fa-eye"></i>
+          </span>
+        </div>
+        <div id="loadingSpinner" style="display:none; text-align:center;">
+          <i class="fas fa-spinner fa-spin" style="font-size:24px; color:#1E3A8A;"></i>
+          <p>Logging in...</p>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+      <a href="forgot-pin.html">Forgot Password</a>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabase = createClient(
+      'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+    );
+
+    function showLogin() {
+  document.getElementById("loginModal").style.display = "block";
+}
+
+function closeLogin() {
+  document.getElementById("loginModal").style.display = "none";
+}
+
+// ✅ Add this below
+window.showLogin = showLogin;
+window.closeLogin = closeLogin;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleIcon = document.getElementById('togglePasswordIcon');
+      const passwordInput = document.getElementById('loginPassword');
+      const loginForm = document.getElementById('loginForm');
+      const loginSpinner = document.getElementById('loadingSpinner');
+      const loginButton = loginForm.querySelector('button[type="submit"]');
+
+      toggleIcon.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        toggleIcon.classList.toggle('fa-eye');
+        toggleIcon.classList.toggle('fa-eye-slash');
+      });
+
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (loginButton.disabled) return; // Prevent double submits
+
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+          alert('Please enter email and password.');
+          return;
+        }
+
+        loginButton.disabled = true;
+        loginSpinner.style.display = 'inline-block';
+
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+          if (error || !data?.user) {
+            alert("Login failed. Please check your credentials.");
+            return;
+          }
+
+          const user = data.user;
+          const { data: userData, error: fetchError } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+          if (fetchError || !userData) {
+            alert("No account record found or error fetching user.");
+          } else {
+            const role = userData.role || "pending";
+            if (role === "pending") {
+              alert("Payment pending. Try again later.");
+            } else if (role === "premium") {
+              window.location.href = "premium/premium.html";
+            } else if (role === "standard") {
+              window.location.href = "standard/standard.html";
+            } else if (role === "admin") {
+              window.location.href = "admin/admin.html";
+            } else {
+              alert("Unknown role. Contact support.");
+            }
+          }
+        } catch (err) {
+          console.error(err);
+          alert("An unexpected error occurred.");
+        } finally {
+          loginButton.disabled = false;
+          loginSpinner.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forgot Password – Top Student</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #1E3A8A;
+      --primary-hover: #172c66;
+      --text: #1F2937;
+      --bg: #F3F4F6;
+      --white: #fff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .home-link {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      font-size: 1.5rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .home-link:hover {
+      color: var(--primary);
+    }
+
+    .container {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.8rem;
+      color: var(--text);
+    }
+
+    p {
+      font-size: 1rem;
+      color: #4B5563;
+    }
+
+    input[type="email"] {
+      width: 100%;
+      padding: 0.85rem;
+      margin-top: 1.2rem;
+      border-radius: 0.75rem;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+      transition: border 0.2s;
+    }
+
+    input[type="email"]:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.9rem 2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      background: linear-gradient(to right, #003366, #33aaff);
+      color: var(--white);
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #33aaff, #003366);
+    }
+
+    #message {
+      margin-top: 1.2rem;
+      font-size: 0.95rem;
+      color: #10B981;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      p, input, button {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="home-link" title="Back to Home">
+    <i class="fas fa-arrow-left"></i>
+  </a>
+
+  <div class="container">
+    <h2>Forgot Password?</h2>
+    <p>Enter your email to receive a reset link.</p>
+    <input type="email" id="email" placeholder="Email address" required />
+    <button onclick="sendReset()">Send Reset Link</button>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    async function sendReset() {
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message");
+
+      if (!email) {
+        message.style.color = "#EF4444";
+        message.textContent = "Please enter your email address.";
+        return;
+      }
+
+      message.style.color = "#6B7280";
+      message.textContent = "Sending reset link...";
+
+      // Simulate async operation
+      setTimeout(() => {
+        // Replace this with your real password reset logic (e.g., Supabase)
+        message.style.color = "#10B981";
+        message.textContent = "Reset link sent! Check your email.";
+      }, 1500);
+    }
+  </script>
+
+</body>
+</html>

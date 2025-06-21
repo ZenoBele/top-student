@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Top Student helps Grade 12 learners excel with past papers, study guides, reminders, and one-on-one support." />
+  <meta name="keywords" content="Top Student, Study Help, Grade 12, Exam Papers, Study Guides, South Africa, Bellshire" />
+  <meta name="author" content="Top Student by Bellshire" />
+  <title>Top Student – Excel in Matric & Beyond</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="css/resource.css" />
+</head>
+<body>
+
+<section>
+  <header class="navbar">
+    <div class="container nav-container">
+  <div class="nav-left">
+    <h1 class="logo">Top Student</h1>
+  </div>
+
+  <nav class="nav-center">
+    <ul class="nav-links" id="navLinks">
+  <!-- Login/Join at the top inside mobile menu -->
+  <li class="mobile-auth-buttons">
+    <button class="btn login-btn" onclick="window.location.href='login.html'">Login</button>
+    <button class="btn join-btn" onclick="window.location.href='service.html'">Join</button>
+  </li>
+
+  <li><a href="index.html">Home</a></li>
+  <li><a href="about.html">About Us</a></li>
+  <li><a href="contact.html">Contact</a></li>
+  <li><a href="service.html">Service</a></li>
+  <li class="resources-dropdown" id="resourceToggle">
+    <a href="resource.html" id="resourceLink">Resources ▾</a>
+    <ul class="dropdown">
+      <li><a href="papers.html">Past Papers</a></li>
+      <li><a href="guides.html">Study Guides</a></li>
+      <li><a href="career.html">Career News</a></li>
+    </ul>
+  </li>
+</ul>
+  </nav>
+
+<div class="hamburger" id="hamburger">☰</div>
+
+  <div class="nav-right desktop-buttons">
+    <button class="btn login-btn" onclick="window.location.href='login.html'">Login</button>
+    <button class="btn join-btn" onclick="window.location.href='service.html'">Join</button>
+  </div>
+</div>
+  </header>
+</section>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<main>
+<section class="resources">
+<div class="cta">
+    <h3>Want More Resources?</h3>
+    <p>Sign up for access to exclusive materials.</p>
+    <a href="service.html" class="btn">Sign Up Now</a>
+  </div>
+
+  <h2>Helpful Resources</h2>
+  <p>Explore a variety of resources to boost your academic performance.</p>
+
+  <div class="resource-categories">
+    <div class="resource-category">
+      <h3>Past Exam Papers</h3>
+      <p>Access past exam papers to practice and improve.</p>
+      <a href="papers.html">View Papers</a>
+    </div>
+
+    <div class="resource-category">
+      <h3>Study Guides</h3>
+      <p>Comprehensive study guides for all subjects.</p>
+      <a href="guides.html">View Guides</a>
+    </div>
+
+    <div class="resource-category">
+      <h3>Career News</h3>
+      <p>Explore career options, university guidance, and more.</p>
+      <a href="career.html">Explore</a>
+    </div>
+  </div>
+</section>
+
+
+<section class="footer">
+  <footer>
+  <div class="footer-content">
+    <div class="footer-left">
+	    <li><a href="privacy-terms.html">Privacy Policy</a></li>
+        <li><a href="privacy-terms.html">|Terms & Conditions</a></li>
+    </div>
+    <div class="footer-right">
+      <ul>
+        <li><a href="mailto:bellshire1@gmail.com">|Email</a></li>
+        <li><a href="tel:+27609313995">|Call</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 BellsHire | All Rights Reserved</p>
+  </div>
+  </footer>
+</section>
+</main>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const resourceToggle = document.getElementById('resourceToggle');
+  const resourceLink = document.getElementById('resourceLink');
+
+  function toggleMenu() {
+    const isOpen = navLinks.classList.toggle('open');
+    hamburger.classList.toggle('open');
+    menuOverlay.classList.toggle('active');
+    hamburger.textContent = isOpen ? '✕' : '☰';
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+
+  resourceToggle?.addEventListener('click', function (e) {
+    // Mobile only (≤768px)
+    if (window.innerWidth <= 768) {
+      e.preventDefault(); // prevent navigation
+      resourceToggle.classList.toggle('open'); // toggle dropdown
+    }
+    // Else (desktop): allow normal link to resource.html
+  });
+
+  menuOverlay.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.textContent = '☰';
+    menuOverlay.classList.remove('active');
+    resourceToggle.classList.remove('open');
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reset Password – Top Student</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #E0F7FA;
+      margin: 0;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .box {
+      background: #FFFFFF;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #01579B;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.8rem 2.5rem 0.8rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #B2EBF2;
+      background: #F1FCFD;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .input-group i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #0288D1;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.9rem;
+      font-size: 1rem;
+      background: #0288D1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    button:hover {
+      background: #0277BD;
+    }
+
+    #passwordRules {
+      text-align: left;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .valid {
+      color: green;
+    }
+
+    .invalid {
+      color: red;
+    }
+
+    #loadingSpinner {
+      display: none;
+      text-align: center;
+      margin-top: 1rem;
+      color: #0288D1;
+    }
+
+    #message {
+      margin-top: 1rem;
+      text-align: center;
+      color: #00796B;
+    }
+
+    .nav-links {
+	  display: flex;
+  justify-content: center;
+  gap: 3rem; /* or whatever spacing you want */
+  flex-wrap: wrap;
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    .nav-links a {
+      margin: 0 0.5rem;
+	  gap: 50%;
+      text-decoration: none;
+      color: #0288D1;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .box {
+        padding: 1.5rem 1rem;
+      }
+
+      .input-group input {
+        font-size: 0.95rem;
+      }
+
+      button {
+        font-size: 0.95rem;
+      }
+
+      .nav-links a {
+        display: block;
+        margin: 0.3rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+  
+    <div class="nav-links">
+      <a href="index.html"><i class="fa fa-home fa-2x"></i></a>
+      <a href="contact.html"><i class="fa fa-envelope fa-2x"></i></a>
+      <a href="login.html"><i class="fa fa-sign-in-alt fa-2x"></i></a>
+    </div>
+	
+    <h2>Set a New Password</h2>
+    <form id="signupForm" onsubmit="event.preventDefault(); resetPassword();">
+      <div class="input-group">
+        <input type="password" id="password" placeholder="New password" required />
+        <i id="toggleIcon" class="fa fa-eye" onclick="togglePassword()"></i>
+      </div>
+
+      <div id="passwordRules">
+        <div id="ruleLength" class="invalid">✗ At least 8 characters</div>
+        <div id="ruleUpper" class="invalid">✗ At least one uppercase letter</div>
+        <div id="ruleLower" class="invalid">✗ At least one lowercase letter</div>
+        <div id="ruleNumber" class="invalid">✗ At least one number</div>
+      </div>
+
+      <button type="submit">Reset Password</button>
+    </form>
+
+    <div id="loadingSpinner">⏳ Processing...</div>
+    <div id="message"></div>
+
+  </div>
+
+  <script>
+    function togglePassword() {
+      const password = document.getElementById("password");
+      const icon = document.getElementById("toggleIcon");
+      if (password.type === "password") {
+        password.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        password.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+
+    function resetPassword() {
+      document.getElementById("loadingSpinner").style.display = "block";
+      document.getElementById("message").innerText = "";
+
+      // Simulated reset logic
+      setTimeout(() => {
+        document.getElementById("loadingSpinner").style.display = "none";
+        document.getElementById("message").innerText = "✅ Password successfully reset!";
+      }, 1500);
+    }
+
+    document.getElementById("password").addEventListener("input", function () {
+      const pwd = this.value;
+
+      // Length
+      const lengthOK = pwd.length >= 8;
+      document.getElementById("ruleLength").innerText = lengthOK ? "✓ At least 8 characters" : "✗ At least 8 characters";
+      document.getElementById("ruleLength").className = lengthOK ? "valid" : "invalid";
+
+      // Uppercase
+      const upperOK = /[A-Z]/.test(pwd);
+      document.getElementById("ruleUpper").innerText = upperOK ? "✓ At least one uppercase letter" : "✗ At least one uppercase letter";
+      document.getElementById("ruleUpper").className = upperOK ? "valid" : "invalid";
+
+      // Lowercase
+      const lowerOK = /[a-z]/.test(pwd);
+      document.getElementById("ruleLower").innerText = lowerOK ? "✓ At least one lowercase letter" : "✗ At least one lowercase letter";
+      document.getElementById("ruleLower").className = lowerOK ? "valid" : "invalid";
+
+      // Number
+      const numberOK = /\d/.test(pwd);
+      document.getElementById("ruleNumber").innerText = numberOK ? "✓ At least one number" : "✗ At least one number";
+      document.getElementById("ruleNumber").className = numberOK ? "valid" : "invalid";
+    });
+  </script>
+</body>
+</html>
+
+

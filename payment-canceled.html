@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Cancelled – Top Student</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gradient-blue-start: #003366;
+      --gradient-blue-end: #33aaff;
+      --gradient-green-start: #10b981;
+      --gradient-green-end: #34d399;
+      --danger: #DC2626;
+      --bg-light: #F0F4F8;
+      --text-dark: #0F172A;
+      --btn-radius: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .container {
+      position: relative;
+      background: white;
+      padding: 3rem 2rem;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 1.2rem;
+      text-decoration: none;
+      color: var(--gradient-blue-start);
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: var(--gradient-blue-end);
+    }
+
+    h1 {
+      color: var(--danger);
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin: 0.75rem 0;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      display: block;
+      padding: 0.9rem;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: var(--btn-radius);
+      transition: opacity 0.3s ease;
+    }
+
+    .btn.primary {
+      background: linear-gradient(to right, var(--gradient-green-end), var(--gradient-blue-end));
+    }
+
+    .btn.primary:hover {
+	  background: linear-gradient(to right, var(--gradient-blue-end), var(--gradient-green-end));
+      opacity: 0.9;
+    }
+
+    .btn.green {
+      background: linear-gradient(to right, var(--gradient-blue-end), var(--gradient-green-end));
+    }
+
+    .btn.green:hover {
+	background: linear-gradient(to right, var(--gradient-green-end), var(--gradient-blue-end));
+      opacity: 0.9;
+    }
+
+    @media (min-width: 500px) {
+      .btn-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .btn {
+        flex: 1 1 calc(50% - 1rem);
+        max-width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <a href="index.html" class="back-arrow">✕</a>
+
+    <h1>Payment Canceled</h1>
+    <p>Your payment was not completed or was canceled.</p>
+    <p>No money was taken. You can try again or choose another action below.</p>
+
+    <div class="btn-group">
+      <a href="service.html" class="btn primary">Try Again</a>
+      <a href="contact.html" class="btn green">Contact Support</a>
+    </div>
+  </div>
+
+</body>
+</html>
+

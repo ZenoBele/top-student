@@ -1,0 +1,116 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Top Student</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script> <!-- Icon library -->
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-white min-h-screen flex items-center justify-center px-4 relative">
+
+  <!-- Loader overlay -->
+  <div id="loader" class="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
+  </div>
+
+  <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl relative">
+    
+    <!-- Back button -->
+    <button 
+      type="button" 
+      onclick="history.back()" 
+      class="absolute top-4 left-4 flex items-center space-x-1 text-blue-600 hover:text-blue-800 font-semibold"
+      aria-label="Go back"
+    >
+      <i class="ph ph-arrow-left text-xl"></i>
+    </button>
+
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Welcome Back</h2>
+
+    <form id="login-form" class="space-y-5">
+      <!-- Email -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+        />
+      </div>
+
+      <!-- Password -->
+      <div class="relative">
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          class="mt-1 block w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+        />
+        <!-- Toggle Eye Icon -->
+        <button type="button" onclick="togglePassword()" class="absolute top-9 right-3 text-gray-500" aria-label="Toggle password visibility">
+          <i id="eye-icon" class="ph ph-eye text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Login Button -->
+      <button
+  type="submit"
+  class="w-full py-2 px-4 text-white font-semibold rounded-lg shadow-md transition duration-300 
+         bg-gradient-to-r from-blue-700 to-blue-300 hover:from-blue-400 hover:to-blue-700"
+>
+        Log In
+      </button>
+    </form>
+
+    <!-- Links -->
+    <div class="mt-6 text-center text-sm text-gray-600 space-y-2">
+      <p>
+        Don’t have an account?
+        <a href="service.html" class="text-blue-600 hover:underline font-medium">Sign up</a>
+      </p>
+      <p>
+        <a href="forgot-pin.html" class="text-blue-600 hover:underline font-medium">Forgot Password?</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Toggle password visibility
+    function togglePassword() {
+      const password = document.getElementById("password");
+      const icon = document.getElementById("eye-icon");
+      if (password.type === "password") {
+        password.type = "text";
+        icon.classList.remove("ph-eye");
+        icon.classList.add("ph-eye-slash");
+      } else {
+        password.type = "password";
+        icon.classList.remove("ph-eye-slash");
+        icon.classList.add("ph-eye");
+      }
+    }
+
+    // Show loader on form submit
+    const form = document.getElementById('login-form');
+    const loader = document.getElementById('loader');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      loader.classList.remove('hidden');
+
+      // Simulate fetch/login delay (replace with actual login logic)
+      setTimeout(() => {
+        loader.classList.add('hidden');
+        alert('Logged in! (This is a demo alert.)');
+        // TODO: Redirect or further login handling
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
