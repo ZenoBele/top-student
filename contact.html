@@ -95,7 +95,10 @@
     <label for="message">Your Message:</label>
     <textarea id="message" name="message" placeholder="Comment!!" rows="5" autocomplete="off" required></textarea>
 
-    <button class="forth" type="submit">Send Message</button>
+<button class="forth" type="submit" id="sendBtn">
+  <span id="btnText">Send</span>
+  <span class="spinner" id="spinner" style="display: none;"></span>
+</button>
   </form>
 </section>
 
@@ -144,6 +147,10 @@
   const menuOverlay = document.getElementById('menuOverlay');
   const resourceToggle = document.getElementById('resourceToggle');
   const resourceLink = document.getElementById('resourceLink');
+  const form = document.querySelector('form');
+  const sendBtn = document.getElementById('sendBtn');
+  const spinner = document.getElementById('spinner');
+  const btnText = document.getElementById('btnText');
 
   function toggleMenu() {
     const isOpen = navLinks.classList.toggle('open');
@@ -169,6 +176,12 @@
     hamburger.textContent = '☰';
     menuOverlay.classList.remove('active');
     resourceToggle.classList.remove('open');
+  });
+  
+  form.addEventListener('submit', () => {
+    sendBtn.disabled = true;
+    btnText.style.display = 'none';        // hide the "Send" text
+    spinner.style.display = 'inline-block'; // show spinner in its place
   });
 </script>
 </body>
