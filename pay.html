@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Top Student – Secure Signup</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.png">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -256,138 +257,131 @@
     <div class="footer">Need help? <a href="mailto:info@topstudent.co.za">Contact Support</a></div>
   </div>
 
-  <script>
-    const SUPABASE_URL = 'https://mlwxxtvsozhwzjxmsvbg.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = createClient(
+      'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+    );
 
-      const params = new URLSearchParams(window.location.search);
-      const plan = params.get("plan");
+  document.addEventListener("DOMContentLoaded", function () {
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      const title = document.getElementById("plan-title");
-      const price = document.getElementById("plan-price");
-      const savingsText = document.getElementById("savingsText");
+    const params = new URLSearchParams(window.location.search);
+    const plan = params.get("plan");
 
-      let payfastUrl = "";
-      let currentPrice = 0;
-      let futurePrice = 0;
+    const title = document.getElementById("plan-title");
+    const price = document.getElementById("plan-price");
+    const savingsText = document.getElementById("savingsText");
 
-if (plan === "standard") {
-  currentPrice = 199;
-  futurePrice = 299;
+    let payfastUrl = "";
+    let currentPrice = 0;
+    let futurePrice = 0;
 
-  const percentSaved = Math.round(((futurePrice - currentPrice) / futurePrice) * 100);
+    if (plan === "standard") {
+      currentPrice = 199;
+      futurePrice = 299;
+      payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=199&item_name=TopStudentStandard&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
+    } else if (plan === "premium") {
+      currentPrice = 299;
+      futurePrice = 499;
+      payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=299&item_name=TopStudentPremium&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
+    } else {
+      title.textContent = "Plan Not Selected";
+      price.textContent = "Please go back and choose a plan first.";
+      document.getElementById("signupForm").style.display = "none";
+      savingsText.style.display = "none";
+      return;
+    }
 
-  title.textContent = "Standard Plan";
-  price.innerHTML = `<span style="color: red; font-weight: bold;">R${currentPrice}p/m</span>`;
-  savingsText.innerHTML = `<span style="padding: 20px; display: inline-block;"> 
-  <span style="font-size: 3rem;; color: #fff;">${percentSaved}% off</span><br/>
-  <span style="font-size: 1rem;">NOW- R${currentPrice}p/m</span><br/><br/>
-  <span style="font-style: italic; font-size: 0.9rem; text-decoration: line-through; color: #ffeeee;">
-    2026 – R${futurePrice}p/m
-  </span>`;
-  
-  payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=199&item_name=TopStudentStandard&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
+    // Display savings
+    const percentSaved = Math.round(((futurePrice - currentPrice) / futurePrice) * 100);
+    title.textContent = plan.charAt(0).toUpperCase() + plan.slice(1) + " Plan";
+    price.innerHTML = `<span style="color: red; font-weight: bold;">R${currentPrice}p/m</span>`;
+    savingsText.innerHTML = `<span style="padding: 20px; display: inline-block;"> 
+      <span style="font-size: 3rem; color: #fff;">${percentSaved}% off</span><br/>
+      <span style="font-size: 1rem;">NOW- R${currentPrice}p/m</span><br/><br/>
+      <span style="font-style: italic; font-size: 0.9rem; text-decoration: line-through; color: #ffeeee;">
+        2026 – R${futurePrice}p/m
+      </span>`;
 
-} else if (plan === "premium") {
-  currentPrice = 299;
-  futurePrice = 499;
+    const passwordInput = document.getElementById('password');
+    const emailInput = document.getElementById('email');
+    const submitBtn = document.getElementById('submitBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const rules = document.getElementById('passwordRules');
 
-  const percentSaved = Math.round(((futurePrice - currentPrice) / futurePrice) * 100);
+    passwordInput.addEventListener("input", function () {
+      const password = this.value;
+      rules.style.display = password.length > 0 ? "block" : "none";
 
-  title.textContent = "Premium Plan";
-  price.innerHTML = `<span style="color: red; font-weight: bold;">R${currentPrice}p/m</span>`;
-  savingsText.innerHTML = `<span style="padding: 20px; display: inline-block;"> 
-  <span style="font-size: 3rem;; color: #fff;">${percentSaved}% off</span><br/>
-  <span style="font-size: 1rem;">NOW- R${currentPrice}p/m</span><br/><br/>
-  <span style="font-style: italic; font-size: 0.9rem; text-decoration: line-through; color: #ffeeee;">
-    2026 – R${futurePrice}p/m
-  </span>`;
+      const lengthOk = password.length >= 8;
+      const upperOk = /[A-Z]/.test(password);
+      const lowerOk = /[a-z]/.test(password);
+      const numberOk = /\d/.test(password);
 
-  payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=299&item_name=TopStudentPremium&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
-} else {
-  title.textContent = "Plan Not Selected";
-  price.textContent = "Please go back and choose a plan first.";
-  document.getElementById("signupForm").style.display = "none";
-  savingsText.style.display = "none";
-  return;
-}
+      updateRule("ruleLength", lengthOk);
+      updateRule("ruleUpper", upperOk);
+      updateRule("ruleLower", lowerOk);
+      updateRule("ruleNumber", numberOk);
+    });
 
-      const passwordInput = document.getElementById('password');
-      const rules = document.getElementById('passwordRules');
-      const submitBtn = document.getElementById('submitBtn');
-      const loadingSpinner = document.getElementById('loadingSpinner');
-      const signupForm = document.getElementById('signupForm');
+    function updateRule(id, passed) {
+      const el = document.getElementById(id);
+      el.textContent = (passed ? "✓ " : "✗ ") + el.textContent.slice(2);
+      el.style.color = passed ? "green" : "red";
+    }
 
-      passwordInput.addEventListener("input", function () {
-        const password = this.value;
-        rules.style.display = password.length > 0 ? "block" : "none";
+    document.getElementById("togglePasswordDiv").addEventListener("click", function () {
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    });
 
-        document.getElementById("ruleLength").textContent = password.length >= 8 ? "✓ At least 8 characters" : "✗ At least 8 characters";
-        document.getElementById("ruleLength").style.color = password.length >= 8 ? "green" : "red";
+    document.getElementById('signupForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-        document.getElementById("ruleUpper").textContent = /[A-Z]/.test(password) ? "✓ At least one uppercase letter" : "✗ At least one uppercase letter";
-        document.getElementById("ruleUpper").style.color = /[A-Z]/.test(password) ? "green" : "red";
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
 
-        document.getElementById("ruleLower").textContent = /[a-z]/.test(password) ? "✓ At least one lowercase letter" : "✗ At least one lowercase letter";
-        document.getElementById("ruleLower").style.color = /[a-z]/.test(password) ? "green" : "red";
+      const valid = password.length >= 8 &&
+                    /[A-Z]/.test(password) &&
+                    /[a-z]/.test(password) &&
+                    /\d/.test(password);
 
-        document.getElementById("ruleNumber").textContent = /\d/.test(password) ? "✓ At least one number" : "✗ At least one number";
-        document.getElementById("ruleNumber").style.color = /\d/.test(password) ? "green" : "red";
-      });
+      if (!valid) {
+        alert("Password does not meet the requirements.");
+        return;
+      }
 
-      document.getElementById("togglePasswordDiv").addEventListener("click", function () {
-        passwordInput.type = passwordInput.type === "password" ? "text" : "password";
-      });
+      submitBtn.disabled = true;
+      loadingSpinner.style.display = "block";
 
-      signupForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+      try {
+        const { data, error } = await client.auth.signUp({ email, password });
 
-        const email = document.getElementById('email').value.trim();
-        const password = passwordInput.value;
-
-        const isValid = password.length >= 8 &&
-                        /[A-Z]/.test(password) &&
-                        /[a-z]/.test(password) &&
-                        /\d/.test(password);
-
-        if (!isValid) {
-          alert("Password does not meet the requirements.");
+        if (error) {
+          alert('Sign up failed: ' + error.message);
           return;
         }
 
-        submitBtn.disabled = true;
-        loadingSpinner.style.display = "block";
-
-        try {
-          const { data, error } = await client.auth.signUp({ email, password });
-
-          if (error) {
-            alert('Error creating account: ' + error.message);
-            return;
-          }
-
-          if (data?.user) {
-            await client.from('profiles').insert([{
-              id: data.user.id,
-              email: data.user.email,
-              role: 'pending',
-              selected_plan: plan
-            }]);
-
-            window.location.href = payfastUrl;
-          }
-
-        } catch (err) {
-          alert('Unexpected error: ' + err.message);
-        } finally {
-          submitBtn.disabled = false;
-          loadingSpinner.style.display = "none";
+        if (data?.user) {
+          await client.from("profiles").insert([{
+            id: data.user.id,
+            email: data.user.email,
+            role: "pending",
+            selected_plan: plan
+          }]);
+          window.location.href = payfastUrl;
         }
-      });
+
+      } catch (err) {
+        alert("Something went wrong: " + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        loadingSpinner.style.display = "none";
+      }
     });
-  </script>
+  });
+</script>
 </body>
 </html>
