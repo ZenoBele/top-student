@@ -2,294 +2,147 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Payment Successful – Top Student</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <style>
-    :root {
-      --primary: #1E3A8A;
-      --accent: #10B981;
-      --text-dark: #1F2937;
-      --bg-light: #F3F4F6;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg-light);
-      color: var(--text-dark);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      padding: 2rem;
-    }
-
-    .container {
-      background: white;
-      padding: 3rem 2rem;
-      border-radius: 16px;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
-      max-width: 480px;
-      width: 100%;
-    }
-
-    h1 {
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
-
-    p {
-      margin: 0.8rem 0;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 1.5rem;
-      padding: 0.8rem 1.5rem;
-      background: var(--accent);
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      border-radius: 8px;
-      transition: background 0.3s ease;
-    }
-
-    .btn:hover {
-      background: #0f766e;
-    }
-
-    .login-link {
-      margin-top: 1.2rem;
-      display: block;
-      color: var(--primary);
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .login-link:hover {
-      text-decoration: underline;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-    }
-
-    .modal-content {
-      background: white;
-      margin: 10% auto;
-      padding: 2rem;
-      width: 90%;
-      max-width: 350px;
-      border-radius: 10px;
-      text-align: center;
-      position: relative;
-    }
-
-    .closeBtn {
-      position: absolute;
-      top: 10px; right: 15px;
-      font-size: 24px;
-      color: #888;
-      cursor: pointer;
-    }
-
-    input[type="email"],
-    input[type="password"] {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    button[type="submit"] {
-      background-color: #1E3A8A;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button[type="submit"]:hover {
-      background-color: #153073;
-    }
-	
-	.password-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.password-wrapper input {
-  width: 96%;
-  padding: 10px 40px 10px 10px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-.toggle-password {
-  position: absolute;
-  top: 50%;
-  right: 30px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #1f2937;
-}
-
-.toggle-password i {
-  font-size: 18px;
-}
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 2rem 1rem;
-      }
-      .modal-content {
-    padding: 1.5rem;
-    margin-top: 20%;
-  }
-  
-      input[type="email"],
-      input[type="password"],
-      .password-wrapper input {
-        width: 100%;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payment Successful - Top Student</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.png" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
+<body class="bg-gradient-to-br from-green-100 to-white min-h-screen flex items-center justify-center px-4 relative">
 
-<body>
-  <div class="container">
-    <h1>Payment Successful!</h1>
-    <p>Your payment has been received. Your account is being set up and will be ready shortly.</p>
-    <p>If you just paid, please allow a few minutes for your access to be activated.</p>
-    <p>You may return to the homepage or log in later.</p>
+  <!-- Success Box -->
+  <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl text-center space-y-6">
+    <div class="text-green-600 text-5xl">
+      <i class="ph ph-check-circle"></i>
+    </div>
+    <h2 class="text-2xl font-bold text-gray-800">Payment Successful</h2>
+    <p class="text-gray-600">Thank you for joining Top Student. You're all set to begin!</p>
 
-    <a href="index.html" class="btn">Back to Home</a>
-    <span class="login-link" onclick="showLogin()">Click here to log in</span>
-  </div>
-
-  <!-- Login Modal -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <span class="closeBtn" onclick="closeLogin()">&times;</span>
-      <h2>Login</h2>
-      <form id="loginForm">
-        <input type="email" id="loginEmail" placeholder="Email" required><br>
-        <div class="password-wrapper">
-          <input type="password" id="loginPassword" placeholder="Password" required>
-          <span class="toggle-password">
-            <i id="togglePasswordIcon" class="fas fa-eye"></i>
-          </span>
-        </div>
-        <div id="loadingSpinner" style="display:none; text-align:center;">
-          <i class="fas fa-spinner fa-spin" style="font-size:24px; color:#1E3A8A;"></i>
-          <p>Logging in...</p>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-      <a href="forgot-pin.html">Forgot Password</a>
+    <!-- Buttons -->
+    <div class="space-y-3">
+      <button onclick="openLogin()" class="w-full py-2 px-4 text-white font-semibold rounded-lg shadow-md bg-green-600 hover:bg-green-700 transition">
+        Log in now
+      </button>
+      <a href="/" class="block w-full py-2 px-4 text-green-700 border border-green-600 rounded-lg hover:bg-green-100 transition text-center">
+        Back to Home
+      </a>
     </div>
   </div>
 
+  <!-- Login Modal -->
+  <div id="login-modal" class="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-[50] hidden">
+    <div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative space-y-5">
+      <!-- Close Button -->
+      <button onclick="closeLogin()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800" aria-label="Close login modal">
+        <i class="ph ph-x text-xl"></i>
+      </button>
+
+      <h3 class="text-xl font-bold text-center text-gray-800">Log In</h3>
+
+      <form id="login-form" class="space-y-4" novalidate>
+        <input
+          type="email"
+          id="email"
+          required
+          placeholder="Email"
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-400"
+          autocomplete="username"
+        />
+        <input
+          type="password"
+          id="password"
+          required
+          placeholder="Password"
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-400"
+          autocomplete="current-password"
+        />
+        <button type="submit" class="w-full py-2 px-4 text-white bg-green-600 hover:bg-green-700 rounded-lg font-semibold">
+          Sign In
+        </button>
+      </form>
+
+      <p class="text-sm text-gray-600 text-center">
+        Need help?
+        <a href="mailto:info@topstudent.co.za" class="text-green-600 hover:underline">Contact support</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Loader overlay -->
+  <div id="loader" class="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-[10000] hidden" aria-live="polite" aria-label="Loading">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-600"></div>
+  </div>
+
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
     const supabase = createClient(
       'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
     );
 
-    function showLogin() {
-  document.getElementById("loginModal").style.display = "block";
-}
+    const loader = document.getElementById('loader');
+    const loginModal = document.getElementById('login-modal');
 
-function closeLogin() {
-  document.getElementById("loginModal").style.display = "none";
-}
+    // Open login modal
+    window.openLogin = () => {
+      loginModal.classList.remove('hidden');
+    };
 
-// ✅ Add this below
-window.showLogin = showLogin;
-window.closeLogin = closeLogin;
+    // Close login modal
+    window.closeLogin = () => {
+      loginModal.classList.add('hidden');
+    };
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const toggleIcon = document.getElementById('togglePasswordIcon');
-      const passwordInput = document.getElementById('loginPassword');
-      const loginForm = document.getElementById('loginForm');
-      const loginSpinner = document.getElementById('loadingSpinner');
-      const loginButton = loginForm.querySelector('button[type="submit"]');
+    // Handle login form submission
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loader.classList.remove('hidden');
 
-      toggleIcon.addEventListener('click', () => {
-        const isPassword = passwordInput.type === 'password';
-        passwordInput.type = isPassword ? 'text' : 'password';
-        toggleIcon.classList.toggle('fa-eye');
-        toggleIcon.classList.toggle('fa-eye-slash');
-      });
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
 
-      loginForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        if (loginButton.disabled) return; // Prevent double submits
+      try {
+        const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
 
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = passwordInput.value;
+        if (loginError) throw loginError;
 
-        if (!email || !password) {
-          alert('Please enter email and password.');
-          return;
+        const userId = loginData.user.id;
+
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', userId)
+          .single();
+
+        if (profileError) throw profileError;
+
+        loader.classList.add('hidden');
+
+        // Redirect based on role
+        switch (profileData.role) {
+          case 'standard':
+            window.location.href = 'standard/standard.html';
+            break;
+          case 'premium':
+            window.location.href = 'premium/premium.html';
+            break;
+          case 'free':
+            window.location.href = '../resource.html';
+            break;
+          default:
+            alert('Unknown user role: ' + profileData.role);
+            break;
         }
-
-        loginButton.disabled = true;
-        loginSpinner.style.display = 'inline-block';
-
-        try {
-          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-          if (error || !data?.user) {
-            alert("Login failed. Please check your credentials.");
-            return;
-          }
-
-          const user = data.user;
-          const { data: userData, error: fetchError } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', user.id)
-            .single();
-
-          if (fetchError || !userData) {
-            alert("No account record found or error fetching user.");
-          } else {
-            const role = userData.role || "pending";
-            if (role === "pending") {
-              alert("Payment pending. Try again later.");
-            } else if (role === "premium") {
-              window.location.href = "premium/premium.html";
-            } else if (role === "standard") {
-              window.location.href = "standard/standard.html";
-            } else if (role === "admin") {
-              window.location.href = "admin/admin.html";
-            } else {
-              alert("Unknown role. Contact support.");
-            }
-          }
-        } catch (err) {
-          console.error(err);
-          alert("An unexpected error occurred.");
-        } finally {
-          loginButton.disabled = false;
-          loginSpinner.style.display = 'none';
-        }
-      });
+      } catch (error) {
+        loader.classList.add('hidden');
+        alert('Login failed: ' + error.message);
+      }
     });
   </script>
 </body>
 </html>
+

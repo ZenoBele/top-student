@@ -260,14 +260,12 @@
   <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    const supabase = createClient(
-      'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
-    );
+  const supabase = createClient(
+    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+  );
 
   document.addEventListener("DOMContentLoaded", function () {
-    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     const params = new URLSearchParams(window.location.search);
     const plan = params.get("plan");
 
@@ -289,13 +287,13 @@
       payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=299&item_name=TopStudentPremium&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
     } else {
       title.textContent = "Plan Not Selected";
+	  title.innerHTML = `<span style="color: red;">Plan Not Selected</span>`;
       price.textContent = "Please go back and choose a plan first.";
       document.getElementById("signupForm").style.display = "none";
       savingsText.style.display = "none";
       return;
     }
 
-    // Display savings
     const percentSaved = Math.round(((futurePrice - currentPrice) / futurePrice) * 100);
     title.textContent = plan.charAt(0).toUpperCase() + plan.slice(1) + " Plan";
     price.innerHTML = `<span style="color: red; font-weight: bold;">R${currentPrice}p/m</span>`;
@@ -316,15 +314,10 @@
       const password = this.value;
       rules.style.display = password.length > 0 ? "block" : "none";
 
-      const lengthOk = password.length >= 8;
-      const upperOk = /[A-Z]/.test(password);
-      const lowerOk = /[a-z]/.test(password);
-      const numberOk = /\d/.test(password);
-
-      updateRule("ruleLength", lengthOk);
-      updateRule("ruleUpper", upperOk);
-      updateRule("ruleLower", lowerOk);
-      updateRule("ruleNumber", numberOk);
+      updateRule("ruleLength", password.length >= 8);
+      updateRule("ruleUpper", /[A-Z]/.test(password));
+      updateRule("ruleLower", /[a-z]/.test(password));
+      updateRule("ruleNumber", /\d/.test(password));
     });
 
     function updateRule(id, passed) {
@@ -357,7 +350,7 @@
       loadingSpinner.style.display = "block";
 
       try {
-        const { data, error } = await client.auth.signUp({ email, password });
+        const { data, error } = await supabase.auth.signUp({ email, password });
 
         if (error) {
           alert('Sign up failed: ' + error.message);
@@ -365,15 +358,15 @@
         }
 
         if (data?.user) {
-          await client.from("profiles").insert([{
+          await supabase.from("profiles").insert([{
             id: data.user.id,
             email: data.user.email,
             role: "pending",
             selected_plan: plan
           }]);
+
           window.location.href = payfastUrl;
         }
-
       } catch (err) {
         alert("Something went wrong: " + err.message);
       } finally {

@@ -2,227 +2,150 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Reset Password – Top Student</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #E0F7FA;
-      margin: 0;
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .box {
-      background: #FFFFFF;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-      width: 100%;
-      max-width: 400px;
-      box-sizing: border-box;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 1rem;
-      color: #01579B;
-    }
-
-    .input-group {
-      position: relative;
-      margin-bottom: 1rem;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 0.8rem 2.5rem 0.8rem 1rem;
-      border-radius: 8px;
-      border: 1px solid #B2EBF2;
-      background: #F1FCFD;
-      font-size: 1rem;
-      box-sizing: border-box;
-    }
-
-    .input-group i {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #0288D1;
-    }
-
-    button {
-      width: 100%;
-      padding: 0.9rem;
-      font-size: 1rem;
-      background: #0288D1;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 0.5rem;
-    }
-
-    button:hover {
-      background: #0277BD;
-    }
-
-    #passwordRules {
-      text-align: left;
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-    }
-
-    .valid {
-      color: green;
-    }
-
-    .invalid {
-      color: red;
-    }
-
-    #loadingSpinner {
-      display: none;
-      text-align: center;
-      margin-top: 1rem;
-      color: #0288D1;
-    }
-
-    #message {
-      margin-top: 1rem;
-      text-align: center;
-      color: #00796B;
-    }
-
-    .nav-links {
-	  display: flex;
-  justify-content: center;
-  gap: 3rem; /* or whatever spacing you want */
-  flex-wrap: wrap;
-      margin-top: 1.5rem;
-      text-align: center;
-    }
-
-    .nav-links a {
-      margin: 0 0.5rem;
-	  gap: 50%;
-      text-decoration: none;
-      color: #0288D1;
-      font-size: 0.95rem;
-    }
-
-    .nav-links a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 480px) {
-      .box {
-        padding: 1.5rem 1rem;
-      }
-
-      .input-group input {
-        font-size: 0.95rem;
-      }
-
-      button {
-        font-size: 0.95rem;
-      }
-
-      .nav-links a {
-        display: block;
-        margin: 0.3rem 0;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reset Password</title>
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <!-- Phosphor Icons -->
+  <link href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-<body>
-  <div class="box">
-  
-    <div class="nav-links">
-      <a href="index.html"><i class="fa fa-home fa-2x"></i></a>
-      <a href="contact.html"><i class="fa fa-envelope fa-2x"></i></a>
-      <a href="login.html"><i class="fa fa-sign-in-alt fa-2x"></i></a>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen px-4">
+  <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
+    
+    <!-- Header with icons -->
+    <div class="flex justify-between items-center mb-4">
+      <a href="/" class="text-blue-600 text-xl hover:text-blue-800 transition">
+        <i class="fas fa-home"></i>
+      </a>
+      <h2 class="text-xl font-bold text-center flex-1">Reset Password</h2>
+      <a href="/login" class="text-purple-600 text-xl hover:text-blue-800 transition text-right">
+        <i class="fas fa-sign-in-alt"></i>
+      </a>
     </div>
-	
-    <h2>Set a New Password</h2>
-    <form id="signupForm" onsubmit="event.preventDefault(); resetPassword();">
-      <div class="input-group">
-        <input type="password" id="password" placeholder="New password" required />
-        <i id="toggleIcon" class="fa fa-eye" onclick="togglePassword()"></i>
+
+    <!-- Form -->
+    <form id="resetForm" class="space-y-4">
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">New Password</label>
+        <div class="relative mt-1">
+          <input type="password" id="password" class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required />
+          <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500">
+            <i id="toggleIcon" class="ph-eye text-xl"></i>
+          </button>
+        </div>
       </div>
 
-      <div id="passwordRules">
-        <div id="ruleLength" class="invalid">✗ At least 8 characters</div>
-        <div id="ruleUpper" class="invalid">✗ At least one uppercase letter</div>
-        <div id="ruleLower" class="invalid">✗ At least one lowercase letter</div>
-        <div id="ruleNumber" class="invalid">✗ At least one number</div>
+      <div class="text-sm space-y-1">
+        <p id="ruleLength" class="text-gray-600">✗ At least 8 characters</p>
+        <p id="ruleUpper" class="text-gray-600">✗ At least one uppercase letter</p>
+        <p id="ruleLower" class="text-gray-600">✗ At least one lowercase letter</p>
+        <p id="ruleNumber" class="text-gray-600">✗ At least one number</p>
       </div>
 
-      <button type="submit">Reset Password</button>
+      <!-- Gradient Button -->
+      <div class="flex justify-center">
+        <button type="submit" class="w-full py-2 text-white font-semibold rounded-md bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition duration-300">
+          Reset Password
+        </button>
+      </div>
+
+      <!-- Loader + Message -->
+      <div id="loader" class="hidden text-center mt-4">
+        <svg class="animate-spin h-5 w-5 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+      </div>
+      <p id="message"></p>
     </form>
-
-    <div id="loadingSpinner">⏳ Processing...</div>
-    <div id="message"></div>
-
   </div>
 
-  <script>
-    function togglePassword() {
-      const password = document.getElementById("password");
-      const icon = document.getElementById("toggleIcon");
-      if (password.type === "password") {
-        password.type = "text";
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
+<script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+    );
+	
+    const passwordInput = document.getElementById('password');
+    const togglePasswordBtn = document.getElementById('togglePassword');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const loader = document.getElementById('loader');
+    const messageEl = document.getElementById('message');
+    const submitBtn = document.getElementById('submitBtn');
+
+    const ruleLength = document.getElementById('ruleLength');
+    const ruleUpper = document.getElementById('ruleUpper');
+    const ruleLower = document.getElementById('ruleLower');
+    const ruleNumber = document.getElementById('ruleNumber');
+
+    togglePasswordBtn.addEventListener('click', () => {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.replace('ph-eye', 'ph-eye-slash');
       } else {
-        password.type = "password";
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
+        passwordInput.type = 'password';
+        toggleIcon.classList.replace('ph-eye-slash', 'ph-eye');
       }
-    }
+    });
 
-    function resetPassword() {
-      document.getElementById("loadingSpinner").style.display = "block";
-      document.getElementById("message").innerText = "";
-
-      // Simulated reset logic
-      setTimeout(() => {
-        document.getElementById("loadingSpinner").style.display = "none";
-        document.getElementById("message").innerText = "✅ Password successfully reset!";
-      }, 1500);
-    }
-
-    document.getElementById("password").addEventListener("input", function () {
-      const pwd = this.value;
-
-      // Length
+    passwordInput.addEventListener('input', () => {
+      const pwd = passwordInput.value;
       const lengthOK = pwd.length >= 8;
-      document.getElementById("ruleLength").innerText = lengthOK ? "✓ At least 8 characters" : "✗ At least 8 characters";
-      document.getElementById("ruleLength").className = lengthOK ? "valid" : "invalid";
-
-      // Uppercase
       const upperOK = /[A-Z]/.test(pwd);
-      document.getElementById("ruleUpper").innerText = upperOK ? "✓ At least one uppercase letter" : "✗ At least one uppercase letter";
-      document.getElementById("ruleUpper").className = upperOK ? "valid" : "invalid";
-
-      // Lowercase
       const lowerOK = /[a-z]/.test(pwd);
-      document.getElementById("ruleLower").innerText = lowerOK ? "✓ At least one lowercase letter" : "✗ At least one lowercase letter";
-      document.getElementById("ruleLower").className = lowerOK ? "valid" : "invalid";
-
-      // Number
       const numberOK = /\d/.test(pwd);
-      document.getElementById("ruleNumber").innerText = numberOK ? "✓ At least one number" : "✗ At least one number";
-      document.getElementById("ruleNumber").className = numberOK ? "valid" : "invalid";
+
+      ruleLength.textContent = (lengthOK ? '✓' : '✗') + ' At least 8 characters';
+      ruleLength.className = lengthOK ? 'text-green-600' : 'text-red-600';
+
+      ruleUpper.textContent = (upperOK ? '✓' : '✗') + ' At least one uppercase letter';
+      ruleUpper.className = upperOK ? 'text-green-600' : 'text-red-600';
+
+      ruleLower.textContent = (lowerOK ? '✓' : '✗') + ' At least one lowercase letter';
+      ruleLower.className = lowerOK ? 'text-green-600' : 'text-red-600';
+
+      ruleNumber.textContent = (numberOK ? '✓' : '✗') + ' At least one number';
+      ruleNumber.className = numberOK ? 'text-green-600' : 'text-red-600';
+    });
+
+    document.getElementById('resetForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loader.classList.remove('hidden');
+      messageEl.textContent = '';
+      submitBtn.disabled = true;
+
+      const newPassword = passwordInput.value;
+      const urlParams = new URLSearchParams(window.location.search);
+      const access_token = urlParams.get("access_token");
+
+      if (!access_token) {
+        loader.classList.add('hidden');
+        messageEl.textContent = '⚠️ Invalid or expired reset link.';
+        messageEl.className = 'text-red-600 text-center mt-4';
+        submitBtn.disabled = false;
+        return;
+      }
+
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+      loader.classList.add('hidden');
+      if (error) {
+        messageEl.textContent = '❌ ' + error.message;
+        messageEl.className = 'text-red-600 text-center mt-4';
+      } else {
+        messageEl.textContent = '✅ Password updated successfully!';
+        messageEl.className = 'text-green-600 text-center mt-4';
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+      }
+
+      submitBtn.disabled = false;
     });
   </script>
 </body>
 </html>
-
-

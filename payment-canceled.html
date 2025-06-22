@@ -1,136 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Payment Cancelled – Top Student</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --gradient-blue-start: #003366;
-      --gradient-blue-end: #33aaff;
-      --gradient-green-start: #10b981;
-      --gradient-green-end: #34d399;
-      --danger: #DC2626;
-      --bg-light: #F0F4F8;
-      --text-dark: #0F172A;
-      --btn-radius: 10px;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg-light);
-      color: var(--text-dark);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .container {
-      position: relative;
-      background: white;
-      padding: 3rem 2rem;
-      border-radius: 18px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      max-width: 480px;
-      width: 100%;
-    }
-
-    .back-arrow {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      font-size: 1.2rem;
-      text-decoration: none;
-      color: var(--gradient-blue-start);
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-
-    .back-arrow:hover {
-      color: var(--gradient-blue-end);
-    }
-
-    h1 {
-      color: var(--danger);
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      margin: 0.75rem 0;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      margin-top: 2rem;
-    }
-
-    .btn {
-      display: block;
-      padding: 0.9rem;
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      border-radius: var(--btn-radius);
-      transition: opacity 0.3s ease;
-    }
-
-    .btn.primary {
-      background: linear-gradient(to right, var(--gradient-green-end), var(--gradient-blue-end));
-    }
-
-    .btn.primary:hover {
-	  background: linear-gradient(to right, var(--gradient-blue-end), var(--gradient-green-end));
-      opacity: 0.9;
-    }
-
-    .btn.green {
-      background: linear-gradient(to right, var(--gradient-blue-end), var(--gradient-green-end));
-    }
-
-    .btn.green:hover {
-	background: linear-gradient(to right, var(--gradient-green-end), var(--gradient-blue-end));
-      opacity: 0.9;
-    }
-
-    @media (min-width: 500px) {
-      .btn-group {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      .btn {
-        flex: 1 1 calc(50% - 1rem);
-        max-width: 200px;
-      }
-    }
-  </style>
+  <link rel="icon" type="image/x-icon" href="images/favicon.png" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-6 font-sans text-gray-900 relative">
 
-  <div class="container">
-    <a href="index.html" class="back-arrow">✕</a>
+  <!-- Loader Overlay -->
+  <div id="loader" class="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50 hidden" aria-live="polite" aria-label="Loading">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-600"></div>
+  </div>
 
-    <h1>Payment Canceled</h1>
-    <p>Your payment was not completed or was canceled.</p>
-    <p>No money was taken. You can try again or choose another action below.</p>
+  <div class="relative bg-white rounded-2xl shadow-lg max-w-md w-full p-8 text-center">
+    <!-- Back Arrow -->
+    <a href="index.html" aria-label="Close payment cancelled page" class="absolute top-4 left-4 text-red-700 hover:text-red-500 font-semibold text-2xl select-none">✕</a>
 
-    <div class="btn-group">
-      <a href="service.html" class="btn primary">Try Again</a>
-      <a href="contact.html" class="btn green">Contact Support</a>
+    <h1 class="text-red-600 text-2xl font-bold mb-4">Payment Cancelled</h1>
+    <p class="mb-2 text-base leading-relaxed">
+      Your payment was not completed or was canceled.
+    </p>
+    <p class="mb-6 text-base leading-relaxed">
+      No money was taken. You can retry your payment or contact support below.
+    </p>
+
+    <div class="flex flex-col sm:flex-row sm:justify-center gap-4">
+      <button id="retryPaymentBtn" class="flex-1 bg-gradient-to-r from-red-500 to-red-700 hover:from-red-700 hover:to-red-500 text-white font-semibold rounded-xl py-3 transition">
+        Retry Payment
+      </button>
+      <a href="contact.html" class="flex-1 bg-gradient-to-r from-red-700 to-red-500 hover:from-red-500 hover:to-red-700 text-white font-semibold rounded-xl py-3 transition text-center">
+        Contact Support
+      </a>
     </div>
   </div>
 
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    // Replace with your Supabase URL and anon key
+    const supabaseUrl = 'https://mlwxxtvsozhwzjxmsvbg.supabase.co';
+    const supabaseKey = 'YOUR_PUBLIC_ANON_KEY';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const loader = document.getElementById('loader');
+    const retryPaymentBtn = document.getElementById('retryPaymentBtn');
+
+    retryPaymentBtn.addEventListener('click', async () => {
+      loader.classList.remove('hidden');
+
+      try {
+        // Simulate an async retry payment operation
+        await new Promise((r) => setTimeout(r, 2000));
+
+        // TODO: Implement actual retry payment logic with Supabase or payment provider API
+
+        alert('Payment retry process started. Please check your email or payment portal.');
+      } catch (error) {
+        alert('Error retrying payment: ' + error.message);
+      } finally {
+        loader.classList.add('hidden');
+      }
+    });
+  </script>
 </body>
 </html>
-
