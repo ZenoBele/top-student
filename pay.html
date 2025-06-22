@@ -253,7 +253,7 @@
     </form>
 
     <div class="secure">🔒 100% Secure Payment powered by PayFast</div>
-    <div class="footer">Need help? <a href="mailto:support@topstudent.co.za">Contact Support</a></div>
+    <div class="footer">Need help? <a href="mailto:info@topstudent.co.za">Contact Support</a></div>
   </div>
 
   <script>
@@ -289,7 +289,7 @@ if (plan === "standard") {
     2026 – R${futurePrice}p/m
   </span>`;
   
-  payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=199&item_name=TopStudentStandard&return_url=https://yourdomain.com/thank-you.html&cancel_url=https://yourdomain.com/payment-cancelled.html';
+  payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=199&item_name=TopStudentStandard&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
 
 } else if (plan === "premium") {
   currentPrice = 299;
@@ -306,7 +306,7 @@ if (plan === "standard") {
     2026 – R${futurePrice}p/m
   </span>`;
 
-  payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=299&item_name=TopStudentPremium&return_url=https://yourdomain.com/thank-you.html&cancel_url=https://yourdomain.com/payment-cancelled.html';
+  payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=299&item_name=TopStudentPremium&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
 } else {
   title.textContent = "Plan Not Selected";
   price.textContent = "Please go back and choose a plan first.";
