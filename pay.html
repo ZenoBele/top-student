@@ -3,379 +3,164 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Top Student – Secure Signup</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
-  <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Top Student – Launching Soon</title>
+  <meta name="description" content="Top Student is launching soon. Prepare for study guides, past papers, reminders, tips, and more for Grade 12 learners in South Africa." />
+
   <style>
   * {
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-  }
-  
-  html, body {
-  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
   overflow-x: hidden;
 }
-
-  body {
-    margin: 0;
-    padding: 0;
-    background: #fff;
-    color: #000;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-	overflow-x: hidden;
-  width: 100vw;
-  }
-
-.container {
-  background: #ffffff;
-  color: #333;
-  border-radius: 16px;
-  padding: clamp(1rem, 5vw, 2.5rem);
-  width: 100%;
-  margin-top: 1rem;
-  margin-buttom: 1rem;
-  max-width: 800px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  position: relative;
-  overflow-x: hidden;
-}
-
-  .cancel-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #cc0000;
-  cursor: pointer;
-  z-index: 9999;
-  padding: 0.25rem;
-  line-height: 1;
-  width: 2rem;
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.cancel-btn:hover {
-  color: #fff;
-  background: #cc0000;
-  border-radius: 50%;
-}
-
-  h2 {
-    text-align: center;
-    font-size: 1.8rem;
-    color: #003366;
-    margin-top: 1.5rem;
-  }
-
-  .savings-banner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-	width: 100%;
-    max-width: 500px;
-    margin: 1.5rem auto;
-    min-height: 160px;
-    padding: 1.5rem;
-    color: #fff;
-    font-weight: 600;
-    font-size: 1rem;
-    background: rgba(255, 0, 0, 0.9);
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-    text-shadow: 0 1px 1px #00000090;
-    animation: zoomPulse 2.5s infinite;
-    transition: transform 0.3s ease;
-    line-height: 1.4;
-  }
-
-  @keyframes zoomPulse {
-    0%, 100% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.06);
-    }
-  }
-
-  p {
-    text-align: center;
-    font-size: 1.1rem;
-    color: #444;
-  }
-
-  label {
-    display: block;
-    margin: 1rem 0 0.3rem;
-    font-weight: 600;
-  }
-
-  input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #bbb;
-    border-radius: 8px;
-    font-size: 1rem;
-  }
-
-  #togglePasswordDiv {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #007acc;
-    display: none;
-    cursor: pointer;
-  }
-
-  #passwordRules {
-    background-color: #f8f9fa;
-    border: 1px solid #ccc;
-    padding: 0.7rem;
-    border-radius: 8px;
-    margin-top: 1rem;
-  }
-
-  .rule {
-    font-size: 0.9rem;
-    margin-bottom: 0.3rem;
-  }
-
-  button {
-    width: 100%;
-    padding: 12px;
-    background-color: #00cc66;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: 600;
-    font-size: 1rem;
-    margin-top: 1.5rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-
-  button:hover {
-    background-color: #00994d;
-  }
-
-  #loadingSpinner {
-    text-align: center;
-    margin-top: 1rem;
-    display: none;
-  }
-
-  .footer {
-    margin-top: 1.5rem;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #555;
-  }
-
-  .footer a {
-    color: #007acc;
-    text-decoration: none;
-  }
   
-    .footer a:hover {
-    text-decoration: underline;
-  }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #003366, #33aaff);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      height: 100vh;
+      padding: 2rem;
+    }
 
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
 
-  .secure {
-    margin-top: 1.2rem;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #007700;
-  }
-
-  @media (max-width: 480px) {
-  .container {
-    padding: 1rem;
-  }
-
-    h2 {
-      font-size: 1.5rem;
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
     }
 
     p {
-      font-size: 1rem;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+	
+    .countdown {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
     }
 
-    .savings-banner {
-      font-size: 0.95rem;
-      padding: 1.2rem;
-      min-height: auto;
+    .notify-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .back-btn {
-      font-size: 1.2rem;
+    .notify-buttons a {
+      text-decoration: none;
+      background: #facc15;
+      color: #1e3a8a;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: background 0.3s ease;
     }
+
+    .notify-buttons a:hover {
+      background: #fbbf24;
+    }
+	
+.animated-banner {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.5rem;
+  border-radius: 40px;
+  margin-bottom: 2rem;
+  position: relative;
+  animation: driveInOut 8s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+@keyframes driveInOut {
+  0% {
+    transform: translateX(-190%);
+    opacity: 0;
   }
-</style>
+  20% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  65% {
+    transform: translateX(-10px);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(190%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%);
+    opacity: 0;
+  }
+}
+  </style>
 </head>
 <body>
+<div class="animated-banner">
+  <div class="logo">Top Student</div>
+  <div>Opening Soon – Get ready to level up!</div>
+  <div class="countdown" id="countdown">Loading...</div>
 
-  <div class="container">
-<button class="cancel-btn" onclick="window.location.href='https://topstudent.co.za/payment-canceled.html'">✕</button>
-    <h2 id="plan-title">Loading Plan...</h2>
-    <div class="savings-banner" id="savingsText">You're saving big!</div>
-    <p id="plan-price">Please wait...</p>
+<section style="padding: 40px; background: #f0f8ff; text-align: center; border-radius: 16px; max-width: 700px; margin: 40px auto; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+  <h2 style="font-size: 2rem; color: #003366; margin-bottom: 16px;">📲 Book Your Account Now</h2>
+  <p style="font-size: 1.1rem; color: #333; margin-bottom: 30px;">
+    Send the word <strong>"Standard"</strong> or <strong>"Premium"</strong> via WhatsApp</br>to book your Top Student account instantly.
+  </p>
+  <a href="https://wa.me/27609313995?text=Standard" target="_blank" style="display: inline-block; background: linear-gradient(to right, #25D366, #128C7E); color: white; padding: 14px 30px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; margin: 8px;">
+    WhatsApp "Standard"
+  </a>
+  <a href="https://wa.me/27609313995?text=Premium" target="_blank" style="display: inline-block; background: linear-gradient(to right, #25D366, #128C7E); color: white; padding: 14px 30px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; margin: 8px;">
+    WhatsApp "Premium"
+  </a>
+</section>
 
-    <form id="signupForm">
-      <label for="email">Email Address</label>
-      <input type="email" id="email" required />
-
-      <label for="password">Password</label>
-      <input type="password" id="password" required />
-
-      <div id="togglePasswordDiv"></div>
-
-      <div id="passwordRules">
-        <div class="rule" id="ruleLength">✗ At least 8 characters</div>
-        <div class="rule" id="ruleUpper">✗ At least one uppercase letter</div>
-        <div class="rule" id="ruleLower">✗ At least one lowercase letter</div>
-        <div class="rule" id="ruleNumber">✗ At least one number</div>
-      </div>
-
-      <button type="submit" id="submitBtn">Sign Up & Proceed to Payment</button>
-      <div id="loadingSpinner">Processing your signup...</div>
-    </form>
-
-    <div class="secure">🔒 100% Secure Payment powered by PayFast</div>
-    <div class="footer">Need help? <a href="mailto:info@topstudent.co.za">Contact Support</a></div>
+  <div class="notify-buttons">
+    <a href="https://wa.me/27609313995" target="_blank">Notify Me on WhatsApp</a>
+    <a href="mailto:info@topstudent.co.za?subject=Notify%20Me%20When%20Top%20Student%20Goes%20Live">Notify Me by Email</a>
   </div>
+</div>
+  <script>
+    // Set your launch date here
+    const launchDate = new Date("2025-07-07T08:00:00").getTime(); // Example date
 
-  <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const countdown = document.getElementById("countdown");
 
-  const supabase = createClient(
-    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
-  );
+    const timer = setInterval(function () {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const params = new URLSearchParams(window.location.search);
-    const plan = params.get("plan");
-
-    const title = document.getElementById("plan-title");
-    const price = document.getElementById("plan-price");
-    const savingsText = document.getElementById("savingsText");
-
-    let payfastUrl = "";
-    let currentPrice = 0;
-    let futurePrice = 0;
-
-    if (plan === "standard") {
-      currentPrice = 199;
-      futurePrice = 299;
-      payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=199&item_name=TopStudentStandard&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
-    } else if (plan === "premium") {
-      currentPrice = 299;
-      futurePrice = 499;
-      payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=299&item_name=TopStudentPremium&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
-    } else {
-      title.textContent = "Plan Not Selected";
-	  title.innerHTML = `<span style="color: red;">Plan Not Selected</span>`;
-      price.textContent = "Please go back and choose a plan first.";
-      document.getElementById("signupForm").style.display = "none";
-      savingsText.style.display = "none";
-      return;
-    }
-
-    const percentSaved = Math.round(((futurePrice - currentPrice) / futurePrice) * 100);
-    title.textContent = plan.charAt(0).toUpperCase() + plan.slice(1) + " Plan";
-    price.innerHTML = `<span style="color: red; font-weight: bold;">R${currentPrice}p/m</span>`;
-    savingsText.innerHTML = `<span style="padding: 20px; display: inline-block;"> 
-      <span style="font-size: 3rem; color: #fff;">${percentSaved}% off</span><br/>
-      <span style="font-size: 1rem;">NOW- R${currentPrice}p/m</span><br/><br/>
-      <span style="font-style: italic; font-size: 0.9rem; text-decoration: line-through; color: #ffeeee;">
-        2026 – R${futurePrice}p/m
-      </span>`;
-
-    const passwordInput = document.getElementById('password');
-    const emailInput = document.getElementById('email');
-    const submitBtn = document.getElementById('submitBtn');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    const rules = document.getElementById('passwordRules');
-
-    passwordInput.addEventListener("input", function () {
-      const password = this.value;
-      rules.style.display = password.length > 0 ? "block" : "none";
-
-      updateRule("ruleLength", password.length >= 8);
-      updateRule("ruleUpper", /[A-Z]/.test(password));
-      updateRule("ruleLower", /[a-z]/.test(password));
-      updateRule("ruleNumber", /\d/.test(password));
-    });
-
-    function updateRule(id, passed) {
-      const el = document.getElementById(id);
-      el.textContent = (passed ? "✓ " : "✗ ") + el.textContent.slice(2);
-      el.style.color = passed ? "green" : "red";
-    }
-
-    document.getElementById("togglePasswordDiv").addEventListener("click", function () {
-      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
-    });
-
-    document.getElementById('signupForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
-
-      const valid = password.length >= 8 &&
-                    /[A-Z]/.test(password) &&
-                    /[a-z]/.test(password) &&
-                    /\d/.test(password);
-
-      if (!valid) {
-        alert("Password does not meet the requirements.");
+      if (distance < 0) {
+        clearInterval(timer);
+        countdown.innerText = "We're now live!";
         return;
       }
 
-      submitBtn.disabled = true;
-      loadingSpinner.style.display = "block";
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      try {
-        const { data, error } = await supabase.auth.signUp({ email, password });
-
-        if (error) {
-          alert('Sign up failed: ' + error.message);
-          return;
-        }
-
-        if (data?.user) {
-          await supabase.from("profiles").insert([{
-            id: data.user.id,
-            email: data.user.email,
-            role: "pending",
-            selected_plan: plan
-          }]);
-
-          window.location.href = payfastUrl;
-        }
-      } catch (err) {
-        alert("Something went wrong: " + err.message);
-      } finally {
-        submitBtn.disabled = false;
-        loadingSpinner.style.display = "none";
-      }
-    });
-  });
-</script>
+      countdown.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }, 1000);
+  </script>
 </body>
 </html>
