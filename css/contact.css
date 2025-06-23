@@ -297,22 +297,51 @@ body {
   align-items: center;
   text-align: center;
 }
-
-.send-message button {
-  background-color: #005bb5;
+#sendBtn {
+  background: linear-gradient(to right, #003366, #33aaff);
   color: white;
   margin: auto;
   padding: 14px 30px;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
 }
 
-.send-message button:hover {
-  background-color: green;
+#sendBtn:hover {
+  background: linear-gradient(to right, #1a8ddc, #002b5c);
+  transform: scale(1.02);
 }
+
+#sendBtn:disabled {
+  background: #33aaff;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 .follow-us {
   text-align: center;
