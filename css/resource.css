@@ -484,20 +484,22 @@ footer {
   }
 
   .resources-dropdown .dropdown {
-    position: relative;
-    border: none;
-    box-shadow: none;
-    padding-left: 1rem;
-    margin-top: 0.5rem;
-  }
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  color: white;
+  padding: 0.5rem;
+  z-index: 50;
+}
 
-  .resources-dropdown:hover .dropdown {
-    display: none; /* disable hover */
-  }
+.resources-dropdown:hover .dropdown {
+  display: block;
+}
 
-  .resources-dropdown.open .dropdown {
-    display: block;
-  }
+.resources-dropdown.open .dropdown {
+  display: block;
+}
 
   .logo {
     flex: 1;
