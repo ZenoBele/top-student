@@ -4,49 +4,42 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
+<!-- Created with focus on indexable and accurate URLs -->
 
 <url>
   <loc>https://topstudent.co.za/</loc>
-  <lastmod>2025-06-23T06:46:03+00:00</lastmod>
+  <lastmod>2025-06-23</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://topstudent.co.za/about</loc>
-  <lastmod>2025-06-23T06:46:03+00:00</lastmod>
+  <loc>https://topstudent.co.za/about.html</loc>
+  <lastmod>2025-06-23</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://topstudent.co.za/contact</loc>
-  <lastmod>2025-06-23T06:46:03+00:00</lastmod>
+  <loc>https://topstudent.co.za/contact.html</loc>
+  <lastmod>2025-06-23</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://topstudent.co.za/service</loc>
-  <lastmod>2025-06-23T06:46:03+00:00</lastmod>
+  <loc>https://topstudent.co.za/service.html</loc>
+  <lastmod>2025-06-23</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://topstudent.co.za/resource</loc>
-  <lastmod>2025-06-23T06:46:03+00:00</lastmod>
+  <loc>https://topstudent.co.za/resource.html</loc>
+  <lastmod>2025-06-23</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://topstudent.co.za/privacy-terms</loc>
-  <lastmod>2025-06-23T06:46:03+00:00</lastmod>
+  <loc>https://topstudent.co.za/privacy-terms.html</loc>
+  <lastmod>2025-06-23</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://topstudent.co.za/pay?plan=standard</loc>
-  <lastmod>2025-06-23T06:46:03+00:00</lastmod>
-  <priority>0.64</priority>
+  <loc>https://topstudent.co.za/papers.html</loc>
+  <lastmod>2025-06-23</lastmod>
+  <priority>0.85</priority>
 </url>
-<url>
-  <loc>https://topstudent.co.za/pay?plan=premium</loc>
-  <lastmod>2025-06-23T06:46:03+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-
 
 </urlset>
