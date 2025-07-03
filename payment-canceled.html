@@ -29,42 +29,13 @@
     </p>
 
     <div class="flex flex-col sm:flex-row sm:justify-center gap-4">
-      <button id="retryPaymentBtn" class="flex-1 bg-gradient-to-r from-red-500 to-red-700 hover:from-red-700 hover:to-red-500 text-white font-semibold rounded-xl py-3 transition">
-        Retry Payment
-      </button>
+      <a href="service.html" class="flex-1 bg-gradient-to-r from-red-700 to-red-500 hover:from-red-500 hover:to-red-700 text-white font-semibold rounded-xl py-3 transition text-center">
+        Try again
+      </a>
       <a href="contact.html" class="flex-1 bg-gradient-to-r from-red-700 to-red-500 hover:from-red-500 hover:to-red-700 text-white font-semibold rounded-xl py-3 transition text-center">
         Contact Support
       </a>
     </div>
   </div>
-
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-   const supabase = createClient(
-    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
-  );
-
-    const loader = document.getElementById('loader');
-    const retryPaymentBtn = document.getElementById('retryPaymentBtn');
-
-    retryPaymentBtn.addEventListener('click', async () => {
-      loader.classList.remove('hidden');
-
-      try {
-        // Simulate an async retry payment operation
-        await new Promise((r) => setTimeout(r, 2000));
-
-        // TODO: Implement actual retry payment logic with Supabase or payment provider API
-
-        alert('Payment retry process started. Please check your email or payment portal.');
-      } catch (error) {
-        alert('Error retrying payment: ' + error.message);
-      } finally {
-        loader.classList.add('hidden');
-      }
-    });
-  </script>
 </body>
 </html>
