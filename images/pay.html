@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top Student – Secure Signup</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  * {
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #000;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	overflow-x: hidden;
+  width: 100vw;
+  }
+
+.container {
+  background: #ffffff;
+  color: #333;
+  border-radius: 16px;
+  padding: clamp(1rem, 5vw, 2.5rem);
+  width: 100%;
+  margin-top: 1rem;
+  margin-buttom: 1rem;
+  max-width: 800px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow-x: hidden;
+}
+
+  .cancel-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #cc0000;
+  cursor: pointer;
+  z-index: 9999;
+  padding: 0.25rem;
+  line-height: 1;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cancel-btn:hover {
+  color: #fff;
+  background: #cc0000;
+  border-radius: 50%;
+}
+
+  h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #003366;
+    margin-top: 1.5rem;
+  }
+
+  .savings-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+	width: 100%;
+    max-width: 500px;
+    margin: 1.5rem auto;
+    min-height: 160px;
+    padding: 1.5rem;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    background: rgba(255, 0, 0, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+    text-shadow: 0 1px 1px #00000090;
+    animation: zoomPulse 2.5s infinite;
+    transition: transform 0.3s ease;
+    line-height: 1.4;
+  }
+
+  @keyframes zoomPulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.06);
+    }
+  }
+
+  p {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #444;
+  }
+
+  label {
+    display: block;
+    margin: 1rem 0 0.3rem;
+    font-weight: 600;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+
+  #togglePasswordDiv {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #007acc;
+    display: none;
+    cursor: pointer;
+  }
+
+  #passwordRules {
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    padding: 0.7rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+
+  .rule {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #00cc66;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #00994d;
+  }
+
+  #loadingSpinner {
+    text-align: center;
+    margin-top: 1rem;
+    display: none;
+  }
+
+  .footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  .footer a {
+    color: #007acc;
+    text-decoration: none;
+  }
+  
+    .footer a:hover {
+    text-decoration: underline;
+  }
+
+
+  .secure {
+    margin-top: 1.2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #007700;
+  }
+
+  @media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    .savings-banner {
+      font-size: 0.95rem;
+      padding: 1.2rem;
+      min-height: auto;
+    }
+
+    .back-btn {
+      font-size: 1.2rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+<button class="cancel-btn" onclick="window.location.href='https://topstudent.co.za/payment-canceled.html'">✕</button>
+    <h2 id="plan-title">Loading Plan...</h2>
+    <div class="savings-banner" id="savingsText">You're saving big!</div>
+    <p id="plan-price">Please wait...</p>
+
+    <form id="signupForm">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required />
+
+      <div id="togglePasswordDiv"></div>
+
+      <div id="passwordRules">
+        <div class="rule" id="ruleLength">✗ At least 8 characters</div>
+        <div class="rule" id="ruleUpper">✗ At least one uppercase letter</div>
+        <div class="rule" id="ruleLower">✗ At least one lowercase letter</div>
+        <div class="rule" id="ruleNumber">✗ At least one number</div>
+      </div>
+
+      <button type="submit" id="submitBtn">Sign Up & Proceed to Payment</button>
+      <div id="loadingSpinner">Processing your signup...</div>
+    </form>
+
+    <div class="secure">🔒 100% Secure Payment powered by PayFast</div>
+    <div class="footer">Need help? <a href="mailto:info@topstudent.co.za">Contact Support</a></div>
+  </div>
+
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+  );
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    const plan = params.get("plan");
+
+    const title = document.getElementById("plan-title");
+    const price = document.getElementById("plan-price");
+    const savingsText = document.getElementById("savingsText");
+
+    let payfastUrl = "";
+    let currentPrice = 0;
+    let futurePrice = 0;
+
+    if (plan === "standard") {
+      currentPrice = 199;
+      futurePrice = 299;
+      payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=199&item_name=TopStudentStandard&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
+    } else if (plan === "premium") {
+      currentPrice = 299;
+      futurePrice = 499;
+      payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=299&item_name=TopStudentPremium&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
+    } else {
+      title.textContent = "Plan Not Selected";
+	  title.innerHTML = `<span style="color: red;">Plan Not Selected</span>`;
+      price.textContent = "Please go back and choose a plan first.";
+      document.getElementById("signupForm").style.display = "none";
+      savingsText.style.display = "none";
+      return;
+    }
+
+    const percentSaved = Math.round(((futurePrice - currentPrice) / futurePrice) * 100);
+    title.textContent = plan.charAt(0).toUpperCase() + plan.slice(1) + " Plan";
+    price.innerHTML = `<span style="color: red; font-weight: bold;">R${currentPrice}p/m</span>`;
+    savingsText.innerHTML = `<span style="padding: 20px; display: inline-block;"> 
+      <span style="font-size: 3rem; color: #fff;">${percentSaved}% off</span><br/>
+      <span style="font-size: 1rem;">NOW- R${currentPrice}p/m</span><br/><br/>
+      <span style="font-style: italic; font-size: 0.9rem; text-decoration: line-through; color: #ffeeee;">
+        2026 – R${futurePrice}p/m
+      </span>`;
+
+    const passwordInput = document.getElementById('password');
+    const emailInput = document.getElementById('email');
+    const submitBtn = document.getElementById('submitBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const rules = document.getElementById('passwordRules');
+
+    passwordInput.addEventListener("input", function () {
+      const password = this.value;
+      rules.style.display = password.length > 0 ? "block" : "none";
+
+      updateRule("ruleLength", password.length >= 8);
+      updateRule("ruleUpper", /[A-Z]/.test(password));
+      updateRule("ruleLower", /[a-z]/.test(password));
+      updateRule("ruleNumber", /\d/.test(password));
+    });
+
+    function updateRule(id, passed) {
+      const el = document.getElementById(id);
+      el.textContent = (passed ? "✓ " : "✗ ") + el.textContent.slice(2);
+      el.style.color = passed ? "green" : "red";
+    }
+
+    document.getElementById("togglePasswordDiv").addEventListener("click", function () {
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      const valid = password.length >= 8 &&
+                    /[A-Z]/.test(password) &&
+                    /[a-z]/.test(password) &&
+                    /\d/.test(password);
+
+      if (!valid) {
+        alert("Password does not meet the requirements.");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      loadingSpinner.style.display = "block";
+
+      try {
+        // 1. Sign up the user with Supabase Auth
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+
+        if (signUpError) {
+          alert(`Sign-up failed: ${signUpError.message}`);
+          submitBtn.disabled = false;
+          loadingSpinner.style.display = "none";
+          return;
+        }
+
+        // 2. Get the user object from sign-up response
+        const user = signUpData.user;
+
+        if (!user) {
+          alert('Unexpected error: No user returned after sign-up.');
+          submitBtn.disabled = false;
+          loadingSpinner.style.display = "none";
+          return;
+        }
+
+        // 3. Insert into profiles table
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: user.id,
+            email: user.email,
+            role: 'pending', 
+            created_at: new Date().toISOString(),
+          });
+
+        if (profileError) {
+          alert(`Failed to create user profile: ${profileError.message}`);
+          submitBtn.disabled = false;
+          loadingSpinner.style.display = "none";
+          return;
+        }
+
+        // 4. Redirect to payment (PayFast) or success page
+        window.location.href = payfastUrl;
+
+      } catch (error) {
+        alert('Unexpected error occurred during sign-up.');
+        console.error(error);
+        submitBtn.disabled = false;
+        loadingSpinner.style.display = "none";
+      }
+    });
+  });
+</script>
+</body>
+</html>
