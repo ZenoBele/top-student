@@ -89,77 +89,102 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
   );
 
-  // Toggle password visibility
-   window.togglePassword = function () {
-    const password = document.getElementById("password");
-    const icon = document.getElementById("eye-icon");
-    if (password.type === "password") {
-      password.type = "text";
-      icon.classList.remove("ph-eye");
-      icon.classList.add("ph-eye-slash");
-    } else {
-      password.type = "password";
-      icon.classList.remove("ph-eye-slash");
-      icon.classList.add("ph-eye");
-    }
-  };
+window.togglePassword = function () {
+  const password = document.getElementById("password");
+  const icon = document.getElementById("eye-icon");
+  if (password.type === "password") {
+    password.type = "text";
+    icon.classList.remove("ph-eye");
+    icon.classList.add("ph-eye-slash");
+  } else {
+    password.type = "password";
+    icon.classList.remove("ph-eye-slash");
+    icon.classList.add("ph-eye");
+  }
+};
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('login-form');
-    const loader = document.getElementById('loader');
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('login-form');
+  const loader = document.getElementById('loader');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      loader.classList.remove('hidden');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    loader.classList.remove('hidden');
 
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
 
-      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (loginError) {
-        loader.classList.add('hidden');
-        alert("Login failed: " + loginError.message);
-        return;
-      }
-
-      const userId = loginData.user.id;
-
-      // Now fetch the user's profile
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', userId)
-        .single();
-
-      loader.classList.add('hidden');
-
-      if (profileError) {
-        alert("Error fetching user role: " + profileError.message);
-        return;
-      }
-
-      // Redirect based on role
-      const role = profileData.role;
-      switch (role) {
-        case 'standard':
-          window.location.href = 'standard/standard.html';
-          break;
-        case 'premium':
-          window.location.href = 'premium/premium.html';
-          break;
-        case 'free':
-          window.location.href = '../resource.html';
-          break;
-        default:
-          alert("Unknown user role: " + role);
-          break;
-      }
+    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password
     });
+
+    if (loginError) {
+      loader.classList.add('hidden');
+      return showToast("Login failed: " + loginError.message, "error");
+    }
+
+    const userId = loginData.user.id;
+
+    // 🔐 Fetch extended profile once
+    const { data: profileData, error: profileError } = await supabase
+      .from('profiles')
+      .select('role, is_active, first_name, last_paid_at')
+      .eq('id', userId)
+      .single();
+
+    if (profileError) {
+      loader.classList.add('hidden');
+      return showToast("Error fetching profile: " + profileError.message, "error");
+    }
+
+    if (!profileData.is_active) {
+      await supabase.auth.signOut();
+      loader.classList.add('hidden');
+      return showToast("Account is inactive or scheduled for deletion.", "error");
+    }
+
+    // ✅ Cache profile in sessionStorage
+    sessionStorage.setItem('user_profile', JSON.stringify(profileData));
+
+    loader.classList.add('hidden');
+
+    // 🚀 Redirect by role
+    switch (profileData.role) {
+      case 'standard':
+        window.location.href = 'standard/standard.html';
+        break;
+      case 'premium':
+        window.location.href = 'premium/premium.html';
+        break;
+      case 'free':
+        window.location.href = 'standard/manage.html';
+        break;
+      case 'unpaid':
+        window.location.href = 'premium/manage.html';
+        break;
+      case 'pending':
+        showToast("pending wait for your account to be approved, try again at 17h00", "error");
+        break;
+      default:
+        showToast("Unknown user role.", "error");
+        break;
+    }
   });
+});
+
+function showToast(message, type = "info") {
+  const box = document.createElement('div');
+  box.textContent = message;
+  box.className = `fixed bottom-5 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded shadow-lg text-white text-sm z-50 transition ${
+    type === "error" ? "bg-red-600" : type === "success" ? "bg-green-600" : "bg-blue-600"
+  }`;
+
+  document.body.appendChild(box);
+  setTimeout(() => {
+    box.remove();
+  }, 3000);
+}
 </script>
 </body>
 </html>

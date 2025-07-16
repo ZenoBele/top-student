@@ -4,30 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Payment Successful - Top Student</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
-  <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png" />
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body class="bg-gradient-to-br from-green-100 to-white min-h-screen flex items-center justify-center px-4 relative">
 
   <!-- Success Box -->
-  <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl text-center space-y-6">
+  <div id="success-box" class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl text-center space-y-6 hidden">
     <div class="text-green-600 text-5xl">
       <i class="ph ph-check-circle"></i>
     </div>
     <h2 class="text-2xl font-bold text-gray-800">Payment Successful</h2>
-    <p class="text-gray-600">Thank you for joining Top Student. You're all set to begin!</p>
+    <p id="success-message" class="text-gray-600">Thank you for joining Top Student. You're all set to begin!</p>
 
     <!-- Buttons -->
     <div class="space-y-3">
       <button onclick="openLogin()" class="w-full py-2 px-4 text-white font-semibold rounded-lg shadow-md bg-green-600 hover:bg-green-700 transition">
         Log in now
       </button>
-      <a href="/" class="block w-full py-2 px-4 text-green-700 border border-green-600 rounded-lg hover:bg-green-100 transition text-center">
+      <a href="../index.html" class="block w-full py-2 px-4 text-green-700 border border-green-600 rounded-lg hover:bg-green-100 transition text-center">
         Back to Home
       </a>
     </div>
+  </div>
+
+  <!-- Error Box -->
+  <div id="error-box" class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl text-center space-y-6 hidden">
+    <div class="text-red-600 text-5xl">
+      <i class="ph ph-x-circle"></i>
+    </div>
+    <h2 class="text-2xl font-bold text-gray-800">Payment Processing Failed</h2>
+    <p id="error-message" class="text-gray-600">Something went wrong. Please try again or contact support.</p>
+    <a href="/" class="inline-block mt-4 text-red-600 hover:underline">Back to Home</a>
   </div>
 
   <!-- Login Modal -->
@@ -75,75 +85,230 @@
   </div>
 
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    const supabase = createClient(
-      'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
-    );
+  const supabase = createClient(
+    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+  );
 
-    const loader = document.getElementById('loader');
-    const loginModal = document.getElementById('login-modal');
+  const loader = document.getElementById('loader');
+  const loginModal = document.getElementById('login-modal');
+  const successBox = document.getElementById('success-box');
+  const errorBox = document.getElementById('error-box');
+  const successMessage = document.getElementById('success-message');
+  const errorMessage = document.getElementById('error-message');
 
-    // Open login modal
-    window.openLogin = () => {
-      loginModal.classList.remove('hidden');
+  window.openLogin = () => loginModal.classList.remove('hidden');
+  window.closeLogin = () => loginModal.classList.add('hidden');
+  const showLoader = () => loader.classList.remove('hidden');
+  const hideLoader = () => loader.classList.add('hidden');
+  const showToast = (msg) => alert(msg);
+
+  function getQueryParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      amount: params.get('amount'),
+      item_name: params.get('item_name'),
+      payment_status: params.get('payment_status') || 'success',
+      pf_payment_id: params.get('pf_payment_id'),
     };
+  }
 
-    // Close login modal
-    window.closeLogin = () => {
-      loginModal.classList.add('hidden');
-    };
+  async function generateAndStorePDF(user, amount, plan = 'Standard Plan') {
+    const doc = new jsPDF();
+    const paidAt = new Date();
+    const paidAtString = paidAt.toLocaleString();
+    const invoiceId = `IN${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    // Handle login form submission
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      loader.classList.remove('hidden');
+    const lineY = (y) => doc.line(15, y, 195, y);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0, 0, 0);
+    doc.setDrawColor(150);
 
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+    doc.setFontSize(18);
+    doc.text('Top Student Invoice', 15, 20);
+    doc.setFontSize(12);
+    doc.text(`Invoice #: ${invoiceId}`, 150, 20);
+    lineY(25);
 
-      try {
-        const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
+    doc.setFontSize(10);
+    doc.text('From:', 15, 32);
+    doc.text('Top Student', 15, 37);
+    doc.text('info@topstudent.co.za', 15, 42);
+    doc.text('topstudent.co.za', 15, 47);
 
-        if (loginError) throw loginError;
+    doc.text('Billed To:', 110, 32);
+    doc.text(user.email, 110, 37);
+    doc.text(user.id, 110, 47);
+    lineY(52);
 
-        const userId = loginData.user.id;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Description', 15, 60);
+    doc.text('Plan', 95, 60);
+    doc.text('Amount (ZAR)', 150, 60);
+    lineY(62);
 
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', userId)
-          .single();
+    doc.setFont('helvetica', 'normal');
+    doc.text('Top Student Subscription', 15, 70);
+    doc.text(plan, 95, 70);
+    doc.text(`R${amount}`, 150, 70);
+    lineY(75);
 
-        if (profileError) throw profileError;
+    doc.setFontSize(10);
+    doc.text(`Date Paid: ${paidAtString}`, 15, 85);
+    doc.text(`User ID: ${user.id}`, 15, 90);
 
-        loader.classList.add('hidden');
+    doc.setFont('helvetica', 'italic');
+    doc.text("Thank you for your payment!", 15, 105);
+    doc.text("Need help? Contact us at info@topstudent.co.za", 15, 110);
 
-        // Redirect based on role
-        switch (profileData.role) {
-          case 'standard':
-            window.location.href = 'standard/standard.html';
-            break;
-          case 'premium':
-            window.location.href = 'premium/premium.html';
-            break;
-          case 'free':
-            window.location.href = '../resource.html';
-            break;
-          default:
-            alert('Unknown user role: ' + profileData.role);
-            break;
-        }
-      } catch (error) {
-        loader.classList.add('hidden');
-        alert('Login failed: ' + error.message);
+    doc.setFontSize(50);
+    doc.setTextColor(240);
+    doc.text('Top Student', 105, 180, { align: 'center', angle: 45 });
+
+    const pdfBlob = doc.output("blob");
+    const fileName = `receipt-${invoiceId}-${user.id}.pdf`;
+
+    const { error: uploadErr } = await supabase.storage
+      .from('receipts')
+      .upload(fileName, pdfBlob, {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: 'application/pdf'
+      });
+
+    if (uploadErr) {
+      showToast("Upload failed: " + uploadErr.message);
+      return null;
+    }
+
+    const { data } = supabase.storage.from('receipts').getPublicUrl(fileName);
+    return data.publicUrl;
+  }
+
+  async function updateProfileAndLogPayment(user, amount, plan, receiptUrl) {
+    const role = plan.toLowerCase().includes('premium') ? 'premium' : 'standard';
+    const now = new Date().toISOString();
+
+    const { error: updateErr } = await supabase
+      .from('profiles')
+      .update({
+        role,
+        status: true,
+        last_paid_at: now,
+      })
+      .eq('id', user.id);
+
+    if (updateErr) throw new Error("Profile update failed");
+
+    const { error: insertErr } = await supabase
+      .from('payments')
+      .insert([{
+        user_id: user.id,
+        amount,
+        type: plan,
+		invoice: invoiceId, // ✅ here
+        paid_at: now,
+        download_url: receiptUrl,
+      }]);
+
+    if (insertErr) throw new Error("Payment logging failed");
+  }
+
+  async function main() {
+    showLoader();
+
+    const params = getQueryParams();
+    if (!params.amount || !params.item_name) {
+      hideLoader();
+      errorMessage.textContent = "Payment data is missing or incomplete.";
+      errorBox.classList.remove('hidden');
+      return;
+    }
+
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      hideLoader();
+      errorMessage.textContent = "You must be logged in to complete this process.";
+      errorBox.classList.remove('hidden');
+      return;
+    }
+
+    if (params.payment_status !== 'success') {
+      hideLoader();
+      errorMessage.textContent = "Payment was not successful.";
+      errorBox.classList.remove('hidden');
+      return;
+    }
+
+    try {
+      const receiptUrl = await generateAndStorePDF(user, params.amount, params.item_name);
+      if (!receiptUrl) throw new Error("Receipt could not be uploaded.");
+
+      await updateProfileAndLogPayment(user, params.amount, params.item_name, receiptUrl);
+
+      successMessage.textContent = `Thank you for your payment of R${params.amount} for the ${params.item_name} plan. You may now log in.`;
+      successBox.classList.remove('hidden');
+    } catch (err) {
+      errorMessage.textContent = `Error processing payment: ${err.message}`;
+      errorBox.classList.remove('hidden');
+    } finally {
+      hideLoader();
+    }
+  }
+
+  main();
+
+  // Login form logic
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    showLoader();
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    try {
+      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (loginError) throw loginError;
+
+      const userId = loginData.user.id;
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', userId)
+        .single();
+
+      if (profileError) throw profileError;
+
+      hideLoader();
+
+      switch (profileData.role) {
+        case 'standard':
+          window.location.href = 'standard/standard.html';
+          break;
+        case 'premium':
+          window.location.href = 'premium/premium.html';
+          break;
+        case 'free':
+          window.location.href = 'standard/manage.html';
+          break;
+        default:
+          alert('Unknown role: ' + profileData.role);
       }
-    });
-  </script>
+    } catch (err) {
+      hideLoader();
+      alert('Login failed: ' + err.message);
+    }
+  });
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </body>
 </html>
+
 

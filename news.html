@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Access high-quality past exam papers with Top Student. Practice and prepare effectively for your exams with a growing collection of past papers." />
-<meta name="keywords" content="Past papers, exam practice, exam preparation, Top Student, study resources, past exam papers" />
+  <meta name="description" content="Stay informed with the latest career news and advice from Top Student. Plan your future with expert insights and updates designed for students." />
+<meta name="keywords" content="Career news, student career advice, future planning, exam tips, Top Student, education updates" />
 <meta name="author" content="Top Student" />
-  <title>Past Papers – Top Student</title>
+  <title>Career News – Top Student</title>
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
@@ -28,7 +29,6 @@
         <li><a href="news.html" class="hover:underline">News</a></li>
       </ul>
 
-      <!-- Right: Call Icon -->
       <div class="flex items-center space-x-4 flex-shrink-0">
   <a href="tel:0609313995" title="Call us" class="text-white hover:text-gray-100">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,10 +53,12 @@
   </nav>
 
   <!-- Main Message -->
-<main class="flex-grow flex flex-col items-center text-center px-4 py-12">
-  <h2 class="text-2xl sm:text-3xl font-semibold mb-6 text-gray-700">Available past papers</h2>
-  <div id="papersList" class="space-y-4 w-full max-w-xl">
-    <p class="text-gray-500">Loading past papers...</p>
+<main class="flex-grow px-4 py-12 max-w-3xl mx-auto">
+ <h2 class="text-3xl font-extrabold mb-6 text-center text-blue-800 tracking-tight">
+  🔥 Mugozi & Gossipies
+</h2>
+  <div id="newsList" class="space-y-6">
+    <p class="text-gray-500 text-center">Loading stories that matter to you...</p>
   </div>
 </main>
 
@@ -64,50 +66,88 @@
   <footer class="text-center text-gray-500 py-4 text-sm">
     &copy; 2025 Top Student. All rights reserved.
   </footer>
-  
+
 <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
   const supabaseUrl = 'https://mlwxxtvsozhwzjxmsvbg.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU';
-  const bucketName = 'papers';
-
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  async function loadGuides() {
-    const listContainer = document.getElementById('papersList');
-    listContainer.innerHTML = '';
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
 
-    const { data, error } = await supabase.storage.from(bucketName).list('', {
-      limit: 100,
-      sortBy: { column: 'name', order: 'asc' },
-    });
+async function loadNews() {
+  const listContainer = document.getElementById('newsList');
+  listContainer.innerHTML = '';
 
-    if (error) {
-      listContainer.innerHTML = `<p class="text-red-500">Error loading papers.</p>`;
-      return;
-    }
+  const { data, error } = await supabase
+    .from('news')
+    .select('title, body, date_posted, author, audience, image_url, source_url')
+    .order('date_posted', { ascending: false });
 
-    if (!data || data.length === 0) {
-      listContainer.innerHTML = `<p class="text-gray-500">No papers available yet.</p>`;
-      return;
-    }
-
-    data.forEach(file => {
-      const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${file.name}`;
-      const item = document.createElement('div');
-      item.className = 'bg-white shadow-md p-4 rounded-md text-left';
-      item.innerHTML = `
-        <h3 class="text-lg font-semibold text-blue-700">${file.name}</h3>
-        <a href="${publicUrl}" target="_blank" download class="text-sm text-blue-500 hover:underline">
-          Download
-        </a>
-      `;
-      listContainer.appendChild(item);
-    });
+  if (error) {
+    listContainer.innerHTML = `<p class="text-red-500">Couldn't load news. Please refresh.</p>`;
+    return;
   }
 
-  loadGuides();
+  if (!data || data.length === 0) {
+    listContainer.innerHTML = `<p class="text-gray-500">No news yet. Check back soon!</p>`;
+    return;
+  }
+
+  data.forEach(post => {
+    const card = document.createElement('div');
+   card.className = `
+  bg-white rounded-xl shadow-md 
+  transition transform duration-300 ease-in-out 
+  hover:scale-105 
+  hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
+  overflow-hidden max-w-3xl mx-auto
+`;
+
+    const date = new Date(post.date_posted).toLocaleDateString('en-ZA', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+
+    const audience = post.audience ? ` • For: ${capitalize(post.audience)}` : '';
+    const meta = `📅 ${date} • ✍️ ${post.author || 'Top Student'}${audience}`;
+
+    const image = post.image_url
+      ? `<img src="${post.image_url}" alt="news image" class="w-full h-48 object-cover">`
+      : '';
+
+    const sourceButton =
+      post.source_url && post.source_url !== '#' && post.source_url.startsWith('http')
+        ? `
+          <div class="flex justify-center mt-4">
+  <a href="${post.source_url}" target="_blank" rel="noopener"
+     class="inline-block text-sm font-semibold text-white bg-blue-400 
+            hover:bg-blue-800 px-4 py-2 rounded shadow hover:shadow-md transition">
+    🔗 View Full News
+  </a>
+</div>
+        `
+        : '';
+
+    card.innerHTML = `
+      ${image}
+      <div class="p-6">
+        <h3 class="text-2xl font-bold text-blue-800 mb-2">📰 ${post.title}</h3>
+        <p class="text-sm text-gray-500 mb-3">${meta}</p>
+        <div class="text-gray-800 leading-relaxed whitespace-pre-line">${post.body}</div>
+        ${sourceButton}
+      </div>
+    `;
+
+    listContainer.appendChild(card);
+  });
+}
+
+loadNews();
 </script>
 </body>
 </html>

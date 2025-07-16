@@ -4,67 +4,109 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Explore comprehensive study guides with Top Student. Get expert tips and structured materials to help you excel in your exams and boost your learning." />
-<meta name="keywords" content="Study guides, exam tips, exam preparation, Top Student, learning resources, study materials" />
-<meta name="author" content="Top Student" />
+  <meta name="keywords" content="Study guides, exam tips, exam preparation, Top Student, learning resources, study materials" />
+  <meta name="author" content="Top Student" />
   <title>Study Guides – Top Student</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
-  <link rel="shortcut icon" type="image/png" href="images/favicon.png">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
 
   <!-- Navbar -->
   <nav class="bg-gradient-to-r from-blue-800 to-blue-400 shadow-md">
-    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="container px-4 py-4 flex items-center justify-between">
       <!-- Left: Logo -->
       <div class="flex-shrink-0">
-        <h1 class="text-white text-xl font-bold">Top Student</h1>
+        <img src="images/logo2.png" alt="Top Student Logo"
+		class="mx-8 h-20 w-30 transition-transform duration-300 hover:scale-105 cursor-pointer">
       </div>
 
       <!-- Center: Navigation Links -->
-      <ul class="hidden md:flex space-x-6 text-white text-sm font-medium mx-auto">
+      <ul class="hidden md:flex space-x-6 text-white text-sm font-medium ml-32">
         <li><a href="papers.html" class="hover:underline">Past Papers</a></li>
         <li><a href="guides.html" class="hover:underline">Study Guides</a></li>
-        <li><a href="career.html" class="hover:underline">Career News</a></li>
+        <li><a href="news.html" class="hover:underline">News</a></li>
       </ul>
-
-      <!-- Right: Call Icon -->
+	  
       <div class="flex items-center space-x-4 flex-shrink-0">
-  <a href="tel:0609313995" title="Call us" class="text-white hover:text-gray-100">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M3 5a2 2 0 012-2h3.6a1 1 0 01.94.658l1.4 3.743a1 1 0 01-.21 1.049L9.38 10.2a11.042 11.042 0 005.42 5.42l1.75-1.35a1 1 0 011.049-.21l3.743 1.4a1 1 0 01.658.94V19a2 2 0 01-2 2h-.5C10.074 21 3 13.926 3 5.5V5z" />
-    </svg>
-  </a>
-  <a href="resource.html" title="Back to Resources" class="text-white hover:text-gray-100">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-    </svg>
-  </a>
-</div>
+        <a href="tel:0609313995" title="Call us" class="text-white hover:text-gray-100">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 5a2 2 0 012-2h3.6a1 1 0 01.94.658l1.4 3.743a1 1 0 01-.21 1.049L9.38 10.2a11.042 11.042 0 005.42 5.42l1.75-1.35a1 1 0 011.049-.21l3.743 1.4a1 1 0 01.658.94V19a2 2 0 01-2 2h-.5C10.074 21 3 13.926 3 5.5V5z" />
+          </svg>
+        </a>
+        <a href="resource.html" title="Back to Resources" class="text-white hover:text-gray-100">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </a>
+      </div>
     </div>
-
-    <!-- Mobile nav -->
     <div class="md:hidden bg-blue-700 text-white px-4 py-2 space-y-2 text-center">
       <a href="papers.html" class="block hover:underline">Past Papers</a>
       <a href="guides.html" class="block hover:underline">Study Guides</a>
-      <a href="career.html" class="block hover:underline">Career News</a>
+      <a href="news.html" class="block hover:underline">News</a>
     </div>
   </nav>
 
-  <!-- Main Message -->
-  <main class="flex-grow flex flex-col items-center justify-center text-center px-4">
-    <h2 class="text-2xl sm:text-3xl font-semibold mb-4 text-gray-700">Study Guides Not Available Yet</h2>
-    <p class="text-gray-600 max-w-md">
-      Our comprehensive study guides are coming soon. 
-      Stay tuned for expert tips and structured materials to boost your exam prep.
-    </p>
-  </main>
+  <!-- Main Content -->
+<main class="flex-grow flex flex-col items-center text-center px-4 py-12">
+  <h2 class="text-2xl sm:text-3xl font-semibold mb-6 text-gray-700">Available Study Guides</h2>
+  <div id="guideList" class="space-y-4 w-full max-w-xl">
+    <p class="text-gray-500">Loading guides...</p>
+  </div>
+</main>
 
   <!-- Footer -->
   <footer class="text-center text-gray-500 py-4 text-sm">
     &copy; 2025 Top Student. All rights reserved.
   </footer>
 
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabaseUrl = 'https://mlwxxtvsozhwzjxmsvbg.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU';
+  const bucketName = 'guides';
+
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  async function loadGuides() {
+    const listContainer = document.getElementById('guideList');
+    listContainer.innerHTML = '';
+
+    const { data, error } = await supabase.storage.from(bucketName).list('', {
+      limit: 100,
+      sortBy: { column: 'name', order: 'asc' },
+    });
+
+    if (error) {
+      listContainer.innerHTML = `<p class="text-red-500">Error loading guides.</p>`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      listContainer.innerHTML = `<p class="text-gray-500">No guides available yet.</p>`;
+      return;
+    }
+
+    data.forEach(file => {
+      const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${file.name}`;
+      const item = document.createElement('div');
+      item.className = 'bg-white shadow-md p-4 rounded-md text-left';
+      item.innerHTML = `
+        <h3 class="text-lg font-bold text-purple-700 hover:text-purple-900 transition-colors duration-300">
+  ${file.name}
+</h3>
+<a href="${publicUrl}" target="_blank" download class="text-sm font-semibold text-blue-600 hover:underline">
+  Download
+</a>
+      `;
+      listContainer.appendChild(item);
+    });
+  }
+
+  loadGuides();
+</script>
 </body>
 </html>
