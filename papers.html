@@ -152,16 +152,24 @@ const supabase = createClient(supabaseUrl, supabaseKey);
         for (const file of files) {
           const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${folder.name}/${file.name}`;
         const li = document.createElement('li');
-li.className = 'border p-3 rounded hover:bg-blue-50 flex justify-between items-center paper-item';
+li.className = 'border p-3 rounded hover:bg-blue-50 flex flex-col md:flex-row justify-between md:items-center items-start text-sm gap-1 md:gap-0 paper-item';
 li.setAttribute('data-filename', `${folder.name.toLowerCase()} ${file.name.toLowerCase()}`);
 
 // ✅ Extract a cleaner display name from the full file name
-const displayName = file.name.replace(/^.*?(Grd\d{2}_)/, '$1'); // Keeps from Grd12_ onwards
+const match = file.name.match(/(Grd\d{2}_.*)/);
+const displayName = match ? match[1] : file.name;
 
-// ✅ Now safely set the innerHTML
+// ✅ Responsive layout: stacked on mobile, inline on desktop
 li.innerHTML = `
-  <span class="truncate max-w-[60%] overflow-hidden whitespace-nowrap" title="${file.name}">${displayName}</span>
-  <a href="${publicUrl}" target="_blank" rel="noopener" download class="text-blue-600 hover:underline font-semibold">Download</a>
+  <div class="w-full md:w-auto truncate max-w-full" title="${file.name}">
+    <span class="block md:hidden">${displayName}</span>
+    <span class="hidden md:block">${file.name}</span>
+  </div>
+  <div class="w-full md:w-auto text-right">
+    <a href="${publicUrl}" target="_blank" rel="noopener" download class="text-blue-600 hover:underline font-semibold block md:inline">
+      Download
+    </a>
+  </div>
 `;
           fileList.appendChild(li);
           allFileElements.push(li);
