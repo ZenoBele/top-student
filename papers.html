@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Access high-quality past exam papers with Top Student. Practice and prepare effectively for your exams with a growing collection of past papers." />
-<meta name="keywords" content="Past papers, exam practice, exam preparation, Top Student, study resources, past exam papers" />
-<meta name="author" content="Top Student" />
-  <title>Past Papers – Top Student</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Past Exam Papers for South African Students – Top Student</title>
+
+  <meta name="description" content="Download free past exam papers for South African students. Top Student helps you revise for NSC exams with DBE-sourced study materials and memos." />
+  <meta name="keywords" content="past exam papers, DBE papers, NSC exam papers, study materials South Africa, Top Student, Grade 12, Grade 11, Grade 10" />
+  <meta name="author" content="Top Student" />
+  <link rel="canonical" href="https://topstudent.co.za/papers.html" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
 
@@ -17,97 +21,169 @@
     <div class="container px-4 py-4 flex items-center justify-between">
       <!-- Left: Logo -->
       <div class="flex-shrink-0">
-        <img src="images/logo2.png" alt="Top Student Logo"
-		class="mx-8 h-20 w-30 transition-transform duration-300 hover:scale-105 cursor-pointer">
+        <img src="images/logo2.png" alt="Top Student Logo" class="mx-8 h-20 w-30 transition-transform duration-300 hover:scale-105 cursor-pointer" />
       </div>
 
       <!-- Center: Navigation Links -->
       <ul class="hidden md:flex space-x-6 text-white text-sm font-medium ml-32">
-        <li><a href="papers.html" class="hover:underline">Past Papers</a></li>
+        <li><a href="papers.html" class="hover:underline">Papers</a></li>
         <li><a href="guides.html" class="hover:underline">Study Guides</a></li>
         <li><a href="news.html" class="hover:underline">News</a></li>
       </ul>
 
-      <!-- Right: Call Icon -->
+      <!-- Right: Call and Back -->
       <div class="flex items-center space-x-4 flex-shrink-0">
-  <a href="tel:0609313995" title="Call us" class="text-white hover:text-gray-100">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M3 5a2 2 0 012-2h3.6a1 1 0 01.94.658l1.4 3.743a1 1 0 01-.21 1.049L9.38 10.2a11.042 11.042 0 005.42 5.42l1.75-1.35a1 1 0 011.049-.21l3.743 1.4a1 1 0 01.658.94V19a2 2 0 01-2 2h-.5C10.074 21 3 13.926 3 5.5V5z" />
-    </svg>
-  </a>
-  <a href="resource.html" title="Back to Resources" class="text-white hover:text-gray-100">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-    </svg>
-  </a>
-</div>
+        <a href="tel:0727306186" title="Call us" class="text-white hover:text-gray-100">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.6a1 1 0 01.94.658l1.4 3.743a1 1 0 01-.21 1.049L9.38 10.2a11.042 11.042 0 005.42 5.42l1.75-1.35a1 1 0 011.049-.21l3.743 1.4a1 1 0 01.658.94V19a2 2 0 01-2 2h-.5C10.074 21 3 13.926 3 5.5V5z" />
+          </svg>
+        </a>
+        <a href="resource.html" title="Back to Resources" class="text-white hover:text-gray-100">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </a>
+      </div>
     </div>
 
     <!-- Mobile nav -->
     <div class="md:hidden bg-blue-700 text-white px-4 py-2 space-y-2 text-center">
-      <a href="papers.html" class="block hover:underline">Past Papers</a>
+      <a href="papers.html" class="block hover:underline">Papers</a>
       <a href="guides.html" class="block hover:underline">Study Guides</a>
       <a href="news.html" class="block hover:underline">News</a>
     </div>
   </nav>
 
-  <!-- Main Message -->
-<main class="flex-grow flex flex-col items-center text-center px-4 py-12">
-  <h2 class="text-2xl sm:text-3xl font-semibold mb-6 text-gray-700">Available past papers</h2>
-  <div id="papersList" class="space-y-4 w-full max-w-xl">
-    <p class="text-gray-500">Loading past papers...</p>
-  </div>
-</main>
+  <!-- Main Content -->
+  <main class="flex-grow flex flex-col items-center text-center px-4 py-8 max-w-4xl mx-auto w-full">
+    <h2 class="text-3xl font-semibold mb-8 py-2 text-blue-700">Papers & Meomes</h2>
+	<p class="text-xs text-gray-500 mt-4">
+  All past exam papers are sourced from the South African Department of Basic Education (DBE) and are publicly available. We do not claim ownership over these documents and offer them here to support learner revision and academic success.
+</p>
+    <div id="spinner" class="flex justify-center py-10 hidden">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-opacity-50"></div>
+    </div>
+    <div id="paperList" class="space-y-6 w-full"></div>
+  </main>
 
   <!-- Footer -->
   <footer class="text-center text-gray-500 py-4 text-sm">
     &copy; 2025 Top Student. All rights reserved.
   </footer>
-  
+
 <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-  const supabaseUrl = 'https://mlwxxtvsozhwzjxmsvbg.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU';
-  const bucketName = 'papers';
+    const supabaseUrl = 'https://mlwxxtvsozhwzjxmsvbg.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU';
+    const bucketName = 'papers';
+	
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const container = document.getElementById('paperList');
+  const searchInput = document.getElementById('searchInput');
+  
+  let allFileElements = [];
 
-  async function loadGuides() {
-    const listContainer = document.getElementById('papersList');
-    listContainer.innerHTML = '';
+  async function loadPapers() {
+  const spinner = document.getElementById('spinner');
+  container.innerHTML = '';
+  spinner.classList.remove('hidden'); // Show spinner
 
-    const { data, error } = await supabase.storage.from(bucketName).list('', {
-      limit: 100,
-      sortBy: { column: 'name', order: 'asc' },
-    });
+  try {
+    const { data: folders, error: foldersError } = await supabase
+      .storage
+      .from(bucketName)
+      .list('', { limit: 100, offset: 0 });
 
-    if (error) {
-      listContainer.innerHTML = `<p class="text-red-500">Error loading papers.</p>`;
+    if (foldersError) {
+      container.innerHTML = `<p class="text-red-500">Error loading folders.</p>`;
+      console.error('Error fetching folders:', foldersError);
       return;
     }
 
-    if (!data || data.length === 0) {
-      listContainer.innerHTML = `<p class="text-gray-500">No papers available yet.</p>`;
+    const validFolders = folders.filter(folder => folder.name && folder.metadata?.['mimetype'] === undefined);
+
+    if (validFolders.length === 0) {
+      container.innerHTML = '<p class="text-gray-500">No folders found in papers bucket.</p>';
       return;
     }
 
-    data.forEach(file => {
-      const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${file.name}`;
-      const item = document.createElement('div');
-      item.className = 'bg-white shadow-md p-4 rounded-md text-left';
-      item.innerHTML = `
-        <h3 class="text-lg font-semibold text-blue-700">${file.name}</h3>
-        <a href="${publicUrl}" target="_blank" download class="text-sm text-blue-500 hover:underline">
-          Download
-        </a>
+    container.innerHTML = '';
+    allFileElements = [];
+
+    for (const folder of validFolders) {
+      const section = document.createElement('section');
+      section.className = 'bg-white rounded shadow p-4';
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'w-full text-left font-semibold text-blue-700 hover:text-blue-900 flex justify-between items-center focus:outline-none';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-controls', `folder-${folder.name}`);
+      btn.id = `btn-${folder.name}`;
+      btn.innerHTML = `
+        <span class="text-lg"><i class="fas fa-folder mr-2 text-indigo-500"></i> ${folder.name}</span>
+        <svg class="w-5 h-5 transition-transform transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
       `;
-      listContainer.appendChild(item);
-    });
-  }
 
-  loadGuides();
-</script>
+      const fileList = document.createElement('ul');
+      fileList.id = `folder-${folder.name}`;
+      fileList.className = 'mt-3 space-y-2 ml-4 hidden text-left';
+
+      const { data: files, error: filesError } = await supabase
+        .storage
+        .from(bucketName)
+        .list(folder.name, { limit: 100 });
+
+      if (filesError) {
+        const errorMsg = document.createElement('li');
+        errorMsg.className = 'text-red-500';
+        errorMsg.textContent = `Error loading files in "${folder.name}"`;
+        fileList.appendChild(errorMsg);
+      } else if (!files || files.length === 0) {
+        const noFilesMsg = document.createElement('li');
+        noFilesMsg.className = 'text-gray-500 italic';
+        noFilesMsg.textContent = 'No papers found.';
+        fileList.appendChild(noFilesMsg);
+      } else {
+        for (const file of files) {
+          const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${folder.name}/${file.name}`;
+          const li = document.createElement('li');
+li.className = 'border p-3 rounded hover:bg-blue-50 flex justify-between items-center paper-item';
+li.setAttribute('data-filename', `${folder.name.toLowerCase()} ${file.name.toLowerCase()}`); // ✅ Includes folder and file name
+li.innerHTML = `
+  <span>${file.name}</span>
+  <a href="${publicUrl}" target="_blank" rel="noopener" download class="text-blue-600 hover:underline font-semibold">Download</a>
+`;
+          fileList.appendChild(li);
+          allFileElements.push(li);
+        }
+      }
+
+      btn.addEventListener('click', () => {
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!isExpanded));
+        fileList.classList.toggle('hidden');
+        btn.querySelector('svg').classList.toggle('rotate-180');
+      });
+
+      section.appendChild(btn);
+      section.appendChild(fileList);
+      container.appendChild(section);
+    }
+
+  } catch (err) {
+    container.innerHTML = `<p class="text-red-500">Unexpected error loading papers.</p>`;
+    console.error('Unexpected error:', err);
+  } finally {
+    spinner.classList.add('hidden'); // Hide spinner
+  }
+}
+
+  loadPapers();
+  </script>
 </body>
 </html>

@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Stay informed with the latest career news and advice from Top Student. Plan your future with expert insights and updates designed for students." />
-<meta name="keywords" content="Career news, student career advice, future planning, exam tips, Top Student, education updates" />
-<meta name="author" content="Top Student" />
-  <title>Career News – Top Student</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
-  <link rel="shortcut icon" type="image/png" href="images/favicon.png">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="description" content="Explore South Africa’s top student-focused news hub. Get expert career advice, university tips, and Matric success strategies to shape your future with confidence." />
+  <meta name="keywords" content="Top Student news, career guidance South Africa, student news updates, Matric advice, university applications, study tips, Grade 12 education, student success" />
+  <meta name="author" content="Top Student by Bellshire" />
+  <title>Career & Education News – Top Student South Africa</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png" />
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
+  <link rel="canonical" href="https://topstudent.co.za/news.html" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
 
@@ -24,13 +25,13 @@
 
       <!-- Center: Navigation Links -->
       <ul class="hidden md:flex space-x-6 text-white text-sm font-medium ml-32">
-        <li><a href="papers.html" class="hover:underline">Past Papers</a></li>
+        <li><a href="papers.html" class="hover:underline">Papers</a></li>
         <li><a href="guides.html" class="hover:underline">Study Guides</a></li>
         <li><a href="news.html" class="hover:underline">News</a></li>
       </ul>
 
       <div class="flex items-center space-x-4 flex-shrink-0">
-  <a href="tel:0609313995" title="Call us" class="text-white hover:text-gray-100">
+  <a href="tel:0727306186" title="Call us" class="text-white hover:text-gray-100">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
         d="M3 5a2 2 0 012-2h3.6a1 1 0 01.94.658l1.4 3.743a1 1 0 01-.21 1.049L9.38 10.2a11.042 11.042 0 005.42 5.42l1.75-1.35a1 1 0 011.049-.21l3.743 1.4a1 1 0 01.658.94V19a2 2 0 01-2 2h-.5C10.074 21 3 13.926 3 5.5V5z" />
@@ -46,7 +47,7 @@
 
     <!-- Mobile nav -->
     <div class="md:hidden bg-blue-700 text-white px-4 py-2 space-y-2 text-center">
-      <a href="papers.html" class="block hover:underline">Past Papers</a>
+      <a href="papers.html" class="block hover:underline">Papers</a>
       <a href="guides.html" class="block hover:underline">Study Guides</a>
       <a href="news.html" class="block hover:underline">News</a>
     </div>
@@ -74,80 +75,80 @@
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU';
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
-
-async function loadNews() {
-  const listContainer = document.getElementById('newsList');
-  listContainer.innerHTML = '';
-
-  const { data, error } = await supabase
-    .from('news')
-    .select('title, body, date_posted, author, audience, image_url, source_url')
-    .order('date_posted', { ascending: false });
-
-  if (error) {
-    listContainer.innerHTML = `<p class="text-red-500">Couldn't load news. Please refresh.</p>`;
-    return;
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
 
-  if (!data || data.length === 0) {
-    listContainer.innerHTML = `<p class="text-gray-500">No news yet. Check back soon!</p>`;
-    return;
-  }
+  async function loadNews() {
+    const listContainer = document.getElementById('newsList');
+    listContainer.innerHTML = '';
 
-  data.forEach(post => {
-    const card = document.createElement('div');
-   card.className = `
-  bg-white rounded-xl shadow-md 
-  transition transform duration-300 ease-in-out 
-  hover:scale-105 
-  hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
-  overflow-hidden max-w-3xl mx-auto
-`;
+    const { data, error } = await supabase
+      .from('news')
+      .select('title, body, date_posted, author, audience, image_url, source_url')
+      .order('date_posted', { ascending: false });
 
-    const date = new Date(post.date_posted).toLocaleDateString('en-ZA', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    });
+    if (error) {
+      listContainer.innerHTML = `<p class="text-red-500">Couldn't load news. Please refresh.</p>`;
+      return;
+    }
 
-    const audience = post.audience ? ` • For: ${capitalize(post.audience)}` : '';
-    const meta = `📅 ${date} • ✍️ ${post.author || 'Top Student'}${audience}`;
+    if (!data || data.length === 0) {
+      listContainer.innerHTML = `<p class="text-gray-500">No news yet. Check back soon!</p>`;
+      return;
+    }
 
-    const image = post.image_url
-      ? `<img src="${post.image_url}" alt="news image" class="w-full h-48 object-cover">`
-      : '';
+    data.forEach(post => {
+      const card = document.createElement('div');
+      card.className = `
+        bg-white rounded-xl shadow-md 
+        transition transform duration-300 ease-in-out 
+        hover:scale-105 
+        hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
+        overflow-hidden max-w-5xl mx-auto mb-6
+      `;
 
-    const sourceButton =
-      post.source_url && post.source_url !== '#' && post.source_url.startsWith('http')
-        ? `
-          <div class="flex justify-center mt-4">
-  <a href="${post.source_url}" target="_blank" rel="noopener"
-     class="inline-block text-sm font-semibold text-white bg-blue-400 
-            hover:bg-blue-800 px-4 py-2 rounded shadow hover:shadow-md transition">
-    🔗 View Full News
-  </a>
-</div>
-        `
+      const date = new Date(post.date_posted).toLocaleDateString('en-ZA', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+
+      const audience = post.audience ? ` • For: ${capitalize(post.audience)}` : '';
+      const meta = `📅 ${date} • ✍️ ${post.author || 'Top Student'}${audience}`;
+
+      const image = post.image_url
+        ? `<img src="${post.image_url}" alt="news image" class="w-full h-55 object-cover">`
         : '';
 
-    card.innerHTML = `
-      ${image}
-      <div class="p-6">
-        <h3 class="text-2xl font-bold text-blue-800 mb-2">📰 ${post.title}</h3>
-        <p class="text-sm text-gray-500 mb-3">${meta}</p>
-        <div class="text-gray-800 leading-relaxed whitespace-pre-line">${post.body}</div>
-        ${sourceButton}
-      </div>
-    `;
+      const sourceButton =
+        post.source_url && post.source_url !== '#' && post.source_url.startsWith('http')
+          ? `
+            <div class="flex justify-center mt-4">
+              <a href="${post.source_url}" target="_blank" rel="noopener"
+                 class="inline-block text-sm font-semibold text-white bg-blue-400 
+                        hover:bg-blue-800 px-4 py-2 rounded shadow hover:shadow-md transition">
+                🔗 View Full News
+              </a>
+            </div>
+          `
+          : '';
 
-    listContainer.appendChild(card);
-  });
-}
+      card.innerHTML = `
+        ${image}
+        <div class="p-4">
+          <h3 class="text-xl font-bold text-blue-800 mb-2">📰 ${post.title}</h3>
+          <p class="text-sm text-gray-500 mb-3">${meta}</p>
+          <div class="text-gray-800 leading-relaxed whitespace-pre-line">${post.body}</div>
+          ${sourceButton}
+        </div>
+      `;
 
-loadNews();
+      listContainer.appendChild(card);
+    });
+  }
+
+  loadNews();
 </script>
 </body>
 </html>
