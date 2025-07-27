@@ -151,11 +151,16 @@ const supabase = createClient(supabaseUrl, supabaseKey);
       } else {
         for (const file of files) {
           const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${folder.name}/${file.name}`;
-          const li = document.createElement('li');
+        const li = document.createElement('li');
 li.className = 'border p-3 rounded hover:bg-blue-50 flex justify-between items-center paper-item';
-li.setAttribute('data-filename', `${folder.name.toLowerCase()} ${file.name.toLowerCase()}`); // ✅ Includes folder and file name
+li.setAttribute('data-filename', `${folder.name.toLowerCase()} ${file.name.toLowerCase()}`);
+
+// ✅ Extract a cleaner display name from the full file name
+const displayName = file.name.replace(/^.*?(Grd\d{2}_)/, '$1'); // Keeps from Grd12_ onwards
+
+// ✅ Now safely set the innerHTML
 li.innerHTML = `
-  <span>${file.name}</span>
+  <span class="truncate max-w-[60%] overflow-hidden whitespace-nowrap" title="${file.name}">${displayName}</span>
   <a href="${publicUrl}" target="_blank" rel="noopener" download class="text-blue-600 hover:underline font-semibold">Download</a>
 `;
           fileList.appendChild(li);

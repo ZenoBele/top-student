@@ -161,13 +161,18 @@ async function loadGuides() {
             }
 
             const li = document.createElement('li');
-            li.className = 'border p-3 rounded hover:bg-blue-50 flex justify-between items-center text-sm';
-            li.innerHTML = `
-              <span>${file.name}</span>
-              <a href="${signed.signedUrl}" target="_blank" rel="noopener" download class="text-blue-600 hover:underline font-semibold">
-                Download
-              </a>
-            `;
+li.className = 'border p-3 rounded hover:bg-blue-50 flex justify-between items-center text-sm';
+
+// ✅ Clean the name to show only from "Grd12_" onwards
+const displayName = file.name.replace(/^.*?(Grd\d{2}_)/, '$1');
+
+// ✅ Now use it in the inner HTML
+li.innerHTML = `
+  <span class="truncate max-w-[60%] overflow-hidden whitespace-nowrap" title="${file.name}">${displayName}</span>
+  <a href="${signed.signedUrl}" target="_blank" rel="noopener" download class="text-blue-600 hover:underline font-semibold">
+    Download
+  </a>
+`;
             fileList.appendChild(li);
           }
         }
