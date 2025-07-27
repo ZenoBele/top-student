@@ -18,41 +18,41 @@
 
   <!-- Navbar -->
   <nav class="bg-gradient-to-r from-blue-800 to-blue-400 shadow-md">
-    <div class="container px-4 py-4 flex items-center justify-between">
-      <!-- Left: Logo -->
-      <div class="flex-shrink-0">
-        <img src="images/logo2.png" alt="Top Student Logo" class="mx-8 h-20 w-30 transition-transform duration-300 hover:scale-105 cursor-pointer" />
-      </div>
-
-      <!-- Center: Navigation Links -->
-      <ul class="hidden md:flex space-x-6 text-white text-sm font-medium ml-32">
-        <li><a href="papers.html" class="hover:underline">Papers</a></li>
-        <li><a href="guides.html" class="hover:underline">Study Guides</a></li>
-        <li><a href="news.html" class="hover:underline">News</a></li>
-      </ul>
-
-      <!-- Right: Call and Back -->
-      <div class="flex items-center space-x-4 flex-shrink-0">
-        <a href="tel:0727306186" title="Call us" class="text-white hover:text-gray-100">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.6a1 1 0 01.94.658l1.4 3.743a1 1 0 01-.21 1.049L9.38 10.2a11.042 11.042 0 005.42 5.42l1.75-1.35a1 1 0 011.049-.21l3.743 1.4a1 1 0 01.658.94V19a2 2 0 01-2 2h-.5C10.074 21 3 13.926 3 5.5V5z" />
-          </svg>
-        </a>
-        <a href="resource.html" title="Back to Resources" class="text-white hover:text-gray-100">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-        </a>
-      </div>
+  <div class="container px-4 py-4 flex items-center justify-between">
+    <!-- Left: Logo -->
+    <div class="flex-shrink-0">
+      <img src="images/logo2.png" alt="Top Student Logo" class="h-20 w-auto transition-transform duration-300 hover:scale-105 cursor-pointer" />
     </div>
 
-    <!-- Mobile nav -->
-    <div class="md:hidden bg-blue-700 text-white px-4 py-2 space-y-2 text-center">
-      <a href="papers.html" class="block hover:underline">Papers</a>
-      <a href="guides.html" class="block hover:underline">Study Guides</a>
-      <a href="news.html" class="block hover:underline">News</a>
+    <!-- Center: Navigation Links -->
+    <ul class="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6 text-white text-sm font-medium">
+      <li><a href="papers.html" class="hover:underline">Papers</a></li>
+      <li><a href="guides.html" class="hover:underline">Study Guides</a></li>
+      <li><a href="news.html" class="hover:underline">News</a></li>
+    </ul>
+
+    <!-- Right: Call and Back -->
+    <div class="flex items-center space-x-4 flex-shrink-0">
+      <a href="tel:0727306186" title="Call us" class="text-white hover:text-gray-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.6a1 1 0 01.94.658l1.4 3.743a1 1 0 01-.21 1.049L9.38 10.2a11.042 11.042 0 005.42 5.42l1.75-1.35a1 1 0 011.049-.21l3.743 1.4a1 1 0 01.658.94V19a2 2 0 01-2 2h-.5C10.074 21 3 13.926 3 5.5V5z" />
+        </svg>
+      </a>
+      <a href="resource.html" title="Back to Resources" class="text-white hover:text-gray-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </a>
     </div>
-  </nav>
+  </div>
+
+  <!-- Mobile nav -->
+  <div class="md:hidden bg-blue-700 text-white px-4 py-2 space-y-2 text-center">
+    <a href="papers.html" class="block hover:underline">Papers</a>
+    <a href="guides.html" class="block hover:underline">Study Guides</a>
+    <a href="news.html" class="block hover:underline">News</a>
+  </div>
+</nav>
 
   <!-- Main Content -->
   <main class="flex-grow flex flex-col items-center text-center px-4 py-8 max-w-4xl mx-auto w-full">
