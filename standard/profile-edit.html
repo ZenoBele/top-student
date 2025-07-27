@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Top Student – Profile Edit</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .edit-btn:hover {
+      background: linear-gradient(to right, #2563eb, #1e40af);
+    }
+    /* Simple custom input styling using Tailwind utility classes */
+    .input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #cbd5e1; /* Tailwind slate-300 */
+      border-radius: 0.375rem; /* rounded-md */
+      background-color: white;
+      outline: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .input:focus {
+      box-shadow: 0 0 0 2px #3b82f6; /* Tailwind blue-500 ring */
+      border-color: #3b82f6;
+    }
+	
+	.animation-delay-150 {
+    animation-delay: 0.15s;
+  }
+  .animation-delay-300 {
+    animation-delay: 0.3s;
+  }
+  </style>
+</head>
+
+<body class="bg-gradient-to-b from-blue-100 to-white text-gray-800 font-sans">
+
+<div id="profileAlert"
+     class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 max-w-md w-full p-4 rounded text-sm font-medium text-center shadow-lg transition-opacity duration-300">
+</div>
+  
+  <!-- Header -->
+  <header class="flex justify-between items-center bg-gray-900 px-6 py-4 shadow-md">
+    <h1 class="text-xl font-bold text-white">Top Student</h1>
+    <nav class="space-x-4 text-sm text-white">
+      <a href="standard.html" class="hover:text-[#0EA5E9]">Dashboard</a>
+      <a href="../index.html" class="hover:text-[#0EA5E9]" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </nav>
+  </header>
+
+  <!-- Loader (visible initially) -->
+<div id="form-loading" class="fixed inset-0 bg-white bg-opacity-80 z-50 flex flex-row items-center justify-center space-x-2">
+  <div class="w-5 h-5 bg-blue-600 rounded-full animate-bounce"></div>
+  <div class="w-5 h-5 bg-blue-400 rounded-full animate-bounce animation-delay-150"></div>
+  <div class="w-5 h-5 bg-blue-200 rounded-full animate-bounce animation-delay-300"></div>
+</div>
+
+<main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+
+  <h2 class="text-2xl font-bold flex items-center gap-2 text-gray-800">
+    <i class="fas fa-user-cog text-blue-600"></i> Profile Settings
+  </h2>
+
+  <form id="profileForm" style="display:none;" class="space-y-10">
+
+    <!-- Personal Info -->
+    <section class="bg-white shadow rounded-2xl p-6 space-y-6">
+      <h3 class="text-xl font-semibold text-gray-700 flex items-center gap-2">
+        <i class="fas fa-id-card"></i> Personal Information
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="name" class="block mb-1 font-medium">First Name
+            <span class="required-star text-red-600">*</span>
+          </label>
+          <input type="text" id="name" name="name" class="input w-full" autocomplete="given-name" required />
+        </div>
+        <div>
+          <label for="surname" class="block mb-1 font-medium">Surname
+            <span class="required-star text-red-600">*</span>
+          </label>
+          <input type="text" id="surname" name="surname" class="input w-full" autocomplete="family-name" required />
+        </div>
+        <div>
+          <label for="email" class="block mb-1 font-medium">Email
+            <span class="required-star text-red-600">*</span>
+          </label>
+          <input type="email" id="email" name="email" class="input w-full" autocomplete="email" disabled />
+        </div>
+        <div>
+          <label for="phone" class="block mb-1 font-medium">Phone
+            <span class="required-star text-red-600">*</span>
+          </label>
+          <input type="tel" id="phone" name="phone" class="input w-full" autocomplete="tel" required />
+        </div>
+        <div>
+          <label for="dob" class="block mb-1 font-medium">Date of Birth
+            <span class="required-star text-red-600">*</span>
+          </label>
+          <input type="date" id="dob" name="dob" class="input w-full" required />
+        </div>
+        <div>
+          <label for="gender" class="block mb-1 font-medium">Gender
+            <span class="required-star text-red-600">*</span>
+          </label>
+          <select id="gender" name="gender" class="input w-full" required>
+            <option value="">-- Select --</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+        <div class="md:col-span-2">
+          <label for="picture" class="block mb-1 font-medium">Profile Picture</label>
+          <input type="file" id="picture" accept="image/*" class="input w-full bg-white" />
+          <small class="text-sm text-gray-500">JPG, PNG. Max 2MB.</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section id="education-section" class="bg-white shadow rounded-2xl p-6 space-y-6">
+      <h3 class="text-xl font-semibold text-gray-700 flex items-center gap-2">
+        <i class="fas fa-graduation-cap"></i> Education Details
+      </h3>
+
+      <div class="space-y-4">
+        <div>
+          <label for="grade" class="block font-medium mb-1">Grade Level
+            <span class="required-star text-red-600">*</span>
+          </label>
+          <select id="grade" name="grade" class="input w-full" required>
+            <option value="">-- Select --</option>
+            <option>Grade 10</option>
+            <option>Grade 11</option>
+            <option>Grade 12</option>
+          </select>
+        </div>
+
+        <div>
+<span id="subject-label" class="block font-medium mb-1">
+  Subjects (Choose up to 4) <span class="required-star text-red-600">*</span>
+</span>
+
+<button id="toggleDropdownBtn" type="button"
+  aria-labelledby="subject-label"
+  class="input w-full text-left bg-white">
+  <span id="selectedSubjectsText">Select up to 4 Subjects</span>
+</button>
+        </div>
+
+        <div id="subject-section" class="hidden transition-all duration-500 space-y-4">
+          <div id="subjects-dropdown" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <label for="subject-mathematics" class="inline-flex items-center gap-2">
+  <input type="checkbox" id="subject-mathematics" name="subjects" value="Mathematics" />
+  Mathematics
+</label>
+
+<label for="subject-civiltech" class="inline-flex items-center gap-2">
+  <input type="checkbox" id="subject-civiltech" name="subjects" value="Civil Technology" />
+  Mathematical Literacy
+</label>
+
+<label for="subject-physics" class="inline-flex items-center gap-2">
+  <input type="checkbox" id="subject-physics" name="subjects" value="Physical Sciences" />
+  Physical Sciences
+</label>
+
+<label for="subject-egd" class="inline-flex items-center gap-2">
+  <input type="checkbox" id="subject-egd" name="subjects" value="Engineering Graphics and Design" />
+  Engineering Graphics and Design (EGD)
+</label>
+
+<label for="subject-life-sciences" class="inline-flex items-center gap-2">
+  <input type="checkbox" id="subject-life-sciences" name="subjects" value="Life Sciences" />
+  Life Sciences
+</label>
+
+<label for="subject-accounting" class="inline-flex items-center gap-2">
+  <input type="checkbox" id="subject-accounting" name="subjects" value="Accounting" />
+  Accounting
+</label>
+
+<label for="subject-geography" class="inline-flex items-center gap-2">
+  <input type="checkbox" id="subject-geography" name="subjects" value="Geography" />
+  Geography
+</label>
+
+<label for="subject-business" class="inline-flex items-center gap-2">
+  <input type="checkbox" id="subject-business" name="subjects" value="Business Studies" />
+  Business Studies
+</label>
+
+<label for="subject-economics" class="inline-flex items-center gap-2">
+  <input type="checkbox" id="subject-economics" name="subjects" value="Economics" />
+  Economics
+</label>
+
+<label for="subject-history" class="inline-flex items-center gap-2">
+  <input type="checkbox" id="subject-history" name="subjects" value="History" />
+  History
+</label>
+          </div>
+
+          <button id="save-subjects-btn" class="w-full md:w-auto px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all">
+            Save Subjects
+          </button>
+
+          <div id="subject-locked-display" class="hidden flex items-center gap-2 text-green-700">
+            <i class="fas fa-lock animate-pulse"></i>
+            <span id="subject-display" class="font-medium"></span>
+          </div>
+        </div>
+
+        <div>
+          <label for="subject-feedback" class="block font-medium mb-1">Where you struggle or excel most</label>
+          <textarea id="subject-feedback" name="subject-feedback" rows="3" maxlength="250"
+            class="input w-full resize-none"
+            placeholder="e.g. I’m strong in Maths and struggle with Physics and EGD. (Max 250 characters)">
+          </textarea>
+        </div>
+
+        <div>
+          <label for="school" class="block font-medium mb-1">School</label>
+          <input type="text" id="school" name="school" class="input w-full" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Bio -->
+    <section class="bg-white shadow rounded-2xl p-6 space-y-4">
+      <h3 class="text-xl font-semibold text-gray-700 flex items-center gap-2">
+        <i class="fas fa-info-circle"></i> About Me
+      </h3>
+      <label for="bio" class="block font-medium mb-1">About Me</label>
+      <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself..." class="input w-full resize-none"></textarea>
+    </section>
+
+    <!-- Parent Details -->
+    <section class="bg-white shadow rounded-2xl p-6 space-y-4">
+      <h3 class="text-xl font-semibold text-gray-700 flex items-center gap-2">
+        <i class="fas fa-user-friends"></i> Parent / Guardian Details
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="parent-name" class="block mb-1 font-medium">Parent Name</label>
+          <input type="text" id="parent-name" name="parent-name" autocomplete="name" class="input w-full" />
+        </div>
+        <div>
+          <label for="parent-phone" class="block mb-1 font-medium">Parent Phone</label>
+          <input type="tel" id="parent-phone" name="parent-phone" autocomplete="tel" class="input w-full" />
+        </div>
+        <div class="md:col-span-2">
+          <label for="parent-email" class="block mb-1 font-medium">Parent Email</label>
+          <input type="email" id="parent-email" name="parent-email" autocomplete="email" class="input w-full" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Preferences -->
+    <section class="bg-white shadow rounded-2xl p-6 space-y-4">
+      <h3 class="text-xl font-semibold text-gray-700 flex items-center gap-2">
+        <i class="fas fa-bell"></i> Contact Preferences
+      </h3>
+      <div>
+        <label for="contact-method" class="block mb-1 font-medium">Preferred Contact Method
+          <span class="required-star text-red-600">*</span>
+        </label>
+        <select id="contact-method" name="contact-method" class="input w-full" required>
+          <option value="">-- Select --</option>
+          <option>Email</option>
+          <option>WhatsApp</option>
+          <option>SMS</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Save Button -->
+    <div class="text-center pt-4">
+      <button id="saveProfileBtn" type="button"
+        class="edit-btn bg-blue-500 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold shadow transition-all duration-300">
+        Save Profile
+      </button>
+    </div>
+
+  </form>
+</main>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+  );
+  
+function showProfileAlert(message, type = "blue") {
+  const alertBox = document.getElementById("profileAlert");
+  const styles = {
+    red: "bg-red-100 text-red-800 border border-red-300",
+    green: "bg-green-100 text-green-800 border border-green-300",
+    yellow: "bg-yellow-100 text-yellow-800 border border-yellow-300",
+    blue: "bg-blue-100 text-blue-800 border border-blue-300"
+  };
+
+  alertBox.className = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 max-w-md w-full p-4 rounded text-sm font-medium text-center shadow-lg transition-opacity duration-300 ${styles[type]}`;
+  alertBox.textContent = message;
+  alertBox.classList.remove("hidden");
+
+  // Fade out after 5s
+  setTimeout(() => {
+    alertBox.classList.add("opacity-0");
+    setTimeout(() => {
+      alertBox.classList.add("hidden");
+      alertBox.classList.remove("opacity-0");
+    }, 300); // match transition duration
+  }, 5000);
+}
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const loader = document.getElementById("form-loading");
+    const form = document.getElementById("profileForm");
+    const saveBtn = document.getElementById("saveProfileBtn");
+    const toggleBtn = document.getElementById("toggleDropdownBtn");
+    const subjectSection = document.getElementById("subject-section");
+    const subjectsDropdown = document.getElementById("subjects-dropdown");
+    const subjectCheckboxes = subjectsDropdown.querySelectorAll('input[name="subjects"]');
+    const selectedSubjectsText = document.getElementById("selectedSubjectsText");
+    const saveSubjectsBtn = document.getElementById("save-subjects-btn");
+    const subjectLockedDisplay = document.getElementById("subject-locked-display");
+    const subjectDisplay = document.getElementById("subject-display");
+	
+
+    function showLoader() {
+      loader?.classList.remove("hidden");
+    }
+    function hideLoader() {
+      loader?.classList.add("hidden");
+    }
+
+    showLoader();
+    form.style.display = "none";
+	
+
+    // Get current user
+    const { data: { user }, error: userErr } = await supabase.auth.getUser();
+    if (userErr || !user) {
+      showProfileAlert("Session expired or no user found");
+      hideLoader();
+      return;
+    }
+    const uid = user.id;
+    const email = user.email;
+
+    // Prefill email (disabled)
+    document.getElementById('email').value = email;
+
+    // Load profile data
+    const { data: profileData, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", uid)
+      .single();
+
+    if (profileError && profileError.code !== "PGRST116") {
+      showProfileAlert("Error loading profile data: " + profileError.message);
+      hideLoader();
+      return;
+    }
+
+    const profile = profileData || {};
+    let subjectsLocked = profile.subjects_locked || false;
+
+    // Prefill inputs helper
+    function prefillField(id, value) {
+      const el = document.getElementById(id);
+      if (el && value !== undefined && value !== null) {
+        el.value = value;
+      }
+    }
+
+    prefillField("name", profile.first_name);
+    prefillField("surname", profile.surname);
+    prefillField("phone", profile.phone);
+    prefillField("dob", profile.dob);
+    prefillField("gender", profile.gender);
+    prefillField("grade", profile.grade);
+    prefillField("subject-feedback", profile.subject_feedback);
+    prefillField("school", profile.school);
+    prefillField("bio", profile.bio);
+    prefillField("parent-name", profile.parent_name);
+    prefillField("parent-phone", profile.parent_phone);
+    prefillField("parent-email", profile.parent_email);
+    prefillField("contact-method", profile.contact_method);
+
+    // Subject handling
+    if (subjectsLocked) {
+      // Lock mode: disable inputs, show locked UI
+      subjectCheckboxes.forEach(cb => cb.disabled = true);
+      toggleBtn.disabled = true;
+      subjectSection.classList.add("hidden");
+      subjectLockedDisplay.classList.remove("hidden");
+      subjectDisplay.textContent = (profile.subjects && profile.subjects.length > 0)
+        ? profile.subjects.join(", ")
+        : "No subjects selected";
+      saveSubjectsBtn.classList.add("hidden");
+      selectedSubjectsText.textContent = subjectDisplay.textContent;
+    } else {
+      // Editable mode: enable inputs
+      subjectLockedDisplay.classList.add("hidden");
+      saveSubjectsBtn.classList.remove("hidden");
+      toggleBtn.disabled = false;
+
+      if (Array.isArray(profile.subjects)) {
+        subjectCheckboxes.forEach(cb => {
+          cb.checked = profile.subjects.includes(cb.value);
+        });
+        selectedSubjectsText.textContent = profile.subjects.join(", ") || "Select up to 4 Subjects";
+      }
+
+      // Toggle dropdown open/close
+      toggleBtn.addEventListener("click", () => {
+        subjectSection.classList.toggle("hidden");
+      });
+
+      // Limit to max 4 subjects
+      subjectCheckboxes.forEach(cb => {
+        cb.addEventListener("change", () => {
+          const checked = Array.from(subjectCheckboxes).filter(i => i.checked);
+          if (checked.length > 4) {
+            cb.checked = false;
+            showProfileAlert("You can only select up to 4 subjects.");
+            return;
+          }
+          selectedSubjectsText.textContent = checked.map(i => i.value).join(", ") || "Select up to 4 Subjects";
+        });
+      });
+
+      // Save and lock subjects
+      saveSubjectsBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const checked = Array.from(subjectCheckboxes).filter(i => i.checked);
+        if (checked.length === 0) {
+          showProfileAlert("Please select at least one subject before saving.", "red");
+          return;
+        }
+
+        showLoader();
+
+        const selectedSubjects = checked.map(i => i.value);
+
+        const { error } = await supabase
+          .from("profiles")
+          .update({
+            subjects: selectedSubjects,
+            subjects_locked: true
+          })
+          .eq("id", uid);
+
+        hideLoader();
+
+        if (error) {
+          showProfileAlert("Failed to save and lock subjects: " + error.message);
+          return;
+        }
+
+        showProfileAlert("Subjects saved and locked! Reloading...");
+        window.location.reload();
+      });
+    }
+
+    hideLoader();
+    form.style.display = "block";
+
+    // Upload picture helper
+    async function uploadPicture(file, userId) {
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${userId}/profile.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('pictures')
+        .upload(filePath, file, {
+          upsert: true,
+          contentType: file.type
+        });
+
+      if (uploadError) {
+        console.error('Image upload failed:', uploadError.message);
+        return null;
+      }
+
+      return filePath;
+    }
+
+    // Save profile button click
+    saveBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      showLoader();
+
+      const first_name = document.getElementById("name").value.trim();
+      const surname = document.getElementById("surname").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const dob = document.getElementById("dob").value;
+      const gender = document.getElementById("gender").value;
+      const grade = document.getElementById("grade").value;
+      const subjectFeedback = document.getElementById("subject-feedback").value;
+      const school = document.getElementById("school").value.trim();
+      const bio = document.getElementById("bio").value;
+      const parent_name = document.getElementById("parent-name").value.trim();
+      const parent_phone = document.getElementById("parent-phone").value.trim();
+      const parent_email = document.getElementById("parent-email").value.trim();
+      const contact_method = document.getElementById("contact-method").value;
+
+      // Get selected subjects (locked or editable)
+      let selectedSubjects = [];
+      if (!subjectsLocked) {
+        selectedSubjects = Array.from(subjectCheckboxes)
+          .filter(cb => cb.checked)
+          .map(cb => cb.value);
+
+        if (selectedSubjects.length === 0) {
+          showProfileAlert("Please select at least one subject.", "red");
+          hideLoader();
+          return;
+        }
+        if (selectedSubjects.length > 4) {
+          showProfileAlert("You can select a maximum of 4 subjects.", "red");
+          hideLoader();
+          return;
+        }
+      } else {
+        selectedSubjects = profile.subjects || [];
+      }
+
+      // Required fields validation
+      if (
+        !first_name ||
+        !surname ||
+        !phone ||
+        !dob ||
+        !gender ||
+        !grade ||
+        !contact_method
+      ) {
+        showProfileAlert("Please fill in all required fields.", "red");
+        hideLoader();
+        return;
+      }
+
+      const pictureInput = document.getElementById("picture");
+      let pictureUrl = profile.picture || null;
+      const pictureFile = pictureInput.files[0];
+      if (pictureFile) {
+        const uploadedPath = await uploadPicture(pictureFile, uid);
+        if (uploadedPath) pictureUrl = uploadedPath;
+      }
+
+      const updatedProfile = {
+        id: uid,
+        email,
+        first_name,
+        surname,
+        phone,
+        dob,
+        gender,
+        grade,
+        subjects: selectedSubjects,
+        subjects_locked: subjectsLocked,
+        subject_feedback: subjectFeedback || null,
+        school: school || null,
+        bio: bio || null,
+        parent_name: parent_name || null,
+        parent_phone: parent_phone || null,
+        parent_email: parent_email || null,
+        contact_method,
+        picture: pictureUrl,
+      };
+
+      const { error } = await supabase.from("profiles").upsert(updatedProfile);
+
+      hideLoader();
+
+      if (error) {
+        console.error("Failed to save profile:", error.message);
+        showProfileAlert("Could not save profile. Try again.", "red");
+      } else {
+        showProfileAlert("Profile saved successfully!", "green");
+        window.location.href = "profile-view.html";
+      }
+    });
+  });
+</script>
+</body>
+</html>
