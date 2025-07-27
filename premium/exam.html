@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top Student – Exam Estimation</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="bg-black text-white font-sans">
+
+  <!-- Header -->
+  <header class="flex justify-between items-center bg-gray-900 px-6 py-4 shadow-md">
+    <div>
+      <h1 class="text-xl font-bold text-white">Top Student</h1>
+    </div>
+    <div class="flex items-center gap-4">
+      <nav class="space-x-4 text-sm">
+        <a href="premium.html" class="text-white hover:text-blue-500">Dashboard</a>
+        <a href="contact.html" class="text-white hover:text-blue-500"><i class="fa-solid fa-comments"></i></a>
+        <a href="../index.html" class="text-white hover:text-blue-500"><i class="fa-solid fa-right-from-bracket"></i></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-4xl mx-auto px-4 mt-10 space-y-10">
+
+    <!-- Title -->
+    <div class="text-center space-y-3">
+      <h2 class="text-3xl font-bold text-white flex justify-center items-center gap-2">
+        <i class="fa-solid fa-brain text-red-500"></i> Exam Estimation
+      </h2>
+      <p class="text-gray-400">Get a prediction of what might come in your next exam. Submit your details below.</p>
+    </div>
+
+    <!-- Request Form -->
+    <div class="bg-gray-800 shadow rounded-lg p-6 space-y-6">
+      <form class="space-y-4">
+        <div>
+          <label for="fullName" class="block text-gray-300 font-medium mb-1">Full Name</label>
+          <input type="text" id="fullName" name="fullName" placeholder="John Doe" required
+            class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600">
+        </div>
+
+        <div>
+          <label for="grade" class="block text-gray-300 font-medium mb-1">Grade</label>
+          <select id="grade" name="grade" required
+            class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-red-600">
+            <option value="">Select your grade</option>
+            <option value="12">Grade 12</option>
+            <option value="11">Grade 11</option>
+            <option value="10">Grade 10</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="subject" class="block text-gray-300 font-medium mb-1">Subject</label>
+          <input type="text" id="subject" name="subject" placeholder="e.g. Mathematics" required
+            class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600">
+        </div>
+
+        <div>
+          <label for="paper" class="block text-gray-300 font-medium mb-1">Which Paper?</label>
+          <input type="text" id="paper" name="paper" placeholder="e.g. Paper 1" required
+            class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600">
+        </div>
+
+        <div>
+          <label for="reason" class="block text-gray-300 font-medium mb-1">
+            Why do you need an exam estimation? <span class="text-sm text-gray-500">(Optional)</span>
+          </label>
+          <textarea id="reason" name="reason" rows="3" placeholder="Optional reason..."
+            class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600"></textarea>
+        </div>
+
+        <div class="flex justify-center pt-4 relative">
+          <button type="submit" id="submitBtn"
+            class="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+            Request Estimation
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Estimated Paper Display -->
+    <div class="bg-gray-800 shadow rounded-lg p-6 space-y-4">
+      <h3 class="text-xl font-semibold text-white flex items-center gap-2">
+        <i class="fas fa-file-pdf text-red-500"></i> Estimated Exam Paper
+      </h3>
+      <p id="estimationPlaceholder" class="text-gray-400">
+        No exam estimation has been uploaded yet. Please check back later or await notification.
+      </p>
+    </div>
+  </main>
+  
+  <!-- Footer Spacer -->
+  <div class="mb-10"></div>
+  
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+  );
+
+  const form = document.querySelector("form");
+  const submitBtn = document.getElementById("submitBtn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    const fullName = document.getElementById("fullName").value;
+    const grade = document.getElementById("grade").value;
+    const subject = document.getElementById("subject").value;
+    const paper = document.getElementById("paper").value;
+    const reason = document.getElementById("reason").value;
+
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      alert("Please log in first.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Request Estimation";
+      return;
+    }
+
+    // Determine current semester dates and message
+    const now = new Date();
+    let semesterStart, semesterEnd, limitMessage;
+    const year = now.getFullYear();
+
+    if (now.getMonth() < 6) {
+      // Semester 1: Jan 1 – June 30
+      semesterStart = new Date(year, 0, 1);
+      semesterEnd = new Date(year, 5, 30, 23, 59, 59);
+      limitMessage = "You have reached your limit of 4 requests this semester. Please wait for the final exam when they open again.";
+    } else {
+      // Semester 2: July 1 – Dec 31
+      semesterStart = new Date(year, 6, 1);
+      semesterEnd = new Date(year, 11, 31, 23, 59, 59);
+      limitMessage = "You have reached your limit of 4 requests this semester. Please wait for the June exam next year.";
+    }
+
+    const { count, error: countError } = await supabase
+      .from("exam_requests")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .gte("created_at", semesterStart.toISOString())
+      .lte("created_at", semesterEnd.toISOString());
+
+    if (countError) {
+      alert("Error checking request limits: " + countError.message);
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Request Estimation";
+      return;
+    }
+
+    if (count >= 4) {
+      alert(limitMessage);
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Request Estimation";
+      return;
+    }
+
+    const { error } = await supabase.from("exam_requests").insert([
+      {
+        user_id: user.id,
+        full_name: fullName,
+        grade: grade,
+        subject: subject,
+        paper: paper,
+        reason: reason || null,
+      },
+    ]);
+
+    if (error) {
+      alert("Failed to submit: " + error.message);
+    } else {
+      alert("Request submitted! You’ll find a pdf on the Estimated Exam Paper section when it’s ready.");
+      form.reset();
+    }
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Request Estimation";
+  });
+
+  async function loadEstimation() {
+    const placeholder = document.getElementById("estimationPlaceholder");
+    placeholder.textContent = "Checking for available estimations...";
+
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) return;
+
+    const { data: requests, error: reqError } = await supabase
+      .from("exam_requests")
+      .select("id")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (reqError || !requests || requests.length === 0) {
+      placeholder.textContent = "No estimation requests found.";
+      return;
+    }
+
+    const latestRequestId = requests[0].id;
+
+    const { data: estimation, error: estError } = await supabase
+      .from("exam_estimations")
+      .select("file_url")
+      .eq("request_id", latestRequestId)
+      .single();
+
+    if (estError) {
+      placeholder.textContent = "No estimation available yet.";
+      return;
+    }
+
+    if (estimation && estimation.file_url) {
+      placeholder.innerHTML = `
+        <a href="${estimation.file_url}" class="text-blue-600 hover:underline" target="_blank">
+          📥 Download Estimated Exam (PDF)
+        </a>`;
+    } else {
+      placeholder.textContent = "No estimation available yet. Please check again later.";
+    }
+  }
+
+  loadEstimation();
+</script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Student – Settings</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1F2937; /* Charcoal */
+      color: #F9FAFB;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #111827;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+      color: white;
+    }
+
+    .nav-links a {
+      color: #F9FAFB;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+      color: #DC2626;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    section {
+      background-color: #ffffff;
+      color: #1F2937;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: #DC2626;
+      border-left: 4px solid #DC2626;
+      padding-left: 12px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    input[type="checkbox"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+      margin-top: 6px;
+    }
+
+    select,
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 4px;
+      margin-bottom: 16px;
+      border: 1px solid #D1D5DB;
+      border-radius: 8px;
+      background-color: #F3F4F6;
+      color: #1F2937;
+    }
+
+    select option:first-child {
+      color: #9CA3AF;
+    }
+
+    .save-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background-color: #DC2626;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .save-btn:hover {
+      background-color: #b91c1c;
+    }
+
+    .switch-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 16px 0;
+    }
+
+    .switch-label {
+      font-weight: 600;
+      color: #1F2937;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background-color: #9CA3AF;
+      transition: .4s;
+      border-radius: 26px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    .switch input:checked + .slider {
+      background-color: #DC2626;
+    }
+
+    .switch input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    .multi-select {
+      width: 100%;
+      padding-right: 0px;
+      background-color: #F3F4F6;
+      border: 1px solid #D1D5DB;
+      border-radius: 8px;
+	  margin-bottom: 20px;
+    }
+
+    .multi-select label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: normal;
+    }
+
+    /* Modal for Change Password */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: #111827;
+      padding-top: 60px;
+    }
+
+    .modal-content {
+	  color: #111827;
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 400px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <div class="navbar">
+    <h1>Top Student</h1>
+    <div class="nav-links">
+      <a href="premium.html">Dashboard</a>
+      <a href="profile.html">Profile</a>
+    </div>
+  </div>
+
+  <section>
+    <h2>Account Settings</h2>
+    <label>
+      Email Address:
+      <input type="email" name="user_email">
+    </label>
+    <label>
+      Name:
+      <input type="text" name="user_name">
+    </label>
+    <label>
+      Surname:
+      <input type="text" name="user_surname">
+    </label>
+	<label>
+        Password:
+        <input type="password" name="current_password">
+      </label>
+  </section>
+
+  <section>
+    <h2>Change Password</h2>
+    <button id="changePasswordBtn" class="save-btn">Change Password</button>
+  </section>
+
+  <section>
+    <button class="save-btn">Save Settings</button>
+  </section>
+
+  <!-- Modal for Change Password -->
+  <div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h3>Change Your Password</h3>
+      <label>
+        Current Password:
+        <input type="password" name="current_password" placeholder="Enter current password">
+      </label>
+      <label>
+        New Password:
+        <input type="password" name="new_password" placeholder="Enter new password">
+      </label>
+      <label>
+        Confirm New Password:
+        <input type="password" name="confirm_password" placeholder="Confirm new password">
+      </label>
+      <button class="save-btn">Update Password</button>
+    </div>
+  </div>
+
+  <script>
+    // Modal control for Change Password
+    var modal = document.getElementById("changePasswordModal");
+    var btn = document.getElementById("changePasswordBtn");
+    var span = document.getElementById("closeModal");
+
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top Student - University Application (Step 4)</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+  #submit.submitting {
+    background-color: rgb(192 132 252); /* Tailwind's bg-purple-400 */
+  }
+</style>
+</head>
+<body class="bg-white text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-gray-700 shadow mb-6">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="text-lg font-bold text-white">Top Student</span>
+      </div>
+      <nav class="flex gap-6 text-base text-white">
+        <a href="https://www.google.com/search?q=south+african+universities" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Ex</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">Explore Universities</span>
+        </a>
+        <a href="https://www.google.com/search?q=university+application+tips+south+africa" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">App</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">Application Tips</span>
+        </a>
+        <a href="https://www.google.com/search?q=south+africa+university+courses" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Co</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">Courses & Info</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Step Tracker -->
+  <div class="max-w-4xl mx-auto p-6 text-center">
+    <h1 class="text-3xl font-bold text-purple-500 mb-2">Personal Info</h1>
+    <p class="text-sm text-gray-600 mb-10">Step 4 of 5 – Provide all necessary details below to continue.</p>
+
+    <div class="flex flex-wrap justify-center gap-6 mb-12">
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold text-xl">Step<br/>1</div>
+        <span class="mt-2 text-sm font-medium text-gray-600">How to Apply</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-green-500 text-white font-bold text-xl">Step<br/>2</div>
+        <span class="mt-2 text-sm font-medium text-gray-600">Choose University</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-yellow-500 text-white font-bold text-xl">Step<br/>3</div>
+        <span class="mt-2 text-sm font-medium text-gray-600">Agree to Terms</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-purple-500 text-white font-bold text-xl">Step<br/>4</div>
+        <span class="mt-2 text-sm font-medium text-purple-600">Personal Info</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-red-500 text-white font-bold text-xl">Step<br/>5</div>
+        <span class="mt-2 text-sm font-medium text-gray-600">What’s Next</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Section -->
+  <section class="max-w-3xl mx-auto bg-white shadow-md p-6 rounded-xl border border-purple-300 text-sm text-gray-800">
+  <h2 class="text-2xl font-bold text-purple-600 mb-6 text-center">Submit Your Details</h2>
+  <form id="applicationForm" class="space-y-8" novalidate>
+    
+    <!-- 1. Email -->
+    <div>
+      <label class="block font-semibold mb-1">Email Address <span class="text-red-500">*</span></label>
+      <input type="email" name="email" required class="w-full border border-purple-300 rounded px-4 py-2" placeholder="yourname@gmail.com" />
+    </div>
+
+    <!-- 2. Personal Info -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block font-semibold mb-1">Full Name <span class="text-red-500">*</span></label>
+        <input type="text" name="full_name" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">ID Number <span class="text-red-500">*</span></label>
+        <input type="text" name="id_number" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Gender <span class="text-red-500">*</span></label>
+        <select name="gender" required class="w-full border border-purple-300 rounded px-4 py-2">
+          <option value="">Select option</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Cellphone Number <span class="text-red-500">*</span></label>
+        <input type="text" name="phone" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Residential Address <span class="text-red-500">*</span></label>
+        <input type="text" name="residential_address" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Code <span class="text-red-500">*</span></label>
+        <input type="text" name="code" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+    </div>
+
+    <!-- 3. Academic Info -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block font-semibold mb-1">School Name <span class="text-red-500">*</span></label>
+        <input type="text" name="school_name" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Grade <span class="text-red-500">*</span></label>
+        <input type="text" name="grade" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+    </div>
+
+    <!-- 4. Guardian Info -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block font-semibold mb-1">Guardian Full Name <span class="text-red-500">*</span></label>
+        <input type="text" name="guardian_name" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Guardian ID Number <span class="text-red-500">*</span></label>
+        <input type="text" name="guardian_id" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Guardian Contact Number <span class="text-red-500">*</span></label>
+        <input type="text" name="guardian_contact" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Occupation & Income <span class="text-red-500">*</span></label>
+        <input type="text" name="occupation_income" required class="w-full border border-purple-300 rounded px-4 py-2" />
+      </div>
+    </div>
+
+    <!-- 5. Subjects -->
+    <div class="mb-6">
+      <label class="block mb-2 text-sm font-medium text-gray-700">Subjects & Percentages</label>
+      <div id="subject-container" class="space-y-3">
+        <div class="flex items-center gap-2">
+          <input type="text" name="subject[]" placeholder="Subject" class="w-1/2 border border-gray-300 p-2 rounded" required />
+          <input type="number" name="percentage[]" placeholder="%" min="0" max="100" class="w-1/4 border border-gray-300 p-2 rounded" required />
+          <button type="button" onclick="removeSubjectRow(this)" class="text-red-500 hover:underline text-sm">Remove</button>
+        </div>
+      </div>
+      <button type="button" onclick="addSubjectRow()" class="mt-2 text-purple-600 hover:underline text-sm">+ Add Another Subject</button>
+    </div>
+
+    <!-- 6. Residence -->
+    <div>
+      <label class="block font-semibold mb-1">Applying for Residence? <span class="text-red-500">*</span></label>
+      <select name="residence_option" required class="w-full border border-purple-300 rounded px-4 py-2">
+        <option value="">Select option</option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </div>
+
+    <!-- 7. Uploads -->
+    <div>
+      <label class="block font-semibold mb-1">Upload Academic Document <span class="text-red-500">*</span></label>
+      <input type="file" name="academic" required class="block w-full border border-purple-300 rounded px-4 py-2" />
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">Medical Certificate (optional)</label>
+      <input type="file" name="medical" class="block w-full border border-purple-300 rounded px-4 py-2" />
+    </div>
+
+    <!-- 8. Funding Option -->
+    <div>
+      <p class="block text-sm font-medium text-gray-700">Select your funding option</p>
+      <div class="mt-2 space-y-2">
+        <label class="flex items-center">
+          <input type="radio" name="funding_option" value="NSFAS" required class="text-purple-600" />
+          <span class="ml-2 text-sm text-gray-700">NSFAS</span>
+        </label>
+        <label class="flex items-center">
+          <input type="radio" name="funding_option" value="Private" class="text-purple-600" />
+          <span class="ml-2 text-sm text-gray-700">Private</span>
+        </label>
+        <label class="flex items-center">
+          <input type="radio" name="funding_option" value="Bursary" class="text-purple-600" />
+          <span class="ml-2 text-sm text-gray-700">Bursary</span>
+        </label>
+      </div>
+      <p class="mt-1 text-sm text-red-600 hidden" id="error-funding_option">Please select a funding option.</p>
+    </div>
+
+    <!-- Fun Tip -->
+    <div class="bg-purple-100 text-purple-800 text-center text-sm px-4 py-3 rounded">
+      Applying is like dating a university — make a good impression, and maybe they’ll say yes! 😉🎓
+    </div>
+
+    <!-- 9. Buttons -->
+    <div class="flex justify-between pt-6">
+      <a href="step3.html" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded">← Back</a>
+      <button id="submit" type="submit" class="bg-purple-700 hover:bg-purple-600 text-white font-semibold py-2 px-6 rounded">Next →</button>
+    </div>
+  </form>
+</section>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+  );
+
+async function checkUserApplication() {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      // Not logged in, redirect or handle
+      window.location.href = "../index.html";
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('university_choices')
+      .select('id_number')
+      .eq('user_id', user.id)
+      .single();
+
+    const applicationForm = document.getElementById('applicationForm');
+    const receivedMsg = document.getElementById('applicationReceivedMsg');
+
+    if (error) {
+      console.error('Error fetching application:', error);
+      applicationForm.disabled = false;
+      return;
+    }
+
+    if (data && data.id_number) {
+      // Application exists, hide button & show message
+      applicationForm.style.display = 'none';
+	  window.location.href = "../index.html";
+    } else {
+      // No application yet, enable button & hide message just in case
+      applicationForm.disabled = false;
+      receivedMsg.classList.add('hidden');
+    }
+  }
+
+  checkUserApplication();
+
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  if (!session || sessionError) {
+   Swal.fire('You are not logged in. Please sign in first.');
+    window.location.href = "../login.html";
+  }
+
+  const userId = session.user.id;
+
+  document.getElementById('applicationForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+
+    requiredFields.forEach(field => field.classList.remove('border-red-500'));
+
+    requiredFields.forEach(field => {
+      if (field.type !== 'radio' && !field.value.trim()) {
+        field.classList.add('border-red-500');
+        isValid = false;
+      }
+    });
+
+    const fundingChecked = form.querySelector('input[name="funding_option"]:checked');
+    const fundingError = document.getElementById('error-funding_option');
+    if (!fundingChecked) {
+      fundingError.classList.remove('hidden');
+      isValid = false;
+    } else {
+      fundingError.classList.add('hidden');
+    }
+
+    if (!isValid) {
+      Swal.fire('Please fill in all required fields correctly.');
+      return;
+    }
+
+    const idNumber = formData.get('id_number');
+    const phone = formData.get('phone');
+    const postalCode = formData.get('code');
+
+    if (!/^\d{13}$/.test(idNumber)) {
+      Swal.fire('Invalid ID Number', 'South African ID must be exactly 13 digits.', 'error');
+      return;
+    }
+
+    if (!/^\d{10,}$/.test(phone)) {
+      Swal.fire('Invalid Contact', 'Phone number must be at least 10 digits.', 'error');
+      return;
+    }
+
+    if (!/^\d{4}$/.test(postalCode)) {
+      Swal.fire('Invalid Postal Code', 'Postal code must be exactly 4 digits.', 'error');
+      return;
+    }
+
+    const submitBtn = form.querySelector('#submit');
+    submitBtn.disabled = true;
+    submitBtn.classList.add('cursor-not-allowed', 'submitting');
+    submitBtn.textContent = 'Submitting...';
+
+    async function uploadFile(fileInput, folder) {
+      if (!fileInput || fileInput.files.length === 0) return null;
+
+      const file = fileInput.files[0];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${folder}/${userId}/${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('documents')
+        .upload(fileName, file, { upsert: false });
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError.message);
+        alert('Upload failed: ' + uploadError.message);
+        throw uploadError;
+      }
+
+      const { data: urlData, error: urlError } = supabase
+        .storage
+        .from('documents')
+        .getPublicUrl(fileName);
+
+      if (urlError) {
+        console.error('Public URL error:', urlError.message);
+        return null;
+      }
+
+      return urlData.publicUrl;
+    }
+
+    try {
+      const academicUrl = await uploadFile(form.academic, 'academic');
+      if (!academicUrl) {
+        alert('Academic document is required.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Next →';
+        return;
+      }
+
+      const medicalUrl = await uploadFile(form.medical, 'medical');
+
+      const fullName = formData.get('full_name');
+      const gender = formData.get('gender');
+      const email = formData.get('email');
+      const grade = formData.get('grade');
+      const fundingOption = formData.get('funding_option');
+      const residentialAddress = formData.get('residential_address');
+      const schoolName = formData.get('school_name');
+      const guardianName = formData.get('guardian_name');
+      const guardianId = formData.get('guardian_id');
+      const guardianContact = formData.get('guardian_contact');
+      const occupationIncome = formData.get('occupation_income');
+      const residenceOption = formData.get('residence_option');
+
+      const subjectNames = Array.from(document.querySelectorAll('input[name="subject_name[]"]')).map(el => el.value);
+      const subjectScores = Array.from(document.querySelectorAll('input[name="subject_score[]"]')).map(el => el.value);
+
+      const { error: upsertError } = await supabase
+        .from('university_choices')
+        .upsert([{
+          user_id: userId,
+          full_name: fullName,
+          id_number: idNumber,
+          gender,
+          phone_number: phone,
+          email,
+          grade,
+          funding_option: fundingOption,
+          residential_address: residentialAddress,
+          code: postalCode,
+          school_name: schoolName,
+          guardian_name: guardianName,
+          guardian_id: guardianId,
+          guardian_contact: guardianContact,
+          occupation_income: occupationIncome,
+          residence_option: residenceOption,
+          academic_url: academicUrl,
+          medical_url: medicalUrl,
+          subject_names: subjectNames,
+          subject_scores: subjectScores
+        }], {
+          onConflict: 'user_id'
+        });
+
+      if (upsertError) {
+        console.error('upsert error:', upsertError);
+        alert('❌ Something went wrong while saving your application.');
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Application submitted successfully.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+        form.reset();
+        document.getElementById('subject-container').innerHTML = '';
+        addSubjectRow(); // Default row
+
+        setTimeout(() => {
+          window.location.href = 'step5.html';
+        }, 2000);
+      }
+
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Unexpected!',
+        text: 'Check console for details.',
+        timer: 2000,
+        showConfirmButton: false
+      });
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('cursor-not-allowed', 'submitting');
+      submitBtn.textContent = 'Next →';
+    }
+  });
+
+  // Subject field logic
+  window.addSubjectRow = function () {
+    const container = document.getElementById('subject-container');
+    const row = document.createElement('div');
+    row.className = "flex items-center gap-2 mb-2";
+    row.innerHTML = `
+      <input type="text" name="subject_name[]" placeholder="Subject" class="w-1/2 border border-gray-300 p-2 rounded" required />
+      <input type="number" name="subject_score[]" placeholder="%" min="0" max="100" class="w-1/4 border border-gray-300 p-2 rounded" required />
+      <button type="button" onclick="removeSubjectRow(this)" class="text-red-500 hover:underline text-sm">Remove</button>
+    `;
+    container.appendChild(row);
+  };
+
+  window.removeSubjectRow = function (btn) {
+    btn.parentElement.remove();
+  };
+</script>
+</body>
+</html>
+

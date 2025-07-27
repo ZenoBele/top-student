@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NSFAS Application</title>
+	<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+<body class="bg-gray-900 text-white min-h-screen">
+
+<div id="fullscreen-loader" class="fixed inset-0 bg-white bg-opacity-70 z-[9999] hidden flex items-center justify-center">
+  <div class="text-center">
+    <svg class="animate-spin h-10 w-10 text-indigo-600 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+    </svg>
+    <p class="text-indigo-700 font-semibold text-lg">Submitting, please wait...</p>
+  </div>
+</div>
+
+<header class="bg-gray-700 shadow mb-6">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="text-lg font-bold text-white">Top Student</span>
+      </div>
+      <nav class="flex gap-6 text-base text-white">
+        <a href="https://www.google.com/search?q=south+african+bursaries" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Ex</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">Explore bursaries</span>
+        </a>
+        <a href="https://nsfas.org.za" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">App</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">Application at NSFAS</span>
+        </a>
+        <a href="https://www.google.com/search?q=bursaries" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Bu</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">bursaries & Info</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+<div class="max-w-3xl mx-auto p-6">
+    <h1 class="text-4xl font-bold mb-4 text-indigo-400">NSFAS Application</h1>
+    <p class="text-gray-300 mb-6">
+      Apply for NSFAS funding easily through Top Student. We’ll help you upload what’s needed. We’ll contact you if there are issues or missing documents.
+    </p>
+
+    <form id="nsfasForm" class="space-y-6">
+      <!-- Personal Info -->
+      <div>
+        <label class="block font-semibold mb-1" for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required class="w-full px-4 py-2 bg-gray-800 rounded border border-gray-700 focus:outline-none focus:ring focus:ring-indigo-500" />
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1" for="idNumber">ID Number</label>
+        <input type="text" id="idNumber" name="idNumber" required class="w-full px-4 py-2 bg-gray-800 rounded border border-gray-700 focus:outline-none focus:ring focus:ring-indigo-500" />
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1" for="email">Email</label>
+        <input type="email" id="email" name="email" required class="w-full px-4 py-2 bg-gray-800 rounded border border-gray-700 focus:outline-none focus:ring focus:ring-indigo-500" />
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1" for="contact">Cell Number (Applicant)</label>
+        <input type="tel" id="contact" name="contact" placeholder="e.g. 071 234 5678" required class="w-full px-4 py-2 bg-gray-800 rounded border border-gray-700 focus:outline-none focus:ring focus:ring-green-500" />
+      </div>
+
+      <!-- Required Documents -->
+      <h2 class="text-2xl font-semibold mt-10 mb-2 text-indigo-300">Required Documents</h2>
+      <ul class="text-sm text-gray-400 list-disc list-inside mb-4">
+        <li>Copy of the applicant’s ID or birth certificate</li>
+        <li>Copy of parent(s)/guardian(s) ID</li>
+        <li>Proof of income (payslip, affidavit, etc.)</li>
+        <li>Latest academic results</li>
+        <li>Proof of address (e.g. municipal bill)</li>
+      </ul>
+
+      <!-- Upload Fields -->
+      <div class="space-y-4">
+        <div>
+          <label class="block mb-1">Applicant ID / Birth Certificate (PDF)</label>
+          <input type="file" name="applicant_id" accept=".pdf" required class="block w-full text-sm text-gray-300 bg-gray-800 rounded border border-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 hover:file:bg-indigo-700" />
+        </div>
+
+        <div>
+          <label class="block mb-1">Parent/Guardian ID (PDF)</label>
+          <input type="file" name="parent_id" accept=".pdf" required class="block w-full text-sm text-gray-300 bg-gray-800 rounded border border-gray-700 file:bg-indigo-600 hover:file:bg-indigo-700" />
+        </div>
+
+        <div>
+          <label class="block mb-1">Proof of Income (PDF)</label>
+          <input type="file" name="income_proof" accept=".pdf" class="block w-full text-sm text-gray-300 bg-gray-800 rounded border border-gray-700 file:bg-indigo-600 hover:file:bg-indigo-700" />
+        </div>
+
+        <div>
+          <label class="block mb-1">Latest Results (PDF)</label>
+          <input type="file" name="results" accept=".pdf" required class="block w-full text-sm text-gray-300 bg-gray-800 rounded border border-gray-700 file:bg-indigo-600 hover:file:bg-indigo-700" />
+        </div>
+
+        <div>
+          <label class="block mb-1">Proof of Address (PDF)</label>
+          <input type="file" name="address_proof" accept=".pdf" required class="block w-full text-sm text-gray-300 bg-gray-800 rounded border border-gray-700 file:bg-indigo-600 hover:file:bg-indigo-700" />
+        </div>
+      </div>
+
+      <!-- Contact Notice -->
+      <div class="mt-10 bg-yellow-900/30 border border-yellow-600 rounded-lg p-4 text-yellow-300">
+        <p class="font-semibold">⚠️ Important Notice</p>
+        <p class="text-sm mt-2">
+          If we need anything else, we will contact you using the cell number or email provided. <br/>
+          If you have questions or want to check progress, feel free to contact us on WhatsApp at <strong>072 730 6186</strong> or email <strong>info@topstudent.co.za</strong>.
+        </p>
+      </div>
+      <button type="submit" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition">Submit Application</button>
+    </form>
+  </div>
+  
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+  );
+
+const {
+  data: { user },
+  error: userError
+} = await supabase.auth.getUser();
+
+if (!user) {
+  window.location.href = "../login.html";
+}
+
+// Optional: Premium check
+const { data: roleData, error: roleError } = await supabase
+  .from('profiles')
+  .select('role')
+  .eq('id', user.id)
+  .single();
+
+if (roleError || !roleData || roleData.role !== 'premium') {
+  window.location.href = "../index.html";
+}
+
+// Upload helper
+async function uploadFile(file, path) {
+  const { error } = await supabase.storage
+    .from('documents')
+    .upload(`nsfas/${path}`, file, {
+      contentType: 'application/pdf',
+      upsert: true,
+    });
+
+  if (error) throw error;
+
+  const { data } = supabase.storage
+    .from('documents')
+    .getPublicUrl(`nsfas/${path}`);
+  return data.publicUrl;
+}
+
+const form = document.getElementById('nsfasForm');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const submitBtn = form.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  document.getElementById('fullscreen-loader').classList.remove('hidden');
+
+  try {
+    const fullName = form.fullName.value.trim();
+    const idNumber = form.idNumber.value.trim();
+    const email = form.email.value.trim();
+    const contact = form.contact.value.trim();
+
+    // Validate ID number: 13 digits (South African ID)
+    if (!/^\d{13}$/.test(idNumber)) {
+      throw new Error('ID Number must be exactly 13 digits.');
+    }
+
+    // Validate contact number: 10 digits
+    if (!/^\d{10}$/.test(contact)) {
+      throw new Error('Contact Number must be exactly 10 digits.');
+    }
+
+    // Validate required files exist
+    if (!form.applicant_id.files[0]) throw new Error('Applicant ID file is required.');
+    if (!form.parent_id.files[0]) throw new Error('Parent ID file is required.');
+    if (!form.results.files[0]) throw new Error('Results file is required.');
+    if (!form.address_proof.files[0]) throw new Error('Proof of address file is required.');
+
+    const applicantIdFile = form.applicant_id.files[0];
+    const parentIdFile = form.parent_id.files[0];
+    const incomeProofFile = form.income_proof.files[0] || null; // optional
+    const resultsFile = form.results.files[0];
+    const addressProofFile = form.address_proof.files[0];
+
+    const timestamp = Date.now();
+    const folder = `${user.id}/${timestamp}`;
+
+    // Upload files
+    const applicant_id_url = await uploadFile(applicantIdFile, `${folder}/applicant_id.pdf`);
+    const parent_id_url = await uploadFile(parentIdFile, `${folder}/parent_id.pdf`);
+    const income_proof_url = incomeProofFile ? await uploadFile(incomeProofFile, `${folder}/income_proof.pdf`) : null;
+    const latest_results_url = await uploadFile(resultsFile, `${folder}/results.pdf`);
+    const proof_of_address_url = await uploadFile(addressProofFile, `${folder}/address_proof.pdf`);
+
+    // UPSERT application data
+    const { error: dbError } = await supabase
+      .from('nsfas_applications')
+      .upsert({
+        user_id: user.id,
+        full_name: fullName,
+        id_number: idNumber,
+        email,
+        contact_number: contact,
+        applicant_id_url,
+        parent_id_url,
+        income_proof_url,
+        latest_results_url,
+        proof_of_address_url,
+        status: 'submitted',
+        terms_accepted: true
+      }, { onConflict: ['user_id'] });
+
+    if (dbError) throw dbError;
+
+    await Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: 'Application submitted successfully!',
+      confirmButtonText: 'OK'
+    });
+
+    form.reset();
+    window.location.href = 'submitted.html';
+
+  } catch (error) {
+    console.error(error);
+    await Swal.fire({
+      icon: 'error',
+      title: 'Submission Failed',
+      text: error.message || 'An error occurred while submitting your application.',
+      confirmButtonText: 'OK'
+    });
+  } finally {
+    submitBtn.disabled = false;
+    document.getElementById('fullscreen-loader').classList.add('hidden');
+  }
+});
+</script>
+</body>
+</html>
