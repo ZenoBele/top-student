@@ -233,40 +233,36 @@
   );
   
 async function checkIdNumberAndToggle() {
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-    if (userError || !user) {
-      // Not logged in or error
-      document.getElementById('actionbnt').style.display = 'none';
-      document.getElementById('goToStep5BtnContainer').style.display = 'none';
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from('university_choices')
-      .select('id_number')
-      .eq('user_id', user.id)
-      .single();
-
-    if (error) {
-      console.error('Error fetching university_choices:', error);
-      document.getElementById('actionbnt').style.display = 'none';
-      document.getElementById('goToStep5BtnContainer').style.display = 'none';
-      return;
-    }
-
-    if (data && data.id_number && data.id_number.trim() !== '') {
-      // Hide the original div
-      document.getElementById('actionbnt').style.display = 'none';
-      // Show the new button container
-      document.getElementById('goToStep5BtnContainer').style.display = 'flex';
-    } else {
-      // Show original div
-      document.getElementById('actionbnt').style.display = 'flex';
-      // Hide new button container
-      document.getElementById('goToStep5BtnContainer').style.display = 'none';
-    }
+  if (userError || !user) {
+    document.getElementById('actionbnt').style.display = 'none';
+    document.getElementById('goToStep5BtnContainer').style.display = 'none';
+    return;
   }
+
+  const { data, error } = await supabase
+    .from('university_choices')
+    .select('id_number')
+    .eq('user_id', user.id)
+    .maybeSingle();  // returns null if no row
+
+  if (error) {
+    console.error('Error fetching university_choices:', error);
+    return; // do nothing on error
+  }
+
+  if (!data) {
+    // No row for user — new user case — do nothing, leave buttons as they are
+    return;
+  }
+
+  if (data.id_number && data.id_number.trim() !== '') {
+    // ID number exists — hide actionbnt, show goToStep5BtnContainer
+    document.getElementById('actionbnt').style.display = 'none';
+    document.getElementById('goToStep5BtnContainer').style.display = 'flex';
+  }
+}
 
   checkIdNumberAndToggle();
 

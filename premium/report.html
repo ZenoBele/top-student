@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Submit Term Report – Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -23,8 +24,8 @@
     </div>
   </header>
 
-<div class="max-w-xl mx-auto bg-gray-800 p-8 rounded shadow-md border border-purple-600">
-  <h1 class="text-2xl font-bold mb-6 text-purple-400 text-center">Submit Term Report</h1>
+<div class="max-w-xl mx-auto bg-gray-800 p-8 rounded shadow-md border border-red-600">
+  <h1 class="text-2xl font-bold mb-6 text-red-500 text-center">Submit Term Report</h1>
 
   <form id="reportform" class="space-y-6">
 
@@ -60,11 +61,17 @@
 
     <!-- Centered Analyze Button -->
     <div class="flex justify-center">
-      <button type="submit" class="bg-purple-700 text-white px-6 py-2 rounded hover:bg-purple-800">
+      <button type="submit" class="bg-red-700 text-white px-6 py-2 rounded hover:bg-red-800">
         Analyze
       </button>
     </div>
   </form>
+</div>
+
+<div class="flex justify-center">
+<a href="report-center.html"><button class="bg-red-700 mt-4 text-white px-16 py-2 rounded hover:bg-red-800">
+        Roports History
+      </button></a>
 </div>
 
 <script type="module">

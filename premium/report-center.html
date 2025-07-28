@@ -23,8 +23,8 @@
   </header>
 
 <div class="flex justify-center mt-8">
-  <h1 class="text-3xl mb-4 font-bold text-purple-400 flex items-center gap-2 text-center">
-    <i class="fas fa-chart-bar text-purple-500"></i>
+  <h1 class="text-3xl mb-4 font-bold text-red-500 flex items-center gap-2 text-center">
+    <i class="fas fa-chart-bar text-red-500"></i>
     Report Center
   </h1>
 </div>
@@ -94,7 +94,7 @@ async function fetchReports() {
     }
 
     const reportHtml = `
-      <div class="bg-gray-800 p-6 rounded-lg shadow border border-purple-600">
+      <div class="bg-gray-800 p-6 rounded-lg shadow border border-red-600">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-lg font-semibold text-white">${file.name}</h2>
           <a href="${signedUrlData.signedUrl}" target="_blank" class="text-red-700 hover:underline flex items-center gap-1">

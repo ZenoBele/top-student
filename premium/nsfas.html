@@ -129,25 +129,42 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
   );
 
-const {
-  data: { user },
-  error: userError
-} = await supabase.auth.getUser();
+async function validateTermsOrLogout() {
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-if (!user) {
-  window.location.href = "../login.html";
-}
+  if (userError || !user) {
+    // No user logged in - redirect anyway or just return
+    window.location.href = '../index.html';
+    return;
+  }
 
-// Optional: Premium check
-const { data: roleData, error: roleError } = await supabase
-  .from('profiles')
-  .select('role')
-  .eq('id', user.id)
-  .single();
+  const { data, error } = await supabase
+    .from('nsfas_applications')
+    .select('terms_accepted')
+    .eq('user_id', user.id)
+    .maybeSingle();
 
-if (roleError || !roleData || roleData.role !== 'premium') {
+  if (error) {
+    console.error('Error checking terms acceptance:', error);
+    // Optionally log out on error to be safe
+    await supabase.auth.signOut();
+    window.location.href = '../index.html';
+    return;
+  }
+
+  if (!data || data.terms_accepted !== true) {
+    // terms_accepted is false, null, undefined, or no record — sign out & redirect
+    await supabase.auth.signOut();
+    window.location.href = '../index.html';
+  }
+  if (roleError || !roleData || roleData.role !== 'premium') {
   window.location.href = "../index.html";
 }
+  // else: user accepted terms, allow to continue
+}
+
+// Run the check immediately on page load:
+validateTermsOrLogout();
 
 // Upload helper
 async function uploadFile(file, path) {
