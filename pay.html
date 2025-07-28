@@ -260,7 +260,7 @@
     <div class="footer">Need help? <a href="mailto:info@topstudent.co.za">Contact Support</a></div>
   </div>
 
-  <script type="module">
+<script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
   const supabase = createClient(
@@ -268,29 +268,26 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
   );
 
+  let plan = "";
+  let currentPrice = 0;
+  let futurePrice = 0;
+
   document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
-    const plan = params.get("plan");
+    plan = params.get("plan");
 
     const title = document.getElementById("plan-title");
     const price = document.getElementById("plan-price");
     const savingsText = document.getElementById("savingsText");
 
-    let payfastUrl = "";
-    let currentPrice = 0;
-    let futurePrice = 0;
-
     if (plan === "standard") {
       currentPrice = 199;
       futurePrice = 299;
-      payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=199&item_name=TopStudentStandard&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
     } else if (plan === "premium") {
       currentPrice = 299;
       futurePrice = 499;
-      payfastUrl = 'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=299&item_name=TopStudentPremium&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
     } else {
-      title.textContent = "Plan Not Selected";
-	  title.innerHTML = `<span style="color: red;">Plan Not Selected</span>`;
+      title.innerHTML = `<span style="color: red;">Plan Not Selected</span>`;
       price.textContent = "Please go back and choose a plan first.";
       document.getElementById("signupForm").style.display = "none";
       savingsText.style.display = "none";
@@ -353,54 +350,49 @@
       loadingSpinner.style.display = "block";
 
       try {
-        // 1. Sign up the user with Supabase Auth
         const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email,
           password,
         });
 
-        if (signUpError) {
-          alert(`Sign-up failed: ${signUpError.message}`);
-          submitBtn.disabled = false;
-          loadingSpinner.style.display = "none";
-          return;
-        }
-
-        // 2. Get the user object from sign-up response
+        if (signUpError) throw signUpError;
         const user = signUpData.user;
 
-        if (!user) {
-          alert('Unexpected error: No user returned after sign-up.');
-          submitBtn.disabled = false;
-          loadingSpinner.style.display = "none";
-          return;
-        }
+        if (!user) throw new Error("No user returned from signup.");
 
-        // 3. Insert into profiles table
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: user.id,
-            email: user.email,
-            role: 'pending', 
-            created_at: new Date().toISOString(),
-          });
+        const { error: profileError } = await supabase.from('profiles').insert({
+          id: user.id,
+          email: user.email,
+          role: 'pending',
+          created_at: new Date().toISOString(),
+        });
 
-        if (profileError) {
-          alert(`Failed to create user profile: ${profileError.message}`);
-          submitBtn.disabled = false;
-          loadingSpinner.style.display = "none";
-          return;
-        }
+        if (profileError) throw profileError;
 
-        // 4. Redirect to payment (PayFast) or success page
-        window.location.href = payfastUrl;
+        // ✅ Build and submit PayFast form
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://www.payfast.co.za/eng/process';
+        form.innerHTML = `
+          <input type="hidden" name="merchant_id" value="30322591" />
+          <input type="hidden" name="merchant_key" value="b7owp8kz6kmgz" />
+          <input type="hidden" name="amount" value="${currentPrice}" />
+          <input type="hidden" name="item_name" value="TopStudent${plan}" />
+          <input type="hidden" name="email_address" value="${email}" />
+          <input type="hidden" name="custom_str1" value="${user.id}" />
+          <input type="hidden" name="custom_str2" value="${plan}" />
+          <input type="hidden" name="notify_url" value="https://mlwxxtvsozhwzjxmsvbg.supabase.co/functions/v1/payfast-webhook" />
+          <input type="hidden" name="return_url" value="https://topstudent.co.za/payment-success.html" />
+          <input type="hidden" name="cancel_url" value="https://topstudent.co.za/payment-canceled.html" />
+        `;
+        document.body.appendChild(form);
+        form.submit();
 
       } catch (error) {
-        alert('Unexpected error occurred during sign-up.');
+        alert('Signup failed: ' + error.message);
         console.error(error);
-        submitBtn.disabled = false;
-        loadingSpinner.style.display = "none";
+        document.getElementById('submitBtn').disabled = false;
+        document.getElementById('loadingSpinner').style.display = "none";
       }
     });
   });
