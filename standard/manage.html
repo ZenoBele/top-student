@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Manage Subscription – Top Student</title>
   <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
@@ -62,7 +63,7 @@
 
     <div class="text-center mt-10">
   <button id="btn-back-dashboard" class="inline-block text-blue-600 hover:underline text-sm">
-    <i class="fas fa-arrow-left"></i> Back to Dashboard
+    <i class="fas fa-arrow-left"></i> Back
   </button>
 </div>
   </div>
@@ -193,12 +194,14 @@ if (upgradeBtn) {
 }
 
 const pauseBtn = document.getElementById('btn-pause');
+
 if (pauseBtn) {
   pauseBtn.addEventListener('click', async () => {
     const confirmed = await showConfirm('Pause (downgrade) your subscription?');
     if (!confirmed) return;
 
     if (loader) loader.classList.remove('hidden');
+
     const user = await getUser();
     if (!user) {
       if (loader) loader.classList.add('hidden');
@@ -218,9 +221,23 @@ if (pauseBtn) {
     }
 
     const currentRole = data.role;
+
     if (currentRole === 'free') {
       if (loader) loader.classList.add('hidden');
-      showToast("You're already paused.", 'info');
+
+      Swal.fire({
+        icon: 'info',
+        title: 'Your Access is Paused',
+        text: 'Your trial has ended or your subscription is already paused. Would you like to renew now?',
+        showCancelButton: true,
+        confirmButtonText: 'Renew Now',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = 'renew.html';
+        }
+      });
+
       return;
     }
 
@@ -240,53 +257,65 @@ if (pauseBtn) {
     } else {
       updateStatusLabel(false);
       showToast("Subscription paused. You're now on the free plan.", 'success');
+
       await supabase.auth.signOut();
-      setTimeout(() => (window.location.href = '../index.html'), 2000);
+      setTimeout(() => {
+        window.location.href = '../index.html';
+      }, 2000);
     }
   });
 }
 
 const resumeBtn = document.getElementById('btn-resume');
+
 if (resumeBtn) {
   resumeBtn.addEventListener('click', async () => {
-    const confirmed = await showConfirm('Resume your subscription?');
+    const confirmed = await showConfirm("Resume your subscription?");
     if (!confirmed) return;
 
-    if (loader) loader.classList.remove('hidden');
     const user = await getUser();
     if (!user) {
-      if (loader) loader.classList.add('hidden');
+      loader.classList.add('hidden');
+      showToast("User not found.", 'error');
       return;
     }
 
+    // 🔍 Fetch previous_role and status from profile
     const { data, error: fetchErr } = await supabase
       .from('profiles')
-      .select('previous_role')
+      .select('previous_role, status')
       .eq('id', user.id)
       .single();
 
-    if (fetchErr || !data?.previous_role) {
-      if (loader) loader.classList.add('hidden');
-      showToast('Could not retrieve your previous role.', 'error');
+    if (fetchErr || !data) {
+      loader.classList.add('hidden');
+      showToast("Unable to fetch subscription status.", 'error');
       return;
     }
 
+    // 🔁 Redirect to renew if paused with valid previous_role
+    if (data.previous_role && data.status === true) {
+      window.location.href = 'renew.html';
+      return;
+    }
+
+    // ✅ Resume subscription
     const { error } = await supabase
       .from('profiles')
       .update({
         role: data.previous_role,
         previous_role: null,
-        status: true,
+        status: true
       })
       .eq('id', user.id);
 
-    if (loader) loader.classList.add('hidden');
+    loader.classList.add('hidden');
 
     if (error) {
-      showToast('Failed to resume subscription.', 'error');
+      showToast("Failed to resume subscription.", 'error');
     } else {
       updateStatusLabel(true);
-      showToast('Subscription resumed. Welcome back!', 'success');
+      showToast("Subscription resumed successfully. Welcome back!", 'success');
     }
   });
 }
@@ -367,10 +396,10 @@ if (backBtn) {
       localStorage.removeItem(key);
 
       // Continue to dashboard
-      if (data.role === 'premium') {
-        window.location.href = 'premium.html';
-      } else {
+      if (data.role === 'standard') {
         window.location.href = 'standard.html';
+      } else {
+        window.location.href = '../index.html';
       }
     }
   });
