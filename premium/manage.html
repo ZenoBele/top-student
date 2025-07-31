@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Manage Subscription – Top Student</title>
   <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
@@ -61,7 +62,7 @@
     <!-- Back -->
     <div class="text-center mt-10">
       <button id="btn-back-dashboard" class="inline-block text-purple-400 hover:text-red-500 text-sm transition">
-        <i class="fas fa-arrow-left"></i> Back to Dashboard
+        <i class="fas fa-arrow-left"></i> Back
       </button>
     </div>
   </div>
@@ -215,10 +216,21 @@
 
     const currentRole = data.role;
     if (currentRole === 'unpaid') {
-      loader.classList.add('hidden');
-      showToast("You're already paused.", 'info');
-      return;
+  loader.classList.add('hidden');
+  Swal.fire({
+    icon: 'info',
+    title: 'Your Access is Paused',
+    text: "Your trial has ended or subscription is paused. Would you like to renew now?",
+    showCancelButton: true,
+    confirmButtonText: 'Renew Now',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = 'renew.html';
     }
+  });
+  return;
+}
 
     const { error } = await supabase
       .from('profiles')
@@ -241,47 +253,57 @@
     }
   });
 
-  resumeBtn.addEventListener('click', async () => {
-    const confirmed = await showConfirm("Resume your subscription?");
-    if (!confirmed) return;
+resumeBtn.addEventListener('click', async () => {
+  const confirmed = await showConfirm("Resume your subscription?");
+  if (!confirmed) return;
 
-    loader.classList.remove('hidden');
-    const user = await getUser();
-    if (!user) {
-      loader.classList.add('hidden');
-      return;
-    }
+  loader.classList.remove('hidden');
 
-    const { data, error: fetchErr } = await supabase
-      .from('profiles')
-      .select('previous_role')
-      .eq('id', user.id)
-      .single();
-
-    if (fetchErr || !data?.previous_role) {
-      loader.classList.add('hidden');
-      showToast("Could not retrieve your previous role.", 'error');
-      return;
-    }
-
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        role: data.previous_role,
-        previous_role: null,
-        status: true
-      })
-      .eq('id', user.id);
-
+  const user = await getUser();
+  if (!user) {
     loader.classList.add('hidden');
+    return;
+  }
 
-    if (error) {
-      showToast("Failed to resume subscription.", 'error');
-    } else {
-      updateStatusLabel(true);
-      showToast("Subscription resumed. Welcome back!", 'success');
-    }
-  });
+  // 🔍 Fetch both previous_role and status
+  const { data, error: fetchErr } = await supabase
+    .from('profiles')
+    .select('previous_role, status')
+    .eq('id', user.id)
+    .single();
+
+  if (fetchErr || !data) {
+    loader.classList.add('hidden');
+    showToast("Could not check your subscription status.", 'error');
+    return;
+  }
+
+  // 🔁 If previous_role exists and status is true, redirect to renew.html
+  if (data.previous_role && data.status === true) {
+    loader.classList.add('hidden');
+    window.location.href = 'renew.html';
+    return;
+  }
+
+  // ✅ Continue with resume process
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      role: data.previous_role,
+      previous_role: null,
+      status: true
+    })
+    .eq('id', user.id);
+
+  loader.classList.add('hidden');
+
+  if (error) {
+    showToast("Failed to resume subscription.", 'error');
+  } else {
+    updateStatusLabel(true);
+    showToast("Subscription resumed. Welcome back!", 'success');
+  }
+});
 
   historyBtn.addEventListener('click', () => {
     window.location.href = 'invoices.html';
@@ -353,7 +375,7 @@
     if (data.role === 'premium') {
       window.location.href = 'premium.html';
     } else {
-      window.location.href = 'standard.html';
+      window.location.href = '../index.html';
     }
   }
 });

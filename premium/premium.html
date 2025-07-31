@@ -7,6 +7,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-black text-white font-sans">
 
@@ -501,6 +502,59 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     await loadNotifications(userId);
   })();
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return // not logged in
+
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('trial, created_at, role')
+    .eq('id', user.id)
+    .single()
+
+  if (error || !profile?.trial) return
+
+  const createdAt = new Date(profile.created_at)
+  const now = new Date()
+  const msInDay = 1000 * 60 * 60 * 24
+  const daysPassed = Math.floor((now - createdAt) / msInDay)
+  const daysLeft = 7 - daysPassed
+
+  if (daysPassed >= 7) {
+  // Trial expired → Update role and logout
+  await supabase
+    .from('profiles')
+    .update({ role: 'unpaid', previous_role: 'premium', trial: false })
+    .eq('id', user.id)
+
+  await Swal.fire({
+    icon: 'info',
+    title: 'Trial Ended',
+    text: 'Your trial has ended. Press OK to renew.',
+    confirmButtonText: 'OK'
+  })
+
+  window.location.href = 'renew.html'
+	  
+  } else if (daysLeft <= 2) {
+    // Trial expiring soon → Alert
+    Swal.fire({
+      icon: 'warning',
+      title: '⏳ Trial Almost Over',
+      text: `You have only ${daysLeft} day${daysLeft === 1 ? '' : 's'} left in your trial.`,
+      confirmButtonText: 'Renew',
+      showCancelButton: true,
+      cancelButtonText: 'Later',
+      confirmButtonColor: 'red',
+      cancelButtonColor: '#6b7280'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = 'renew.html'
+      }
+    })
+  }
 });
 </script>
 </body>
