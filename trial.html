@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Start Free Trial</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+  body { font-family: 'Inter', sans-serif; }
+</style>
+</head>
+<body class="bg-gradient-to-br from-blue-400 via-white to-gray-100 min-h-screen flex items-center justify-center px-4 py-12 font-sans">
+
+  <!-- Card Container -->
+  <div class="relative backdrop-blur-md bg-white/90 border border-gray-200 shadow-2xl rounded-3xl w-full max-w-lg p-8">
+
+    <!-- Close Button -->
+    <button onclick="window.location.href='https://topstudent.co.za/payment-canceled.html'"
+      class="absolute top-5 right-5 text-gray-500 hover:text-red-500 transition duration-200 text-lg">✕</button>
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 id="plan-title" class="text-3xl font-extrabold text-gray-800 tracking-tight">Loading Plan...</h1>
+      <p class="mt-1 text-sm text-green-600 font-semibold" id="savingsText">You're saving big!</p>
+      <p id="plan-price" class="mt-1 text-lg font-bold text-red-500">Please wait...</p>
+    </div>
+
+    <!-- Form -->
+    <form id="signupForm" class="space-y-6">
+      <!-- Email -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <input type="email" id="email" required
+          class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition outline-none shadow-sm bg-white" />
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+        <input type="password" id="password" required
+          class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition outline-none shadow-sm bg-white" />
+        <div id="togglePasswordDiv" class="text-xs mt-1 text-blue-500 hover:underline cursor-pointer">Show/Hide</div>
+      </div>
+
+      <!-- Password Rules -->
+      <div id="passwordRules" class="hidden bg-gray-50 border border-gray-200 rounded-xl p-3">
+        <ul class="space-y-1 text-sm text-gray-700">
+          <li id="ruleLength">✗ At least 8 characters</li>
+          <li id="ruleUpper">✗ One uppercase letter</li>
+          <li id="ruleLower">✗ One lowercase letter</li>
+          <li id="ruleNumber">✗ One number</li>
+        </ul>
+      </div>
+
+      <!-- CTA -->
+      <button type="submit" id="submitBtn"
+        class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-xl shadow-md transition duration-200">
+        Start Free Trial
+      </button>
+      <div id="loadingSpinner" class="text-center text-sm text-gray-500 hidden animate-pulse mt-2">Processing...</div>
+    </form>
+
+    <!-- Trial Details -->
+    <div class="mt-6 text-center text-sm text-gray-600 leading-relaxed">
+      🔒 <strong>No card needed.</strong> Your 7-day free trial gives full access.<br/>
+      After that, pick a plan or let it downgrade to free access.
+    </div>
+
+    <!-- Support -->
+    <div class="mt-4 text-center text-sm">
+      Need help? <a href="mailto:info@topstudent.co.za" class="text-blue-600 underline">Contact Support</a>
+    </div>
+  </div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+  );
+
+  let plan = "";
+  let currentPrice = 0;
+  let futurePrice = 0;
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    plan = params.get("plan");
+
+    const title = document.getElementById("plan-title");
+    const price = document.getElementById("plan-price");
+    const savingsText = document.getElementById("savingsText");
+
+    if (plan === "standard") {
+      currentPrice = 0;
+      futurePrice = 199;
+    } else if (plan === "premium") {
+      currentPrice = 0;
+      futurePrice = 299;
+    } else {
+      title.innerHTML = `<span class="text-red-600 font-semibold">Plan Not Selected</span>`;
+      price.textContent = "Please go back and choose a plan first.";
+      document.getElementById("signupForm").style.display = "none";
+      savingsText.style.display = "none";
+      return;
+    }
+
+    const percentSaved = Math.round(((futurePrice - currentPrice) / futurePrice) * 100);
+    title.textContent = plan.charAt(0).toUpperCase() + plan.slice(1) + " Plan - Free Trial";
+    price.innerHTML = `<span class="text-red-500 font-bold">7 Days Free</span>`;
+    savingsText.innerHTML = `<div class="bg-green-400 text-white p-2 rounded-lg text-center">
+      <div class="text-3xl font-bold">${percentSaved}% off</div>
+      <div>Start now for free</div>
+      <div class="line-through text-sm mt-1">Future: R${futurePrice}p/m</div>
+    </div>`;
+
+    const passwordInput = document.getElementById('password');
+    const emailInput = document.getElementById('email');
+    const submitBtn = document.getElementById('submitBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const rules = document.getElementById('passwordRules');
+
+    passwordInput.addEventListener("input", function () {
+      const password = this.value;
+      rules.style.display = password.length > 0 ? "block" : "none";
+
+      updateRule("ruleLength", password.length >= 8);
+      updateRule("ruleUpper", /[A-Z]/.test(password));
+      updateRule("ruleLower", /[a-z]/.test(password));
+      updateRule("ruleNumber", /\d/.test(password));
+    });
+
+    function updateRule(id, passed) {
+      const el = document.getElementById(id);
+      el.textContent = (passed ? "✓ " : "✗ ") + el.textContent.slice(2);
+      el.style.color = passed ? "green" : "red";
+    }
+
+    document.getElementById("togglePasswordDiv").addEventListener("click", function () {
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      const valid = password.length >= 8 &&
+                    /[A-Z]/.test(password) &&
+                    /[a-z]/.test(password) &&
+                    /\d/.test(password);
+
+      if (!valid) {
+        Swal.fire("Password does not meet the requirements.");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      loadingSpinner.style.display = "block";
+
+      try {
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+
+        if (signUpError) throw signUpError;
+        const user = signUpData.user;
+        if (!user) throw new Error("Signup failed.");
+
+        const role = plan === "standard" ? "standard" : "premium";
+
+        const { error: profileError } = await supabase.from('profiles').insert({
+          id: user.id,
+          email: user.email,
+          role: role,
+		  trial: true,
+		  last_paid_at: new Date().toISOString(),
+          status: true,
+          created_at: new Date().toISOString(),
+        });
+
+        if (profileError) throw profileError;
+
+        // ✅ Redirect to login
+        window.location.href = "login.html";
+
+      } catch (error) {
+        Swal.fire('Signup failed: ' + error.message);
+        console.error(error);
+        submitBtn.disabled = false;
+        loadingSpinner.style.display = "none";
+      }
+    });
+  });
+</script>
+</body>
+</html>
