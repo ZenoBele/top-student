@@ -128,7 +128,7 @@
 
     const passwordInput = document.getElementById('password');
     const emailInput = document.getElementById('email');
-	const phoneInput = document.getElementById('phone');
+    const phoneInput = document.getElementById('phone');
     const submitBtn = document.getElementById('submitBtn');
     const loadingSpinner = document.getElementById('loadingSpinner');
     const rules = document.getElementById('passwordRules');
@@ -156,8 +156,10 @@
     document.getElementById('signupForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
+      console.log("📝 Signup form submitted");
+
       const email = emailInput.value.trim();
-	  const phone = phoneInput.value.trim();
+      const phone = phoneInput.value.trim();
       const password = passwordInput.value;
 
       const valid = password.length >= 8 &&
@@ -173,41 +175,63 @@
       submitBtn.disabled = true;
       loadingSpinner.style.display = "block";
 
-      try {
-        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-          email,
-		  phone,
-          password,
-        });
+try {
+  // 1. Sign up user
+  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+    email,
+    password,
+  });
 
-        if (signUpError) throw signUpError;
-        const user = signUpData.user;
-        if (!user) throw new Error("Signup failed.");
+  if (signUpError) throw signUpError;
 
-        const role = plan === "standard" ? "standard" : "premium";
+  const user = signUpData.user;
+  if (!user) throw new Error("Signup failed.");
 
-        const { error: profileError } = await supabase.from('profiles').insert({
-          id: user.id,
-          email: user.email,
-		  phone: phone,
-          role: role,
-		  trial: true,
-		  last_paid_at: new Date().toISOString(),
-          status: true,
-          created_at: new Date().toISOString(),
-        });
+  console.log("🧾 Signup data:", signUpData, "Error:", signUpError);
 
-        if (profileError) throw profileError;
+  // 2. Insert profile record
+  const role = plan === "standard" ? "standard" : "premium";
+  const { error: profileError } = await supabase.from('profiles').insert({
+    id: user.id,
+    email: user.email,
+    phone: phone,
+    role: role,
+    trial: true,
+    last_paid_at: new Date().toISOString(),
+    status: true,
+    created_at: new Date().toISOString(),
+  });
 
-        // ✅ Redirect to login
-        window.location.href = "login.html";
+  if (profileError) throw profileError;
 
-      } catch (error) {
-        Swal.fire('Signup failed: ' + error.message);
-        console.error(error);
-        submitBtn.disabled = false;
-        loadingSpinner.style.display = "none";
-      }
+  console.log("📨 Calling notify-signup edge function...");
+
+  // ✅ 3. Call the edge function directly via fetch
+  const notifyResponse = await fetch('https://mlwxxtvsozhwzjxmsvbg.supabase.co/functions/v1/notify-signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${signUpData.session?.access_token || ''}`,
+    },
+    body: JSON.stringify({
+      email: user.email,
+      phone: phone,
+    }),
+  });
+
+  const notifyResult = await notifyResponse.json();
+
+  if (!notifyResponse.ok) {
+    console.warn("❌ Notification failed:", notifyResult);
+  } else {
+    console.log("✅ Notification sent:", notifyResult);
+  }
+
+  // 4. Redirect to login
+  window.location.href = "login.html";
+} catch (error) {
+  console.error("❌ Signup failed:", error.message);
+}
     });
   });
 </script>
