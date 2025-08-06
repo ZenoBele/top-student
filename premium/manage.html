@@ -310,11 +310,11 @@ resumeBtn.addEventListener('click', async () => {
   });
 
   backBtn.addEventListener('click', async () => {
-  loader.classList.add('hidden');
+  loader.classList.remove('hidden');
 
   const user = await getUser();
   if (!user) {
-    loader.classList.add('hidden');
+    loader.classList.remove('hidden');
     return;
   }
 
