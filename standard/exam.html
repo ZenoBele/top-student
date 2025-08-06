@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Top Student – Exam Estimation</title>
+  <title>Predicted Exam Performance</title>
   <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
 </head>
 <body class="bg-gradient-to-b from-blue-100 to-white text-gray-800 font-sans">
 
@@ -24,82 +28,21 @@
       </nav>
     </div>
   </header>
-
-  <!-- Main -->
-  <main class="max-w-4xl mx-auto px-4 mt-10 space-y-10">
-
-    <!-- Title -->
-    <div class="text-center space-y-3">
-      <h2 class="text-3xl font-bold text-gray-800 flex justify-center items-center gap-2">
-        <i class="fa-solid fa-brain text-blue-600"></i> Exam Estimation
-      </h2>
-      <p class="text-gray-600">Get a prediction of what might come in your next exam. Submit your details below.</p>
-    </div>
-
-    <!-- Request Form -->
-    <div class="bg-white shadow rounded-lg p-6 space-y-6">
-      <form class="space-y-4">
-        <div>
-          <label for="fullName" class="block text-gray-700 font-medium mb-1">Full Name</label>
-          <input type="text" id="fullName" name="fullName" placeholder="John Doe" required
-            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-
-        <div>
-          <label for="grade" class="block text-gray-700 font-medium mb-1">Grade</label>
-          <select id="grade" name="grade" required
-            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="">Select your grade</option>
-            <option value="12">Grade 12</option>
-            <option value="11">Grade 11</option>
-            <option value="10">Grade 10</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="subject" class="block text-gray-700 font-medium mb-1">Subject</label>
-          <input type="text" id="subject" name="subject" placeholder="e.g. Mathematics" required
-            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-
-        <div>
-          <label for="paper" class="block text-gray-700 font-medium mb-1">Which Paper?</label>
-          <input type="text" id="paper" name="paper" placeholder="e.g. Paper 1" required
-            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-
-        <div>
-          <label for="reason" class="block text-gray-700 font-medium mb-1">
-            Why do you need an exam estimation? <span class="text-sm text-gray-400">(Optional)</span>
-          </label>
-          <textarea id="reason" name="reason" rows="3" placeholder="Optional reason..."
-            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-        </div>
-
-        <div class="flex justify-center pt-4 relative">
-          <button type="submit" id="submitBtn"
-            class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-            Request Estimation
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Estimated Paper Display -->
-    <div class="bg-white shadow rounded-lg p-6 space-y-4">
-      <h3 class="text-xl font-semibold text-gray-700 flex items-center gap-2">
-        <i class="fas fa-file-pdf text-red-600"></i> Estimated Exam Paper
-      </h3>
-<p id="estimationPlaceholder" class="text-gray-600">
-  No exam estimation has been uploaded yet. Please check back later or await notification.
-</p>
-    </div>
-  </main>
-
-  <!-- Footer Spacer -->
-  <div class="mb-10"></div>
+<main>
+  <div class="mt-6 max-w-4xl mx-auto p-4">
   
-  <script type="module">
+  <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Predicted Exam Performance</h1>
+  <p class="text-gray-600 max-w-2xl">
+    See your upcoming exam predictions, feedback, and tips to help you prepare better and track your progress.
+  </p>
+
+  <!-- Predictions Container -->
+  <div id="predictions-container" class="space-y-4"></div>
+
+</div>
+</main>
+
+<script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
   const supabase = createClient(
@@ -107,131 +50,109 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
   );
 
-  const form = document.querySelector("form");
-  const submitBtn = document.getElementById("submitBtn");
+  async function loadPredictions() {
+    const userResult = await supabase.auth.getUser();
+    const user = userResult.data.user;
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting...";
-
-    const fullName = document.getElementById("fullName").value;
-    const grade = document.getElementById("grade").value;
-    const subject = document.getElementById("subject").value;
-    const paper = document.getElementById("paper").value;
-    const reason = document.getElementById("reason").value;
-
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-    if (userError || !user) {
-      alert("Please log in first.");
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Request Estimation";
+    if (!user) {
+      document.getElementById("predictions-container").innerHTML = "<p>Please log in to see predictions.</p>";
       return;
     }
 
-    // Determine current semester dates and message
-    const now = new Date();
-    let semesterStart, semesterEnd, limitMessage;
-    const year = now.getFullYear();
-
-    if (now.getMonth() < 6) {
-      // Semester 1: Jan 1 – June 30
-      semesterStart = new Date(year, 0, 1);
-      semesterEnd = new Date(year, 5, 30, 23, 59, 59);
-      limitMessage = "You have reached your limit of 4 requests this semester. Please wait for the final exam when they open again.";
-    } else {
-      // Semester 2: July 1 – Dec 31
-      semesterStart = new Date(year, 6, 1);
-      semesterEnd = new Date(year, 11, 31, 23, 59, 59);
-      limitMessage = "You have reached your limit of 4 requests this semester. Please wait for the June exam next year.";
-    }
-
-    const { count, error: countError } = await supabase
-      .from("exam_requests")
-      .select("id", { count: "exact", head: true })
+    const { data, error } = await supabase
+      .from("student_term_reports")
+      .select("*")
       .eq("user_id", user.id)
-      .gte("created_at", semesterStart.toISOString())
-      .lte("created_at", semesterEnd.toISOString());
-
-    if (countError) {
-      alert("Error checking request limits: " + countError.message);
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Request Estimation";
-      return;
-    }
-
-    if (count >= 4) {
-      alert(limitMessage);
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Request Estimation";
-      return;
-    }
-
-    const { error } = await supabase.from("exam_requests").insert([
-      {
-        user_id: user.id,
-        full_name: fullName,
-        grade: grade,
-        subject: subject,
-        paper: paper,
-        reason: reason || null,
-      },
-    ]);
+      .order("report_date", { ascending: false });
 
     if (error) {
-      alert("Failed to submit: " + error.message);
-    } else {
-      alert("Request submitted! You’ll find it on the Estimated Exam Paper section when it’s ready.");
-      form.reset();
-    }
-
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Request Estimation";
-  });
-
-  async function loadEstimation() {
-    const placeholder = document.getElementById("estimationPlaceholder");
-    placeholder.textContent = "Checking for available estimations...";
-
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-    if (userError || !user) return;
-
-    const { data: requests, error: reqError } = await supabase
-      .from("exam_requests")
-      .select("id")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(1);
-
-    if (reqError || !requests || requests.length === 0) {
-      placeholder.textContent = "No estimation requests found.";
+      console.error(error);
+      document.getElementById("predictions-container").innerHTML = "<p>Error loading predictions.</p>";
       return;
     }
 
-    const latestRequestId = requests[0].id;
-
-    const { data: estimation, error: estError } = await supabase
-      .from("exam_estimations")
-      .select("file_url")
-      .eq("request_id", latestRequestId)
-      .single();
-
-    if (estError) {
-      placeholder.textContent = "No estimation available yet.";
-      return;
-    }
-
-    if (estimation && estimation.file_url) {
-      placeholder.innerHTML = `
-        <a href="${estimation.file_url}" class="text-blue-600 hover:underline" target="_blank">
-          📥 Download Estimated Exam (PDF)
-        </a>`;
-    } else {
-      placeholder.textContent = "No estimation available yet. Please check again later.";
-    }
+    renderPredictions(data);
   }
 
-  loadEstimation();
+function renderPredictions(reports) {
+  const container = document.getElementById("predictions-container");
+  container.innerHTML = "";
+
+  if (reports.length === 0) {
+    container.innerHTML = `<p class="text-center text-gray-500 italic mt-12">No performance reports found yet. Keep working hard! 💪</p>`;
+    return;
+  }
+
+  reports.forEach((report) => {
+    const { term, grade, report_date, subjects, feedback, advice } = report;
+
+    // Report Header: clean card with subtle border & shadow
+    const reportHeader = document.createElement("section");
+    reportHeader.className =
+      "bg-white rounded-lg border border-gray-200 shadow-sm p-6 mb-8";
+
+    reportHeader.innerHTML = `
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h3 class="text-2xl font-semibold text-gray-900">
+            Term ${term} – Grade ${grade}
+          </h3>
+          <p class="text-sm text-gray-500 mt-1">
+            📅 ${new Date(report_date).toLocaleDateString()}
+          </p>
+        </div>
+        <div class="max-w-md text-gray-700 space-y-1 text-sm italic">
+          ${feedback ? `<p>🗒️ ${feedback}</p>` : ""}
+          ${advice ? `<p class="text-indigo-600 font-semibold">🎯 ${advice}</p>` : ""}
+        </div>
+      </div>
+    `;
+    container.appendChild(reportHeader);
+
+    // Subjects grid: 1 col mobile, 2 cols desktop, gap 6
+    if (Array.isArray(subjects)) {
+      const subjectsGrid = document.createElement("div");
+      subjectsGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-6 mb-12";
+
+      subjects.forEach((subject) => {
+        const colorClass =
+          subject.predicted_score >= 75
+            ? "border-green-400 text-green-700 bg-green-50"
+            : subject.predicted_score >= 50
+            ? "border-yellow-400 text-yellow-700 bg-yellow-50"
+            : "border-red-400 text-red-700 bg-red-50";
+
+        const emoji =
+          subject.predicted_score >= 75
+            ? "✅"
+            : subject.predicted_score >= 50
+            ? "⚠️"
+            : "❌";
+
+        const subjectCard = document.createElement("article");
+        subjectCard.className = `border-l-8 ${colorClass} rounded-md p-5 shadow-sm hover:shadow-md transition-shadow cursor-default`;
+
+        subjectCard.innerHTML = `
+          <div class="flex justify-between items-center mb-2">
+            <h4 class="text-lg font-medium">${subject.name}</h4>
+            <div class="text-xl font-bold tracking-tight">${emoji} ${subject.predicted_score}%</div>
+          </div>
+          ${
+            subject.comment
+              ? `<p class="text-gray-600 text-sm italic leading-relaxed">${subject.comment}</p>`
+              : ""
+          }
+        `;
+
+        subjectsGrid.appendChild(subjectCard);
+      });
+
+      container.appendChild(subjectsGrid);
+    }
+  });
+}
+
+  loadPredictions();
 </script>
 </body>
 </html>
