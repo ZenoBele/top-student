@@ -186,10 +186,48 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 // Button logic with safety checks
 const upgradeBtn = document.getElementById('btn-upgrade');
+
 if (upgradeBtn) {
-  upgradeBtn.addEventListener('click', () => {
-    window.location.href =
-      'https://www.payfast.co.za/eng/process?merchant_id=30322591&merchant_key=b7owp8kz6kmgz&amount=299&item_name=TopStudentPremium&return_url=https://topstudent.co.za/payment-success.html&cancel_url=https://topstudent.co.za/payment-canceled.html';
+  upgradeBtn.addEventListener('click', async () => {
+    const { data, error } = await supabase.auth.getUser();
+    const user = data?.user;
+
+    if (!user) {
+      alert('Please log in first.');
+      return;
+    }
+
+    // OPTIONAL: You can fetch user info from `profiles` table if you need full name, etc.
+
+    // Dynamically create the form
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://www.payfast.co.za/eng/process';
+    form.style.display = 'none';
+
+    const fields = {
+      merchant_id: '30322591',
+      merchant_key: 'b7owp8kz6kmgz',
+      amount: '299',
+      item_name: `TopStudent${plan.title.replace(/\s/g, '')}`,
+      return_url: 'https://topstudent.co.za/payment-success.html',
+      cancel_url: 'https://topstudent.co.za/payment-canceled.html',
+	  notify_url: 'https://mlwxxtvsozhwzjxmsvbg.supabase.co/functions/v1/payfast-webhook'
+      email_address: user.email,
+      custom_str1: user.id,
+      custom_str2: 'Premium',
+    };
+
+    for (const key in fields) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = fields[key];
+      form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
   });
 }
 

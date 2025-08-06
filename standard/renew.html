@@ -43,18 +43,18 @@
     merchant_key: 'b7owp8kz6kmgz',
     return_url: 'https://topstudent.co.za/payment-success.html',
     cancel_url: 'https://topstudent.co.za/payment-canceled.html',
-    notify_url: 'https://mlwxxtvsozhwzjxmsvbg.functions.supabase.co/payfast-webhook'
+    notify_url: 'https://mlwxxtvsozhwzjxmsvbg.supabase.co/functions/v1/payfast-webhook'
   };
 
   const planDetails = {
     standard: {
-      title: "Standard Plan",
+      title: "Standard",
       amount: 199,
       description: "Access exam papers, study guides, tips, and basic support.",
       btnText: "Renew Standard"
     },
     premium: {
-      title: "Premium Plan",
+      title: "Premium",
       amount: 299,
       description: "Everything in Standard plus life after school, priority support, and reminders.",
       btnText: "Renew Premium"
@@ -70,6 +70,7 @@
       return_url: payfastConfig.return_url,
       cancel_url: payfastConfig.cancel_url,
       notify_url: payfastConfig.notify_url,
+	  email_address: user.email,
       custom_str1: userId,
       custom_str2: plan.title
     });
