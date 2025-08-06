@@ -282,7 +282,7 @@
 
   // Subscription check
  async function checkSubscriptionStatus() {
-  // ✅ 1. Check if logged in
+  // 1. Check if logged in
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
   if (authError || !user) {
@@ -293,36 +293,54 @@
     return;
   }
 
-  // ✅ 2. Check if user exists in 'profiles'
-  const { data: profileRow, error: profileError } = await supabase
+  // 2. Fetch user profile
+  const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single();
 
-  if (profileError || !profileRow) {
-    showToast("Your account doesn't exist in our system.", 'error');
+  if (profileError || !profile) {
+    showToast("Your profile is missing.", 'error');
     setTimeout(() => {
       window.location.href = '../index.html';
     }, 2000);
     return;
   }
 
-  // ✅ 3. Passed: Save profile to sessionStorage
-  sessionStorage.setItem('user_profile', JSON.stringify(profileRow));
-
+  // 3. Store in session
+  sessionStorage.setItem('user_profile', JSON.stringify(profile));
   if (loader) loader.classList.add('hidden');
 
+  // 4. Calculate days since last payment
   const now = new Date();
-  const lastPaid = new Date(profileRow.last_paid_at);
+  const lastPaid = new Date(profile.last_paid_at);
   const daysSince = Math.floor((now - lastPaid) / (1000 * 60 * 60 * 24));
 
-  if (daysSince >= 30) {
+  // 5. Downgrade if expired
+  if (daysSince >= 30 && profile.role === 'premium') {
+    const { error: updateError } = await supabase
+      .from('profiles')
+      .update({
+        role: 'unpaid',
+        previous_role: 'premium',
+        status: false
+      })
+      .eq('id', user.id);
+
+    if (updateError) {
+      showToast("Failed to downgrade expired account.", 'error');
+      return;
+    }
+
     showToast("⚠️ Your subscription has expired. Redirecting...", 'error');
     setTimeout(() => {
       window.location.href = 'renew.html';
     }, 2500);
-  } else if (daysSince >= 25) {
+  }
+
+  // 6. Warning banner if close to expiring
+  else if (daysSince >= 25 && profile.role === 'premium') {
     const banner = document.createElement('div');
     banner.className =
       'relative bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-3 mb-4 text-sm flex items-start justify-between gap-4';
@@ -341,7 +359,8 @@
     }
   }
 }
-  checkSubscriptionStatus();
+
+checkSubscriptionStatus();
 
   // Load latest news
   const newsList = document.getElementById('news-list');
