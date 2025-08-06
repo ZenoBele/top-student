@@ -134,8 +134,8 @@
     <div class="flex items-center gap-2">
       <div class="bg-red-600 text-white p-2 rounded-full text-lg group-hover:scale-105 transition">📘</div>
       <div>
-        <h4 class="text-white text-sm font-semibold group-hover:text-red-400">Exam</h4>
-        <p class="text-gray-400 text-xs leading-tight">Prepare now</p>
+        <h4 class="text-white text-sm font-semibold group-hover:text-red-400">Predicted Exam Performance</h4>
+        <p class="text-gray-400 text-xs leading-tight">Predict, Prepare, Pass</p>
       </div>
     </div>
   </a>
@@ -324,7 +324,7 @@
       .update({
         role: 'unpaid',
         previous_role: 'premium',
-        status: false
+        status: null
       })
       .eq('id', user.id);
 
