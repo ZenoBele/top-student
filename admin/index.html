@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Top Student Focus Dashboard</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+    }
+    .primary-bg {
+      background-color: #003366;
+    }
+    .primary-text {
+      color: #1e293b;
+    }
+    .accent-bg {
+      background-color: #33aaff;
+    }
+    .primary-text {
+      color: #003366;
+    }
+    .accent-text {
+      color: #33aaff;
+    }
+    .header-gradient {
+      background: linear-gradient(to right, #003366, #33aaff);
+    }
+	
+	@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fadeIn { animation: fadeIn 0.8s ease forwards; }
+
+  @keyframes slideIn {
+    0% { opacity: 0; transform: translateX(-20px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+  .animate-slideIn { animation: slideIn 0.8s ease forwards; }
+
+  .section-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.15); /* deeper shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.section-card.bg-blue-100:hover { background-color: #b3d1ff; }
+.section-card.bg-green-100:hover { background-color: #bfffcf; }
+.section-card.bg-yellow-100:hover { background-color: #fff3b3; }
+.section-card.bg-purple-100:hover { background-color: #e0b3ff; }
+.section-card.bg-pink-100:hover { background-color: #ffb3d1; }
+  </style>
+</head>
+<body class="bg-white min-h-screen">
+
+<header class="header-gradient p-6 text-white font-sans shadow-md">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <!-- Logo / Title -->
+    <div class="flex items-center space-x-3">
+      <i class="fas fa-graduation-cap text-2xl"></i>
+      <h1 class="text-2xl font-bold">Top Student Admin</h1>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav>
+      <ul class="flex space-x-6 text-white font-medium">
+        <li><a href="index.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-house mr-1"></i> Home</a></li>
+        <li><a href="tsukuyomi.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-clipboard-list mr-1"></i> Work Log</a></li>
+        <li><a href="data.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-chart-line mr-1"></i> Data</a></li>
+		<li><a href="pattern.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-chalkboard mr-1"></i> Pattern</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Dashboard intro -->
+<div class="primary-text mt-6 p-6 text-center shadow-lg">
+  <i class="fas fa-graduation-cap text-3xl mb-2"></i>
+  <h1 class="text-3xl font-bold">Top Student Daily Dashboard</h1>
+  <p class="opacity-80 mt-1">Your focus guide: daily jobs, weekly rhythm & long-term goals</p>
+</div>
+
+<!-- Dashboard Container -->
+<div class="flex flex-col items-center mt-6 space-y-6 w-full">
+
+  <!-- Daily Jobs -->
+  <div class="section-card w-11/12 md:w-4/5 lg:w-2/3 bg-blue-100 rounded-2xl p-8 hover:shadow-2xl hover:translate-y-1 transform transition-all duration-300 animate-fadeIn">
+    <h2 class="text-2xl mb-4 text-blue-900 font-semibold">Daily Jobs (Must Do)</h2>
+    <ul class="list-disc list-inside text-gray-800 text-lg space-y-1">
+      <li>Make 10 school calls (Mon–Thu) – Fridays for follow-ups only</li>
+      <li>3 follow-ups per day with previous contacts</li>
+      <li>Schedule or run at least 1 demo/trial</li>
+      <li>Collect 1 piece of feedback/testimonial</li>
+      <li>Review script and pitch for 10 minutes</li>
+      <li>Check global news & updates (10–15 min morning & evening)</li>
+      <li>Read latest in technology and world trends</li>
+      <li>Focus on tasks first; avoid social media & distractions</li>
+    </ul>
+  </div>
+
+  <!-- Weekly Rhythm -->
+  <div class="section-card w-11/12 md:w-4/5 lg:w-2/3 bg-green-100 rounded-2xl p-8 hover:shadow-2xl hover:translate-y-1 transform transition-all duration-300 animate-slideIn">
+    <h2 class="text-2xl mb-4 text-green-900 font-semibold">Weekly Rhythm</h2>
+    <ul class="list-disc list-inside text-gray-800 text-lg space-y-1">
+      <li>Monday–Thursday: Calls + follow-ups + demos</li>
+      <li>Friday: Only follow-ups, admin, and planning</li>
+      <li>Saturday: Review week progress, prep next week</li>
+      <li>Sunday: Rest or light learning, no calls</li>
+    </ul>
+  </div>
+
+  <!-- Long-term Goals -->
+  <div class="section-card w-11/12 md:w-4/5 lg:w-2/3 bg-yellow-100 rounded-2xl p-8 hover:shadow-2xl hover:translate-y-1 transform transition-all duration-300 animate-fadeIn">
+    <h2 class="text-2xl mb-4 text-yellow-900 font-semibold">Long-term Goals</h2>
+    <ul class="list-disc list-inside text-gray-800 text-lg space-y-1">
+      <li>Travel to Cape Town – target by June 2026</li>
+      <li>Buy a car: <strong>BMW M4 Competition</strong> – target in 18 months</li>
+      <li>Grow Top Student to 500 active students by end of may 2026</li>
+      <li>Maintain disciplined schedule & focus daily</li>
+      <li>Keep learning new tech, mindset, and world news consistently</li>
+    </ul>
+  </div>
+
+  <!-- Communication Guidelines -->
+  <div class="section-card w-11/12 md:w-4/5 lg:w-2/3 bg-purple-100 rounded-2xl p-8 hover:shadow-2xl hover:translate-y-1 transform transition-all duration-300 animate-slideIn">
+    <h2 class="text-2xl mb-4 text-purple-900 font-semibold">Communication</h2>
+    <ul class="list-disc list-inside text-gray-800 text-lg space-y-1">
+      <li>Clients: Be confident, concise, polite, and solution-driven</li>
+      <li>Friends & Family: Keep them updated, but maintain focus on goals</li>
+      <li>Follow-ups: Always be professional and friendly</li>
+      <li>Daily check-ins on priorities only</li>
+    </ul>
+  </div>
+
+  <!-- Motivational Reminders -->
+  <div class="section-card w-11/12 md:w-4/5 lg:w-2/3 bg-pink-100 rounded-2xl p-8 mb-6 hover:shadow-2xl hover:translate-y-1 transform transition-all duration-300 animate-fadeIn">
+    <h2 class="text-2xl mb-4 text-pink-900 font-semibold">Focus & Motivation</h2>
+    <ul class="list-disc list-inside text-gray-800 text-lg space-y-1">
+      <li>Discipline & consistency over motivation – stick to your daily jobs</li>
+      <li>Remember your long-term goals – travel, car, business growth</li>
+      <li>Never waste time on soft life distractions</li>
+      <li>Always check important global news, tech updates & world trends</li>
+      <li>Review progress daily, adjust if necessary</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

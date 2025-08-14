@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top Student - Lessons Learned</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  body { font-family: 'Segoe UI', sans-serif; color: #333; }
+  .primary-bg { background-color: #003366; }
+  .accent-bg { background-color: #33aaff; }
+  .primary-text { color: #003366; }
+  .header-gradient { background: linear-gradient(to right, #003366, #33aaff); }
+  .section-card { background:white; border-radius:1rem; padding:1.5rem; box-shadow:0 6px 12px rgba(0,0,0,0.1); }
+  table th { background-color: #003366; color: #fff; }
+  table td, table th { border-color: #003366; }
+  button { background-color: #33aaff; color: #fff; }
+  button:hover { background-color: #003366; }
+  input, textarea { border-color: #003366; }
+  label { color: #003366; }
+</style>
+</head>
+<body class="bg-white min-h-screen">
+
+<!-- Header -->
+<header class="header-gradient p-6 text-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+      <i class="fas fa-graduation-cap text-2xl"></i>
+      <h1 class="text-2xl font-bold">Top Student Admin</h1>
+    </div>
+    <nav>
+      <ul class="flex space-x-6 text-white font-medium">
+        <li><a href="index.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-house mr-1"></i> Home</a></li>
+        <li><a href="tsukuyomi.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-clipboard-list mr-1"></i> Work Log</a></li>
+        <li><a href="data.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-chart-line mr-1"></i> Data</a></li>
+        <li><a href="pattern.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-chalkboard mr-1"></i> Pattern</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="flex flex-col items-center space-y-6 p-6">
+
+  <!-- Add Lesson Entry -->
+  <div class="section-card w-full max-w-2xl">
+    <h2 class="text-xl font-semibold primary-text mb-3">Add New Lesson</h2>
+    <form id="lessonForm" class="space-y-3">
+      <div>
+        <label class="block font-medium mb-1">Date</label>
+        <input type="date" id="lessonDate" class="w-full border rounded px-3 py-2" required>
+      </div>
+      <div>
+        <label class="block font-medium mb-1">What Worked</label>
+        <textarea id="worked" rows="3" class="w-full border rounded px-3 py-2" placeholder="What went well..." required></textarea>
+      </div>
+      <div>
+        <label class="block font-medium mb-1">What Didn’t Work</label>
+        <textarea id="notWorked" rows="3" class="w-full border rounded px-3 py-2" placeholder="What went wrong..." required></textarea>
+      </div>
+	  <div>
+        <label class="block font-medium mb-1">Description</label>
+        <textarea id="explanation" rows="3" class="w-full border rounded px-3 py-2" placeholder="What you can improve..." required></textarea>
+      </div>
+      <button type="submit" class="rounded px-4 py-2 transition">Add Lesson</button>
+    </form>
+  </div>
+
+  <!-- Lessons Table -->
+  <div class="section-card w-full max-w-4xl">
+    <h2 class="text-xl font-semibold primary-text mb-3">Logged Lessons</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full border text-sm text-left">
+        <thead>
+          <tr>
+            <th class="px-4 py-2 border">Date</th>
+            <th class="px-4 py-2 border">Worked</th>
+            <th class="px-4 py-2 border">Didn’t Work</th>
+			<th class="px-4 py-2 border">Describe</th>
+            <th class="px-4 py-2 border">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="lessonsTable">
+          <!-- Entries inserted dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const supabase = createClient(
+  'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+);
+
+const lessonForm = document.getElementById('lessonForm');
+const lessonsTable = document.getElementById('lessonsTable');
+
+async function getCurrentUser() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session || !session.user) {
+    window.location.href = "login.html";
+    return null;
+  }
+  return session.user;
+}
+
+async function loadLessons() {
+  const user = await getCurrentUser();
+  if (!user) return;
+
+  const { data, error } = await supabase
+    .from('lessons')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error("Error fetching lessons:", error.message);
+    Swal.fire('Error', 'Failed to load lessons', 'error');
+    return;
+  }
+
+  lessonsTable.innerHTML = '';
+  data.forEach((lesson) => {
+    const tr = document.createElement('tr');
+    tr.className = 'border-b';
+    tr.innerHTML = `
+      <td class="px-4 py-2 border">${new Date(lesson.date).toLocaleDateString()}</td>
+      <td class="px-4 py-2 border">${lesson.worked}</td>
+      <td class="px-4 py-2 border">${lesson.not_worked}</td>
+	  <td class="px-4 py-2 border">${lesson.explanation}</td>
+      <td class="px-4 py-2 border">
+        <button onclick="deleteLesson('${lesson.id}')" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">Delete</button>
+      </td>
+    `;
+    lessonsTable.appendChild(tr);
+  });
+}
+
+// Add lesson
+lessonForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const user = await getCurrentUser();
+  if (!user) return;
+
+  const lesson = {
+    date: document.getElementById('lessonDate').value,
+    worked: document.getElementById('worked').value.trim(),
+    not_worked: document.getElementById('notWorked').value.trim(),
+	explanation: document.getElementById('explanation').value.trim(),
+    user_id: user.id
+  };
+
+  const { data, error } = await supabase.from('lessons').insert([lesson]);
+  if (error) {
+    console.error("Insert error:", error.message);
+    Swal.fire('Error', 'Failed to save lesson', 'error');
+    return;
+  }
+
+  Swal.fire('Saved!', 'Your lesson has been logged.', 'success');
+  lessonForm.reset();
+  loadLessons();
+});
+
+// Delete lesson
+window.deleteLesson = async (id) => {
+  const result = await Swal.fire({
+    title: 'Delete this lesson?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete',
+    cancelButtonText: 'Cancel'
+  });
+
+  if(result.isConfirmed){
+    const { error } = await supabase.from('lessons').delete().eq('id', id);
+    if(error){
+      Swal.fire('Error', 'Failed to delete lesson', 'error');
+      return;
+    }
+    Swal.fire('Deleted!', '', 'success');
+    loadLessons();
+  }
+};
+
+// Initial load
+document.addEventListener('DOMContentLoaded', () => {
+  loadLessons();
+});
+</script>
+
+</body>
+</html>

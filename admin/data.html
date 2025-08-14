@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Top Student Dashboard</title>
+
+  <!-- Tailwind v2.2.19 -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; color: #333; }
+    .primary-bg { background-color: #003366; }
+    .accent-bg { background-color: #33aaff; }
+    .primary-text { color: #003366; }
+    .header-gradient { background: linear-gradient(to right, #003366, #33aaff); }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<header class="header-gradient p-6 text-white font-sans shadow-md">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+      <h1 class="text-2xl font-bold">Top Student Admin</h1>
+    </div>
+
+    <nav>
+      <ul class="flex space-x-6 text-white font-medium">
+        <li><a href="index.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-house mr-1"></i> Home</a></li>
+        <li><a href="tsukuyomi.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-clipboard-list mr-1"></i> Work Log</a></li>
+        <li><a href="data.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-chart-line mr-1"></i> Data</a></li>
+		<li><a href="pattern.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-chalkboard mr-1"></i> Pattern</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="primary-text mt-4 p-6 text-center shadow-lg">
+    <div class="flex justify-center items-center">
+      <h1 class="text-2xl font-bold">Top Student Dashboard</h1>
+    </div>
+</div>
+
+<!-- Container -->
+<div class="max-w-6xl mx-auto p-6">
+
+  <!-- Stats Cards -->
+  <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+    <div class="primary-bg text-white p-6 rounded-lg shadow flex items-center justify-between">
+      <div>
+        <p class="text-sm opacity-75">Calls</p>
+        <h2 class="text-2xl font-bold" id="callsCard">0</h2>
+      </div>
+      <i class="fas fa-phone text-3xl"></i>
+    </div>
+    <div class="primary-bg text-white p-6 rounded-lg shadow flex items-center justify-between">
+      <div>
+        <p class="text-sm opacity-75">Follow-ups</p>
+        <h2 class="text-2xl font-bold" id="followUpsCard">0</h2>
+      </div>
+      <i class="fas fa-repeat text-3xl"></i>
+    </div>
+    <div class="primary-bg text-white p-6 rounded-lg shadow flex items-center justify-between">
+      <div>
+        <p class="text-sm opacity-75">Demos</p>
+        <h2 class="text-2xl font-bold" id="demosCard">0</h2>
+      </div>
+      <i class="fas fa-chalkboard-teacher text-3xl"></i>
+    </div>
+    <div class="primary-bg text-white p-6 rounded-lg shadow flex items-center justify-between">
+      <div>
+        <p class="text-sm opacity-75">Feedback</p>
+        <h2 class="text-2xl font-bold" id="feedbacksCard">0</h2>
+      </div>
+      <i class="fas fa-comment-dots text-3xl"></i>
+    </div>
+  </section>
+
+  <!-- Charts -->
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+    <div class="section-card w-11/12 md:w-1/2">
+    <h2 class="text-xl font-semibold mb-3">Calls vs Days</h2>
+    <canvas id="callsChart" height="200"></canvas>
+    </div>
+    <div class="section-card w-11/12 md:w-1/2">
+    <h2 class="text-xl font-semibold mb-3">Demos vs Weeks</h2>
+    <canvas id="trendChart" height="200"></canvas>
+    </div>
+  </section>
+
+  <!-- Activity Feed -->
+  <section class="bg-white p-6 rounded-lg shadow border border-gray-200">
+    <h2 class="text-lg font-semibold primary-text mb-4">📝 Recent Activity</h2>
+    <ul class="space-y-3" id="activityFeed"></ul>
+  </section>
+
+</div>
+
+<!-- Supabase & Dashboard Logic -->
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+  );
+
+  let callsChartInstance, trendChartInstance;
+
+  // Helper: ISO week number
+  Date.prototype.getWeekNumber = function(){
+    const d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+  }
+
+  async function getCurrentUser() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session || !session.user) {
+      window.location.href = "login.html";
+      return null;
+    }
+    return session.user;
+  }
+
+  async function loadDashboard() {
+    const user = await getCurrentUser();
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('work_log')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      updateStatsCards(data);
+      updateCharts(data);
+      updateActivityFeed(data);
+
+    } catch(error) {
+      console.error("Dashboard load error:", error.message);
+    }
+  }
+
+  function updateStatsCards(data) {
+    document.getElementById('callsCard').innerText = data.filter(d=>d.activity_type==='Call').length;
+    document.getElementById('followUpsCard').innerText = data.filter(d=>d.activity_type==='Follow-up').length;
+    document.getElementById('demosCard').innerText = data.filter(d=>d.activity_type==='Demo').length;
+    document.getElementById('feedbacksCard').innerText = data.filter(d=>d.activity_type==='Feedback').length;
+  }
+
+function updateCharts(data) {
+  // Get unique days in the dataset, sorted
+  const uniqueDays = Array.from(new Set(
+    data.map(d => new Date(d.created_at).toLocaleDateString('en-US', { weekday: 'short' }))
+  ));
+
+  // Compute calls per day
+  const callsPerDay = uniqueDays.map(day =>
+    data.filter(d => d.activity_type === 'Call' &&
+      new Date(d.created_at).toLocaleDateString('en-US', { weekday: 'short' }) === day
+    ).length
+  );
+
+  // Compute demos per day
+  const demosPerDay = uniqueDays.map(day =>
+    data.filter(d => d.activity_type === 'Demo' &&
+      new Date(d.created_at).toLocaleDateString('en-US', { weekday: 'short' }) === day
+    ).length
+  );
+
+  // Destroy old charts
+  if (callsChartInstance) callsChartInstance.destroy();
+  if (trendChartInstance) trendChartInstance.destroy();
+
+  // --- Calls Line Chart ---
+  const ctx1 = document.getElementById('callsChart').getContext('2d');
+  callsChartInstance = new Chart(ctx1, {
+    type: 'line',
+    data: {
+      labels: uniqueDays,
+      datasets: [{
+        label: 'Calls Made',
+        data: callsPerDay,
+        borderColor: '#33aaff',
+        backgroundColor: 'rgba(51,170,255,0.2)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 5
+      }]
+    },
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+  });
+
+  // --- Demos Line Chart ---
+  const ctx2 = document.getElementById('trendChart').getContext('2d');
+  trendChartInstance = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: uniqueDays,
+      datasets: [{
+        label: 'Demos Completed',
+        data: demosPerDay,
+        borderColor: '#ff9933',
+        backgroundColor: 'rgba(255,153,51,0.2)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 5
+      }]
+    },
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+  });
+}
+
+  function updateActivityFeed(data) {
+    const feed = document.getElementById('activityFeed');
+    feed.innerHTML = '';
+    data.slice(0,10).forEach(entry=>{
+      let iconClass='', colorClass='';
+      switch(entry.activity_type){
+        case 'Call': iconClass='fa-phone'; colorClass='text-green-600'; break;
+        case 'Follow-up': iconClass='fa-repeat'; colorClass='text-blue-600'; break;
+        case 'Demo': iconClass='fa-chalkboard-teacher'; colorClass='text-yellow-600'; break;
+        case 'Feedback': iconClass='fa-comment-dots'; colorClass='text-purple-600'; break;
+      }
+      const li=document.createElement('li');
+      li.className='border-b pb-2 flex items-center';
+      li.innerHTML=`<i class="fas ${iconClass} ${colorClass} mr-2"></i> ${entry.contact_name} – <span class="font-semibold">${entry.status}</span>`;
+      feed.appendChild(li);
+    });
+  }
+
+  async function subscribeRealtime() {
+    const user = await getCurrentUser();
+    if (!user) return;
+
+    supabase.channel('public:work_log')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'work_log', filter: `user_id=eq.${user.id}` },
+        payload => {
+          console.log('New work log entry:', payload.new);
+          loadDashboard(); // reload all dashboard data
+        })
+      .subscribe();
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadDashboard();
+    await subscribeRealtime();
+  });
+</script>
+
+</body>
+</html>
