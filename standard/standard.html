@@ -136,68 +136,128 @@
   );
 
   const loader = document.getElementById('loader');
+  const newsList = document.getElementById('news-list');
 
-  // 🔒 Load profile from sessionStorage (no DB fetch)
-  const profile = JSON.parse(sessionStorage.getItem('user_profile'));
+  // 🔒 Try to load profile from sessionStorage or Supabase
+  async function loadProfile() {
+    let profile = JSON.parse(sessionStorage.getItem('user_profile'));
+    if (profile) return profile;
 
-  // ⚠️ Check subscription if date exists
-async function checkSubscriptionStatus() {
-  if (!profile || !profile.last_paid_at) {
-    window.location.href = '../index.html';
-    return;
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return null;
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+
+    if (error) {
+      console.error("Failed to fetch profile:", error.message);
+      return null;
+    }
+
+    sessionStorage.setItem('user_profile', JSON.stringify(data));
+    return data;
   }
 
-  loader.classList.add('hidden');
-
-  const now = new Date();
-  const lastPaid = new Date(profile.last_paid_at);
-  const daysSince = Math.floor((now - lastPaid) / (1000 * 60 * 60 * 24));
-
-  // ✅ Downgrade if expired and still standard
-  if (daysSince >= 30 && profile.role === 'standard') {
-    const { error: downgradeError } = await supabase
-      .from('profiles')
-      .update({
-        role: 'free',
-        previous_role: 'standard',
-        status: false
-      })
-      .eq('id', profile.id); // or user.id if profile doesn't contain `id`
-
-    if (downgradeError) {
-      console.error("Failed to downgrade expired account:", downgradeError.message);
-      alert("Something went wrong updating your subscription status.");
+  // ⚡ Centralized subscription + trial check
+  async function checkAccess() {
+    const profile = await loadProfile();
+    if (!profile) {
+      window.location.href = '../index.html';
       return;
     }
 
-    alert("⚠️ Your subscription has expired. Please renew to continue.");
-    window.location.href = 'renew.html';
+    const now = new Date();
+
+    // -----------------
+    // 🧪 Trial Check
+    // -----------------
+    if (profile.trial) {
+      const createdAt = new Date(profile.created_at);
+      const msInDay = 1000 * 60 * 60 * 24;
+      const daysPassed = Math.floor((now - createdAt) / msInDay);
+      const daysLeft = 7 - daysPassed;
+
+      if (daysPassed >= 7) {
+        // Trial expired → downgrade
+        await supabase
+          .from('profiles')
+          .update({ role: 'free', previous_role: profile.role, trial: false })
+          .eq('id', profile.id);
+
+        // update cache
+        profile.role = 'free';
+        profile.trial = false;
+        sessionStorage.setItem('user_profile', JSON.stringify(profile));
+
+        await Swal.fire({
+          icon: 'info',
+          title: 'Trial Ended',
+          text: 'Your trial has ended. Please renew to continue.',
+          confirmButtonText: 'OK'
+        });
+
+        window.location.href = 'renew.html';
+        return;
+      }
+
+      if (daysLeft <= 2) {
+        Swal.fire({
+          icon: 'warning',
+          title: '⏳ Trial Almost Over',
+          text: `You have only ${daysLeft} day${daysLeft === 1 ? '' : 's'} left in your trial.`,
+          confirmButtonText: 'Renew',
+          showCancelButton: true,
+          cancelButtonText: 'Later'
+        }).then(result => {
+          if (result.isConfirmed) window.location.href = 'renew.html';
+        });
+      }
+    }
+
+    // -----------------
+    // 💳 Subscription Check
+    // -----------------
+    if ((profile.role === 'standard' || profile.role === 'premium') && profile.last_paid_at) {
+      const lastPaid = new Date(profile.last_paid_at);
+      const daysSince = Math.floor((now - lastPaid) / (1000 * 60 * 60 * 24));
+
+      if (daysSince >= 30) {
+        await supabase
+          .from('profiles')
+          .update({ role: 'free', previous_role: profile.role, status: false })
+          .eq('id', profile.id);
+
+        // update cache
+        profile.role = 'free';
+        profile.status = false;
+        sessionStorage.setItem('user_profile', JSON.stringify(profile));
+
+        await Swal.fire("Subscription Expired", "Your plan has expired. Please renew.", "info");
+        window.location.href = 'renew.html';
+        return;
+      }
+
+      if (daysSince >= 25) {
+        const daysLeft = 30 - daysSince;
+        Swal.fire({
+          icon: 'warning',
+          title: '⏳ Subscription Expiring',
+          text: `You have ${daysLeft} day${daysLeft === 1 ? '' : 's'} left.`,
+          confirmButtonText: 'Renew',
+          showCancelButton: true
+        }).then(result => {
+          if (result.isConfirmed) window.location.href = 'renew.html';
+        });
+      }
+    }
+
+    loader.classList.add('hidden');
   }
-
-  // ⚠️ Warning if close to expiration
-  else if (daysSince >= 25 && profile.role === 'standard') {
-    const banner = document.createElement('div');
-    banner.className = "relative bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-3 mb-4 text-sm flex items-start justify-between gap-4";
-    banner.innerHTML = `
-      <div>
-        ⚠️ Your subscription expires in <strong>${30 - daysSince}</strong> days.
-        <a href="renew.html" class="underline text-yellow-800 hover:text-yellow-600 ml-1">Renew Now</a>
-      </div>
-      <button id="close-banner" class="font-bold text-lg leading-none text-yellow-700 hover:text-red-600 focus:outline-none">&times;</button>
-    `;
-
-    document.body.prepend(banner);
-    document.getElementById('close-banner').addEventListener('click', () => {
-      banner.remove();
-    });
-  }
-}
-
-checkSubscriptionStatus();
 
   // 📰 Load news
-  const newsList = document.getElementById('news-list');
-
   async function loadNews() {
     const { data, error } = await supabase
       .from('news')
@@ -231,60 +291,10 @@ checkSubscriptionStatus();
     });
   }
 
-  loadNews();
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return // not logged in
-
-  const { data: profile, error } = await supabase
-    .from('profiles')
-    .select('trial, created_at, role')
-    .eq('id', user.id)
-    .single()
-
-  if (error || !profile?.trial) return
-
-  const createdAt = new Date(profile.created_at)
-  const now = new Date()
-  const msInDay = 1000 * 60 * 60 * 24
-  const daysPassed = Math.floor((now - createdAt) / msInDay)
-  const daysLeft = 7 - daysPassed
-
-if (daysPassed >= 7) {
-  // Trial expired → Update role and logout
-  await supabase
-    .from('profiles')
-    .update({ role: 'free', previous_role: 'standard', trial: false })
-    .eq('id', user.id)
-
-  await Swal.fire({
-    icon: 'info',
-    title: 'Trial Ended',
-    text: 'Your trial has ended. Press OK to renew.',
-    confirmButtonText: 'OK'
-  })
-
-  window.location.href = 'renew.html'
-
-  } else if (daysLeft <= 2) {
-    // Trial expiring soon → Alert
-    Swal.fire({
-      icon: 'warning',
-      title: '⏳ Trial Almost Over',
-      text: `You have only ${daysLeft} day${daysLeft === 1 ? '' : 's'} left in your trial.`,
-      confirmButtonText: 'Renew',
-      showCancelButton: true,
-      cancelButtonText: 'Later',
-      confirmButtonColor: '#3B82F6',
-      cancelButtonColor: '#6b7280'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = 'renew.html'
-      }
-    })
-  }
-});
+  document.addEventListener("DOMContentLoaded", async () => {
+    await checkAccess();
+    await loadNews();
+  });
 </script>
 </body>
 </html>

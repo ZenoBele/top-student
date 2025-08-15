@@ -80,7 +80,7 @@
     </div>
   </div>
 
-  <script type="module">
+<script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
   const supabase = createClient(
@@ -197,7 +197,11 @@ if (upgradeBtn) {
       return;
     }
 
-    // OPTIONAL: You can fetch user info from `profiles` table if you need full name, etc.
+    // Define plan here
+    const plan = {
+      title: 'Premium',
+      amount: '299'
+    };
 
     // Dynamically create the form
     const form = document.createElement('form');
@@ -208,14 +212,14 @@ if (upgradeBtn) {
     const fields = {
       merchant_id: '30322591',
       merchant_key: 'b7owp8kz6kmgz',
-      amount: '299',
+      amount: plan.amount,
       item_name: `TopStudent${plan.title.replace(/\s/g, '')}`,
       return_url: 'https://topstudent.co.za/payment-success.html',
       cancel_url: 'https://topstudent.co.za/payment-canceled.html',
-	  notify_url: 'https://mlwxxtvsozhwzjxmsvbg.supabase.co/functions/v1/payfast-webhook'
+      notify_url: 'https://mlwxxtvsozhwzjxmsvbg.supabase.co/functions/v1/payfast-webhook',
       email_address: user.email,
       custom_str1: user.id,
-      custom_str2: 'Premium',
+      custom_str2: plan.title,
     };
 
     for (const key in fields) {
