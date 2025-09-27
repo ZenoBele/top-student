@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create an Account - Sign Up</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen transition-all" id="page"> 
+
+  <!-- Video Background -->
+  <video id="bg-video" autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
+    <source src="sign-up.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div id="overlay" class="absolute inset-0 bg-black/40"></div>
+
+  <!-- Centered Sign Up Box -->
+  <div id="signup-box" class="relative z-10 flex flex-col w-full max-w-md bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden transition-all p-8">
+    
+    <h2 id="form-title" class="text-2xl font-bold mb-6 text-center">Create Your Account</h2>
+
+    <form id="signup-form" class="space-y-6">
+
+      <!-- Selected Plan Display -->
+      <div id="selected-plan-display" class="text-center text-lg font-semibold text-gray-700 mb-4">
+        <span id="selected-plan-text" class="text-black">Free Account</span>
+      </div>
+
+      <!-- PLAN CHOICE -->
+      <div class="grid grid-cols-2 gap-3" id="plan-options">
+
+        <!-- Free -->
+        <label class="cursor-pointer border-2 border-gray-300 rounded-xl text-center hover:border-gray-500 transition-all">
+          <input type="radio" name="plan" value="free" class="hidden peer" checked>
+          <div class="peer-checked:border-gray-700 peer-checked:bg-gray-400 rounded-xl p-2">
+            <h3 class="font-bold text-lg">Free</h3>
+            <p class="text-sm text-black">Basic access</p>
+          </div>
+        </label>
+
+        <!-- Trial -->
+        <label class="cursor-pointer border-2 border-green-300 rounded-xl text-center hover:border-green-500 transition-all">
+          <input type="radio" name="plan" value="trial" class="hidden peer">
+          <div class="peer-checked:border-green-600 peer-checked:bg-green-50 rounded-xl p-2">
+            <h3 class="font-bold text-lg text-green-600">Trial</h3>
+            <p class="text-sm text-black">7 days free</p>
+          </div>
+        </label>
+
+        <!-- Standard -->
+        <label class="cursor-pointer border-2 border-blue-300 rounded-xl text-center hover:border-blue-500 transition-all">
+          <input type="radio" name="plan" value="standard" class="hidden peer">
+          <div class="peer-checked:border-blue-600 peer-checked:bg-blue-50 rounded-xl p-2">
+            <h3 class="font-bold text-lg text-blue-600">Standard</h3>
+            <p class="text-sm text-black">Extended access</p>
+          </div>
+        </label>
+
+        <!-- Premium -->
+        <label class="cursor-pointer border-2 border-pink-300 rounded-xl text-center hover:border-pink-500 transition-all">
+          <input type="radio" name="plan" value="premium" class="hidden peer">
+          <div class="peer-checked:border-pink-600 peer-checked:bg-pink-50 rounded-xl p-2">
+            <h3 class="font-bold text-lg text-pink-600">Premium</h3>
+            <p class="text-sm text-black">Full access</p>
+          </div>
+        </label>
+
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block text-sm font-medium">Email</label>
+        <input type="email" id="email" placeholder="e.g. top@gmail.com" required
+          class="w-full p-2 rounded-md border border-gray-300 focus:ring focus:ring-indigo-300"/>
+      </div>
+
+      <!-- Phone -->
+      <div>
+        <label class="block text-sm font-medium">Phone Number</label>
+        <input type="tel" id="phone" placeholder="e.g. 072 123 4567" required
+          class="w-full p-2 rounded-md border border-gray-300 text-black focus:ring focus:ring-indigo-300"/>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="block text-sm font-medium">Password</label>
+        <div class="relative">
+          <input type="password" id="password" required
+            class="w-full p-2 rounded-md border border-gray-300 focus:ring focus:ring-indigo-300"/>
+          <button type="button" id="toggle-password" class="absolute right-2 top-2 text-sm text-gray-600">Show</button>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" id="signup-btn"
+        class="w-full py-2 px-4 rounded-lg bg-gray-800 text-white font-semibold hover:opacity-90 transition-all">
+        Sign Up
+      </button>
+    </form>
+
+    <p id="plan-hint" class="mt-4 text-center text-sm text-gray-700">
+      🔒 No card needed for trial. Full access for 7 days.
+    </p>
+
+    <p class="mt-2 text-center text-sm text-gray-500">
+     Need help? Contact <a href="../Contact.html" class="text-indigo-600">Support.</a>
+    </p>
+  </div>
+
+  <!-- Script -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+    );
+
+    const form = document.getElementById('signup-form');
+    const planOptions = document.querySelectorAll("input[name='plan']");
+    const selectedPlanText = document.getElementById("selected-plan-text");
+    const signupBox = document.getElementById("signup-box");
+    const formTitle = document.getElementById("form-title");
+    const signupBtn = document.getElementById("signup-btn");
+    const planHint = document.getElementById("plan-hint");
+    const togglePasswordBtn = document.getElementById("toggle-password");
+    const passwordInput = document.getElementById("password");
+
+    // --- Toggle password visibility ---
+    togglePasswordBtn.addEventListener("click", () => {
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        togglePasswordBtn.textContent = "Hide";
+      } else {
+        passwordInput.type = "password";
+        togglePasswordBtn.textContent = "Show";
+      }
+    });
+
+    // --- Form submit ---
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  // Show loading alert
+  Swal.fire({
+    title: 'Creating your account...',
+    text: 'Please wait a moment',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const password = document.getElementById('password').value;
+  const plan = Array.from(planOptions).find(r => r.checked).value;
+
+  try {
+    // 1️⃣ Create user in Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.signUp({ email, password });
+    if (authError) throw authError;
+
+    const userId = authData.user.id;
+    const isActive = (plan === 'free' || plan === 'trial');
+
+    // 2️⃣ Insert user into accounts table
+    const { data, error: dbError } = await supabase
+      .from('accounts')
+      .insert([{
+        email,
+        phone,
+        role: plan,
+        is_active: isActive
+      }]);
+
+    if (dbError) throw dbError;
+	
+	try {
+  await fetch('https://mlwxxtvsozhwzjxmsvbg.supabase.co/functions/v1/notify-signup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, phone })
+  });
+} catch (notifyError) {
+  console.error('Failed to notify new signup:', notifyError);
+}
+
+    // ✅ Close loader
+    Swal.close();
+
+    // 3️⃣ Redirect or show payment info
+    if (isActive) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Account Created!',
+        text: 'You can now log in.',
+        confirmButtonText: 'Go to Login'
+      }).then(() => {
+        window.location.href = '../login';
+      });
+    } else {
+      Swal.fire({
+        icon: 'info',
+        title: 'Complete Your Payment',
+        text: 'You will be redirected to PayFast to complete your payment.',
+        confirmButtonText: 'Proceed to PayFast'
+      }).then(() => {
+        const prices = {
+          standard: 199,
+          premium: 299
+        };
+        const currentPrice = prices[plan] || 0;
+
+        // Create PayFast form dynamically
+        const payForm = document.createElement('form');
+        payForm.method = 'POST';
+        payForm.action = 'https://www.payfast.co.za/eng/process';
+        payForm.innerHTML = `
+          <input type="hidden" name="merchant_id" value="30322591" />
+          <input type="hidden" name="merchant_key" value="b7owp8kz6kmgz" />
+          <input type="hidden" name="amount" value="${currentPrice}" />
+          <input type="hidden" name="item_name" value="TopStudent ${plan}" />
+          <input type="hidden" name="email_address" value="${email}" />
+          <input type="hidden" name="custom_str1" value="${userId}" />
+          <input type="hidden" name="custom_str2" value="${plan}" />
+          <input type="hidden" name="notify_url" value="https://mlwxxtvsozhwzjxmsvbg.supabase.co/functions/v1/payfast-webhook" />
+          <input type="hidden" name="return_url" value="https://topstudent.co.za/payment-success.html" />
+          <input type="hidden" name="cancel_url" value="https://topstudent.co.za/payment-canceled.html" />
+        `;
+        document.body.appendChild(payForm);
+        payForm.submit();
+      });
+    }
+
+  } catch (err) {
+    Swal.close(); // close loader if error
+    console.error(err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Signup Failed',
+      text: err.message
+    });
+  }
+});
+
+    // --- UI updater ---
+    function updateDesign(plan) {
+      formTitle.className = "text-2xl font-bold mb-6 text-center";
+
+      switch (plan) {
+        case "free":
+          signupBox.className =
+            "relative z-10 flex flex-col w-full max-w-md bg-white bg-opacity-90 text-gray-800 p-8 rounded-2xl shadow-lg transition-all";
+          signupBtn.className =
+            "w-full py-2 px-4 rounded-lg bg-gray-700 text-white font-semibold hover:bg-gray-900";
+          planHint.textContent = "You have free access with limited features.";
+          break;
+
+        case "trial":
+          signupBox.className =
+            "relative z-10 flex flex-col w-full max-w-md bg-gradient-to-r from-green-400 to-green-200 p-8 rounded-2xl shadow-xl transition-all";
+          signupBtn.className =
+            "w-full py-2 px-4 rounded-lg bg-green-600 text-black font-semibold hover:bg-green-700";
+          planHint.textContent = "🔒 No card needed. Your 7-day free trial gives full access.";
+          break;
+
+        case "standard":
+          signupBox.className =
+            "relative z-10 flex flex-col w-full max-w-md bg-gradient-to-r from-blue-600 to-blue-400 p-8 rounded-2xl shadow-xl transition-all";
+          signupBtn.className =
+            "w-full py-2 px-4 rounded-lg bg-blue-600 text-black font-semibold hover:bg-blue-700";
+          planHint.textContent = "You now have extended access.";
+          break;
+
+        case "premium":
+          signupBox.className =
+            "relative z-10 flex flex-col w-full max-w-md bg-gradient-to-r from-pink-500 to-red-400 p-8 rounded-2xl shadow-2xl transition-all";
+          signupBtn.className =
+            "w-full py-2 px-4 rounded-lg bg-gradient-to-r from-pink-600 to-red-500 text-white font-bold hover:opacity-90";
+          planHint.textContent = "You now have full premium access. Enjoy advanced features!";
+          break;
+      }
+    }
+
+    // --- Plan change listener ---
+    planOptions.forEach((option) => {
+      option.addEventListener("change", (e) => {
+        const plan = e.target.value;
+        selectedPlanText.textContent =
+          plan.charAt(0).toUpperCase() + plan.slice(1) + " Account";
+        updateDesign(plan);
+      });
+    });
+
+    // --- Init ---
+    const defaultPlan = document.querySelector("input[name='plan']:checked").value;
+    selectedPlanText.textContent =
+      defaultPlan.charAt(0).toUpperCase() + defaultPlan.slice(1) + " Account";
+    updateDesign(defaultPlan);
+  </script>
+</body>
+</html>
