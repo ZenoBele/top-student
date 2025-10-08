@@ -14,7 +14,7 @@
     /* Sci-fi glowing grid background */
     body::before {
       content: "";
-      position: absolute;
+      position: fixed;
       inset: 0;
       background: linear-gradient(to right, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
                   linear-gradient(to bottom, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
@@ -48,35 +48,47 @@
       transform: scale(1.05);
     }
 
-    /* Fix backdrop elements on mobile */
+    /* Ensure scrolling works smoothly */
+    html, body {
+      height: 100%;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    /* Make sure inner card doesn’t overflow */
+    .scroll-container {
+      max-width: 700px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin: 2rem auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Mobile adjustments */
     @media (max-width: 640px) {
       h1 {
         font-size: 1.5rem;
         line-height: 2rem;
       }
-      p {
-        font-size: 0.9rem;
-      }
-      .sci-card {
-        padding: 1.25rem;
-      }
-      select, input, textarea, button {
-        font-size: 0.95rem;
-      }
-      .fa-arrow-left {
-        font-size: 1.3rem;
+      .scroll-container {
+        margin: 4rem 0 6rem 0;
       }
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-blue-950 via-blue-900 to-black min-h-screen flex items-center justify-center p-4 sm:p-6 relative overflow-hidden text-cyan-100">
+<body class="bg-gradient-to-br from-blue-950 via-blue-900 to-black text-cyan-100 relative min-h-screen">
 
   <!-- Floating hologram orbs -->
   <div class="absolute w-52 sm:w-72 h-52 sm:h-72 bg-cyan-500 rounded-full blur-3xl opacity-10 top-10 left-10 animate-pulse"></div>
   <div class="absolute w-64 sm:w-96 h-64 sm:h-96 bg-cyan-300 rounded-full blur-3xl opacity-10 bottom-10 right-10 animate-pulse"></div>
 
-  <!-- Main Card -->
-  <div class="bg-white/5 backdrop-blur-xl sci-card rounded-2xl p-6 sm:p-8 w-full max-w-md sm:max-w-2xl relative z-10">
+  <!-- Scrollable container -->
+  <main class="scroll-container">
+
     <!-- Back Button -->
     <a href="javascript:history.back()" class="absolute top-4 left-4 sm:top-6 sm:left-6 flex items-center text-cyan-200 hover:text-cyan-400 transition transform hover:scale-110 z-20">
       <i class="fa-solid fa-arrow-left text-xl sm:text-2xl mr-1 sm:mr-2"></i>
@@ -86,7 +98,9 @@
     <h1 class="text-2xl sm:text-4xl font-extrabold text-cyan-300 mb-3 text-center tracking-widest uppercase leading-tight">
       Help Build Top Student
     </h1>
-    <p class="text-cyan-100 text-center mb-6 sm:mb-8">Suggest new features, improvements, or design ideas for future versions.</p>
+    <p class="text-cyan-100 text-center mb-6 sm:mb-8">
+      Suggest new features, improvements, or design ideas for future versions.
+    </p>
 
     <!-- Category -->
     <label class="block text-cyan-200 mb-2 text-sm sm:text-base">What area is your idea about?</label>
@@ -120,23 +134,24 @@
     <button id="submitIdea" class="sci-btn w-full bg-gradient-to-r from-blue-500 to-blue-300 text-white py-3 rounded-lg shadow-lg font-semibold">
       Submit Idea
     </button>
-  </div>
+
+  </main>
 
   <!-- Floating Action Buttons -->
   <a href="dashboard.html">
-    <div class="fixed bottom-24 right-5 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full text-white text-xl sm:text-2xl shadow-lg cursor-pointer transform transition duration-300 hover:scale-110"
+    <div class="fixed bottom-24 z-10 right-5 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full text-white text-xl sm:text-2xl shadow-lg cursor-pointer transform transition duration-300 hover:scale-110"
          style="background: linear-gradient(135deg, #00eaff, #0077ff); box-shadow: 0 0 15px #00eaff;">
       <i class="fa-solid fa-house"></i>
     </div>
   </a>
 
   <a href="faq.html">
-    <div class="fixed bottom-6 right-5 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full text-white text-xl sm:text-2xl shadow-lg cursor-pointer transform transition duration-300 hover:scale-110"
+    <div class="fixed bottom-6 right-5 z-10 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full text-white text-xl sm:text-2xl shadow-lg cursor-pointer transform transition duration-300 hover:scale-110"
          style="background: linear-gradient(135deg, #00eaff, #0077ff); box-shadow: 0 0 15px #00eaff;">
       ?
     </div>
   </a>
-  
+
   <script type="module">
     import { supabase } from './js/supabaseClient.js';
 
