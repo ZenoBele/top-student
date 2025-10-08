@@ -1,0 +1,21 @@
+{
+  "name": "Top Student",
+  "short_name": "TopStudent",
+  "description": "Access study guides, past papers, and reminders from Top Student.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e40af",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "images/app.png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "images/app.png"
+    }
+  ]
+}
