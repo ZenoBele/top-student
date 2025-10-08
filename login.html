@@ -84,7 +84,7 @@
   </div>
 
   <!-- Module Script -->
-  <script type="module">
+<script type="module">
 import { supabase } from './js/supabaseClient.js';
 
 const loginForm = document.getElementById('login-form');
@@ -92,7 +92,6 @@ const loader = document.getElementById('loader');
 const togglePasswordBtn = document.getElementById('toggle-password');
 const passwordInput = document.getElementById('password');
 const eyeIcon = document.getElementById('eye-icon');
-const passwordMatch = bcrypt.compareSync(password, user.password_hash);
 
 togglePasswordBtn.addEventListener('click', () => {
   if (passwordInput.type === 'password') {
@@ -117,7 +116,7 @@ loginForm.addEventListener('submit', async (e) => {
     .from('accounts')
     .select('*')
     .eq('email', email)
-    .single(); // expect only 1 result
+    .single();
 
   loader.classList.add('hidden');
 
@@ -140,9 +139,8 @@ loginForm.addEventListener('submit', async (e) => {
     return;
   }
 
-  // Check password
-  // If using bcrypt
-  const passwordMatch = await bcrypt.compare(password, user.password_hash);
+  // Password check (bcryptjs in browser)
+  const passwordMatch = bcrypt.compareSync(password, user.password_hash);
   if (!passwordMatch) {
     Swal.fire({
       icon: 'error',
@@ -158,5 +156,6 @@ loginForm.addEventListener('submit', async (e) => {
 </script>
 </body>
 </html>
+
 
 
