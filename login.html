@@ -7,6 +7,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
   <link rel="shortcut icon" type="image/png" href="images/favicon.png">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script> <!-- Icon library -->
 </head>
@@ -91,6 +92,7 @@ const loader = document.getElementById('loader');
 const togglePasswordBtn = document.getElementById('toggle-password');
 const passwordInput = document.getElementById('password');
 const eyeIcon = document.getElementById('eye-icon');
+const passwordMatch = bcrypt.compareSync(password, user.password_hash);
 
 togglePasswordBtn.addEventListener('click', () => {
   if (passwordInput.type === 'password') {
@@ -156,4 +158,5 @@ loginForm.addEventListener('submit', async (e) => {
 </script>
 </body>
 </html>
+
 
