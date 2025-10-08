@@ -85,7 +85,6 @@
   <!-- Module Script -->
   <script type="module">
 import { supabase } from './js/supabaseClient.js';
-import bcrypt from 'bcryptjs'; // optional if using hashing on client (better on server)
 
 const loginForm = document.getElementById('login-form');
 const loader = document.getElementById('loader');
@@ -157,3 +156,4 @@ loginForm.addEventListener('submit', async (e) => {
 </script>
 </body>
 </html>
+
