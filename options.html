@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Options</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+ <style>
+  html {
+  scroll-behavior: smooth;
+}
+    body {
+      font-family: 'Segoe UI', sans-serif;
+    }
+    
+    .glass {
+      backdrop-filter: blur(8px); /* blur strength */
+      -webkit-backdrop-filter: blur(8px); /* Safari support */
+    }
+
+    #phraseCard {
+      transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    }
+
+    aside::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  aside {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  </style>
+</head>
+<body class="flex bg-gradient-to-tr from-white via-blue-100 to-blue-300">
+
+   <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden fixed top-2 right-0 p-4 z-50">
+    <button id="menuBtn" class="text-white p-2 rounded bg-transparent focus:outline-none">
+      <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+    </button>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+
+  <header class="flex items-center justify-between px-4 md:px-6 text-white fixed top-0 z-30 h-24 md:h-24
+                 w-full md:w-3/4 md:ml-80 md:rounded-b-3xl"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff);">
+
+    <div class="flex flex-col ml-16 items-center flex-1 text-center">
+      <h2 class="text-xl md:text-2xl font-bold flex items-center justify-center gap-2">
+        Explore Your Options
+      </h2>
+      <p class="text-xs md:text-sm">School is just the beginning</p>
+    </div>
+
+    <!-- Right spacer -->
+    <div class="w-20 md:w-28"></div>
+  </header>
+
+<main id="mainContent" class="flex-1 flex flex-col overflow-y-auto relative mb-16 z-0 mt-32 md:ml-64 px-6 md:px-12 space-y-12">
+
+  <section class="px-6 py-12 rounded-2xl border border-gray-200 bg-gradient-to-br from-white to-blue-50 shadow-lg">
+    <div class="text-center max-w-3xl mx-auto">
+
+      <div class="flex justify-center mb-5">
+        <div class="p-3 bg-blue-100 rounded-full shadow-md">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </div>
+      </div>
+
+      <h2 id="typingHeading" class="text-3xl font-extrabold text-gray-900 mb-4 opacity-0"></h2>
+
+      <p id="typingDesc" class="text-gray-600 text-lg leading-relaxed mb-6 opacity-0"></p>
+
+      <div id="typingBtn" class="flex justify-center opacity-0">
+	  <a href="university.html">
+        <button class="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-lg rounded-full shadow-md hover:opacity-90 transition">
+          Start Exploring
+        </button>
+	  </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 py-6 rounded-2xl border border-gray-300 bg-white shadow-lg">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- University -->
+	  <a href="university.html">
+      <div class="option-card bg-blue-500 text-white rounded-2xl p-6 border border-gray-300 shadow-md hover:shadow-xl transform-gpu hover:scale-105 transition cursor-pointer"
+        data-choice="University">
+        <div>
+          <i class="fas fa-university text-4xl mb-4"></i>
+          <h3 class="text-2xl font-bold mb-2">University</h3>
+          <p class="text-md opacity-90 mb-2">
+            <strong>Benefit:</strong> Earn a degree and unlock careers like medicine, engineering, or law.
+          </p>
+          <small class="text-yellow-100 italic">See top universities & programs →</small>
+        </div>
+      </div>
+      </a>
+      <!-- TVET Colleges -->
+	  <a href="tvet.html">
+      <div class="option-card bg-green-500 text-white rounded-2xl p-6 border border-gray-300 shadow-md hover:shadow-xl transform-gpu hover:scale-105 transition cursor-pointer"
+        data-choice="TVET Colleges">
+        <div>
+          <i class="fas fa-tools text-4xl mb-4"></i>
+          <h3 class="text-2xl font-bold mb-2">TVET Colleges</h3>
+          <p class="text-md opacity-90 mb-2">
+            <strong>Benefit:</strong> Get hands-on training for skilled trades and applied careers.
+          </p>
+          <small class="text-yellow-100 italic">Find local TVET programs →</small>
+        </div>
+      </div>
+      </a>
+      <!-- Learnerships -->
+	  <a href="learnership.html">
+      <div class="option-card bg-yellow-500 text-white rounded-2xl p-6 border border-gray-300 shadow-md hover:shadow-xl transform-gpu hover:scale-105 transition cursor-pointer"
+        data-choice="Learnerships">
+        <i class="fas fa-briefcase text-4xl mb-4"></i>
+        <h3 class="text-2xl font-bold mb-2">Learnerships</h3>
+        <p class="text-md opacity-90">
+          <strong>Benefit:</strong> Earn while learning, combining theory with real workplace experience.
+        </p>
+        <small class="block mt-2 text-yellow-100 italic">Find learnership programs near you →</small>
+      </div>
+      </a>
+      <!-- Internships -->
+	  <a href="internship.html">
+      <div class="option-card bg-purple-500 text-white rounded-2xl p-6 border border-gray-300 shadow-md hover:shadow-xl transform-gpu hover:scale-105 transition cursor-pointer"
+        data-choice="Internships">
+        <i class="fas fa-laptop-code text-4xl mb-4"></i>
+        <h3 class="text-2xl font-bold mb-2">Internships</h3>
+        <p class="text-md opacity-90">
+          <strong>Benefit:</strong> Gain real work experience to boost your CV and employment chances.
+        </p>
+        <small class="block mt-2 text-yellow-100 italic">Find internships in your field →</small>
+      </div>
+      </a>
+      <!-- Entrepreneurship -->
+	  <a href="enter.html">
+      <div class="option-card bg-red-500 text-white rounded-2xl p-6 border border-gray-300 shadow-md hover:shadow-xl transform-gpu hover:scale-105 transition cursor-pointer"
+        data-choice="Entrepreneurship">
+        <i class="fas fa-lightbulb text-4xl mb-4"></i>
+        <h3 class="text-2xl font-bold mb-2">Entrepreneurship</h3>
+        <p class="text-md opacity-90">
+          <strong>Benefit:</strong> Turn ideas into income while building independence and a legacy.
+        </p>
+        <small class="block mt-2 text-yellow-100 italic">Start your first project →</small>
+      </div>
+      </a>
+      <!-- Study Abroad -->
+	  <a href="abroad.html">
+      <div class="option-card bg-indigo-500 text-white rounded-2xl p-6 border border-gray-300 shadow-md hover:shadow-xl transform-gpu hover:scale-105 transition cursor-pointer"
+        data-choice="Study Abroad">
+        <i class="fas fa-globe text-4xl mb-4"></i>
+        <h3 class="text-2xl font-bold mb-2">Study Abroad</h3>
+        <p class="text-md opacity-90">
+          <strong>Benefit:</strong> Experience international education and explore new cultures.
+        </p>
+        <small class="block mt-2 text-yellow-100 italic">Explore study abroad options →</small>
+      </div>
+      </a>
+      <!-- Gap Year -->
+	  <a href="gap.html">
+      <div class="option-card bg-gray-500 text-white rounded-2xl p-6 border border-gray-300 shadow-md hover:shadow-xl transform-gpu hover:scale-105 transition cursor-pointer"
+        data-choice="Gap Year">
+        <i class="fas fa-plane text-4xl mb-4"></i>
+        <h3 class="text-2xl font-bold mb-2">Gap Year</h3>
+        <p class="text-md opacity-90">
+          <strong>Benefit:</strong> Travel, volunteer, or work while gaining life experience.
+        </p>
+        <small class="block mt-2 text-yellow-100 italic">See gap year programs →</small>
+      </div>
+      </a>
+      <!-- Military Service -->
+	  <a href="military.html">
+      <div class="option-card bg-gray-900 text-white rounded-2xl p-6 border border-gray-300 shadow-md hover:shadow-xl transform-gpu hover:scale-105 transition cursor-pointer"
+        data-choice="Military Service">
+        <i class="fas fa-shield-alt text-4xl mb-4"></i>
+        <h3 class="text-2xl font-bold mb-2">Military Service</h3>
+        <p class="text-md opacity-90">
+          <strong>Benefit:</strong> Gain discipline, skills, and stable opportunities in the defense force.
+        </p>
+        <small class="block mt-2 text-yellow-100 italic">Learn how to join →</small>
+      </div>
+      </a>
+
+	  <a href="space.html">
+      <div class="option-card bg-gradient-to-r from-indigo-800 via-blue-700 to-indigo-900 text-white rounded-2xl p-6 border border-gray-300 shadow-md hover:shadow-xl transform-gpu hover:scale-105 transition cursor-pointer"
+        data-choice="space">
+        <i class="fas fa-user-astronaut text-4xl mb-4"></i>
+        <h3 class="text-2xl font-bold mb-2">Space</h3>
+        <p class="text-md opacity-90">
+          <strong>Benefit:</strong> travel into space to conduct research, and explore beyond Earth.
+        </p>
+        <small class="block mt-2 text-yellow-100 italic">Explore Beyond →</small>
+      </div>
+      </a>
+    </div>
+  </section>
+
+<section id="storiesSection"
+  class="relative bg-indigo-200 px-12 py-12 rounded-2xl border border-gray-300 bg-white shadow-lg overflow-hidden transition-all duration-500 min-h-64">
+
+  <!-- Short Description -->
+<div id="storiesDescription" 
+     class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 text-center transition-opacity duration-500">
+  <h2 class="text-3xl font-bold">Success Stories</h2>
+  <p class="text-lg font-medium max-w-xl">
+    This section is for sharing and reading success stories from students. Hover to expand.
+  </p>
+</div>
+
+  <!-- Expandable Content -->
+  <div id="storiesContent" class="overflow-hidden max-h-0 opacity-0 transition-all duration-1000 ease-in-out">
+    <h3 class="text-2xl font-bold mb-6 text-center">Success Stories</h3>
+
+    <!-- Carousel Wrapper -->
+    <div class="relative w-full overflow-hidden">
+      <div id="storiesCarousel" class="flex transition-transform duration-500 ease-in-out">
+        <!-- Story slides will be inserted here -->
+      </div>
+    </div>
+
+    <!-- Carousel Navigation -->
+    <div class="flex justify-center mt-4 space-x-4">
+      <button id="prevStory" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition">Prev</button>
+      <button id="nextStory" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition">Next</button>
+    </div>
+
+    <!-- Add Your Own Story -->
+    <div class="space-y-6 mt-8 max-w-xl mx-auto bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+      <!-- Profile & Name -->
+      <div class="flex items-center gap-5">
+        <img id="profile-img" src="https://placehold.co/96x96" alt="Profile"
+          class="w-24 h-24 rounded-full object-cover border shadow-sm">
+        <input type="text" id="storyName"
+          class="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
+          placeholder="Your Name (or nickname)">
+      </div>
+
+      <!-- Before & After Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input type="text" id="storyBefore"
+          class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
+          placeholder="Before (your situation)">
+        <input type="text" id="storyAfter"
+          class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
+          placeholder="After (your outcome)">
+      </div>
+
+      <!-- Story Text -->
+      <textarea id="userStory" rows="5"
+        class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-400"
+        placeholder="Write your success story here..."></textarea>
+
+      <!-- Modern Checkbox Switch -->
+      <div class="flex justify-center">
+        <label class="flex items-center cursor-pointer select-none">
+          <input type="checkbox" id="displayStory" class="sr-only">
+          <div id="switchTrack" class="relative w-12 h-6 bg-indigo-600 to-purple-500 rounded-full transition-colors">
+            <div id="switchThumb" class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform"></div>
+          </div>
+          <span class="ml-3 text-gray-700 text-sm font-medium">Display publicly</span>
+        </label>
+      </div>
+      
+      <div class="flex justify-center">
+        <button id="submitStory"
+          class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-10 py-3 rounded-full font-semibold shadow-md hover:opacity-90 transition">
+          Submit Story
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+const storiesCarousel = document.getElementById("storiesCarousel");
+  const submitBtn = document.getElementById("submitStory");
+  const profileImg = document.getElementById("profile-img");
+  const storyNameInput = document.getElementById("storyName");
+  const displaySwitch = document.getElementById("displayStory");
+  const thumb = document.getElementById("switchThumb");
+  const track = document.getElementById("switchTrack");
+  const storyBeforeInput = document.getElementById("storyBefore");
+  const storyAfterInput = document.getElementById("storyAfter");
+  const userStoryInput = document.getElementById("userStory");
+  const prevBtn = document.getElementById("prevStory");
+  const nextBtn = document.getElementById("nextStory");
+
+  let userProfile = null;
+  let scrollPosition = 0;
+
+  // -----------------------------
+  // Switch JS for Tailwind v2
+  // -----------------------------
+  displaySwitch.addEventListener("change", () => {
+    if (displaySwitch.checked) {
+      thumb.style.transform = "translateX(24px)";
+      track.classList.remove("bg-indigo-600");
+      track.classList.add("bg-green-500");
+    } else {
+      thumb.style.transform = "translateX(0)";
+      track.classList.remove("bg-green-500");
+      track.classList.add("bg-indigo-600");
+    }
+  });
+
+async function checkSubscription() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Not logged in → send to dashboard
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // Fetch subscription record
+  const { data, error } = await supabase
+    .from("subscription")
+    .select("current_plan")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !data) {
+    showUpgradeAlert();
+    return;
+  }
+
+  const allowedPlans = ["trial", "standard", "premium"];
+
+  if (!allowedPlans.includes(data.current_plan)) {
+    showUpgradeAlert();
+  }
+}
+
+function showUpgradeAlert() {
+  Swal.fire({
+    icon: 'warning',
+    title: 'Access Restricted',
+    text: 'This feature is available only for Trial, Standard, or Premium members. Upgrade or activate your plan to continue.',
+    confirmButtonText: 'View Plans',
+    showCancelButton: true,
+    cancelButtonText: 'Go Back',
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = "Subscription.html"; // Upgrade page
+    } else {
+      window.location.href = "dashboard.html"; // Back to dashboard
+    }
+  });
+}
+
+checkSubscription();
+
+  async function loadUserProfile() {
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      Swal.fire("Error", "User not logged in", "error");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+
+    if (error) {
+      Swal.fire("Error", "Failed to load profile: " + error.message, "error");
+      return;
+    }
+
+    userProfile = data;
+    profileImg.src = userProfile.picture_url || "https://placehold.co/96x96";
+    storyNameInput.value = userProfile.name || "";
+  }
+
+  // -----------------------------
+  // Load and display stories
+  // -----------------------------
+  async function loadStories() {
+    const { data, error } = await supabase
+      .from("option_stories")
+      .select(`
+        *,
+        profiles (name, picture_url)
+      `)
+      .eq("display", true)
+      .order("created_at", { ascending: false });
+
+    storiesCarousel.innerHTML = "";
+
+    if (error) {
+      Swal.fire("Error", error.message, "error");
+      return;
+    }
+
+    if (!data || data.length < 3) {
+      storiesCarousel.innerHTML = `
+        <div class="min-w-full p-6 flex-shrink-0">
+          <div class="bg-gray-50 border rounded-xl p-6 shadow-md max-w-xl mx-auto text-center text-gray-600">
+            Stories coming soon!
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    data.forEach(story => {
+      const slide = document.createElement("div");
+      slide.className = "min-w-full p-6 flex-shrink-0";
+
+      const name = story.profiles?.name || "Anonymous";
+      const picture = story.profiles?.picture_url || "https://placehold.co/96x96";
+
+      slide.innerHTML = `
+        <div class="bg-gradient-to-r from-indigo-400 to-purple-500 border border-gray-200 rounded-2xl p-6 shadow-xl max-w-[125%] mx-auto hover:shadow-2xl transition-shadow duration-300">
+  <!-- Header: Profile -->
+  <div class="flex items-center gap-4 mb-5">
+    <img src="${picture}" alt="Profile" class="w-16 h-16 rounded-full border-2 border-white shadow-sm object-cover">
+    <div>
+      <h4 class="font-bold text-xl text-white">${name}</h4>
+      <p class="text-sm text-indigo-100">${new Date(story.created_at).toLocaleDateString()}</p>
+    </div>
+  </div>
+
+  <!-- Story Highlights -->
+  <div class="mb-4 space-y-2">
+    <p class="text-indigo-200 font-medium"><span class="font-bold">Before:</span> ${story.before || "N/A"}</p>
+    <p class="text-green-200 font-medium"><span class="font-bold">After:</span> ${story.after || "N/A"}</p>
+  </div>
+
+  <!-- Full Story -->
+  <p class="text-white leading-relaxed border-t border-white/20 pt-4 mt-4">
+    <span class="font-semibold">Full Story:</span> ${story.story}
+  </p>
+</div>
+      `;
+      storiesCarousel.appendChild(slide);
+    });
+  }
+
+submitBtn.addEventListener("click", async () => {
+  if (!userProfile) {
+    Swal.fire("Error", "Profile not loaded", "error");
+    return;
+  }
+
+  const before = storyBeforeInput.value.trim();
+  const after = storyAfterInput.value.trim();
+  const storyText = userStoryInput.value.trim();
+  const display = displaySwitch.checked;
+
+  if (!storyText) {
+    Swal.fire("Oops!", "Please write your story before submitting.", "warning");
+    return;
+  }
+
+  if (!display) {
+    Swal.fire("Notice", "Stories must be marked for public display to submit.", "info");
+    return;
+  }
+
+  // Disable button & change cursor
+  submitBtn.disabled = true;
+  submitBtn.classList.add("cursor-not-allowed", "opacity-50");
+
+  try {
+    const { error } = await supabase
+      .from("option_stories")
+      .insert([{
+        uid: userProfile.id,
+        before,
+        after,
+        story: storyText,
+        display: true
+      }]);
+
+    if (error) throw error;
+
+    Swal.fire("Success!", "Your story has been submitted!", "success");
+
+    // Reset form
+    storyBeforeInput.value = "";
+    storyAfterInput.value = "";
+    userStoryInput.value = "";
+    displaySwitch.checked = false;
+    thumb.style.transform = "translateX(0)";
+    track.classList.remove("bg-blue-500");
+    track.classList.add("bg-gray-300");
+
+    // Reload stories
+    loadStories();
+
+  } catch (err) {
+    Swal.fire("Error", err.message, "error");
+  } finally {
+    // Re-enable button
+    submitBtn.disabled = false;
+    submitBtn.classList.remove("cursor-not-allowed", "opacity-50");
+  }
+});
+
+  prevBtn.addEventListener("click", () => {
+    scrollPosition = Math.max(scrollPosition - storiesCarousel.clientWidth, 0);
+    storiesCarousel.style.transform = `translateX(-${scrollPosition}px)`;
+  });
+
+  nextBtn.addEventListener("click", () => {
+    scrollPosition = Math.min(
+      scrollPosition + storiesCarousel.clientWidth,
+      storiesCarousel.scrollWidth - storiesCarousel.clientWidth
+    );
+    storiesCarousel.style.transform = `translateX(-${scrollPosition}px)`;
+  });
+
+  loadUserProfile();
+  loadStories();
+</script>
+<script>
+  // Typing effect function
+  function typeEffect(element, text, delay, callback) {
+    let i = 0;
+    element.style.opacity = 1;
+    const interval = setInterval(() => {
+      element.textContent += text.charAt(i);
+      i++;
+      if (i === text.length) {
+        clearInterval(interval);
+        if (callback) setTimeout(callback, 300);
+      }
+    }, delay);
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const heading = document.getElementById("typingHeading");
+    const desc = document.getElementById("typingDesc");
+    const btn = document.getElementById("typingBtn");
+
+    const headingText = "Unsure About Your Next Step After Graduation?";
+    const descText = "Explore every path — from university to entrepreneurship — and find out which fits your goals, skills, and lifestyle. Click an option below to discover actionable tips, real steps, and inspiring success stories.";
+
+    // Animate heading → description → button
+    typeEffect(heading, headingText, 40, () => {
+      typeEffect(desc, descText, 20, () => {
+        btn.style.opacity = 1;
+        btn.classList.add("transition", "duration-500");
+      });
+    });
+  });
+</script>
+<script>
+  const section = document.getElementById("storiesSection");
+  const description = document.getElementById("storiesDescription");
+  const content = document.getElementById("storiesContent");
+
+  let closeTimer;
+
+  function expandContent() {
+    clearTimeout(closeTimer); // cancel any close countdown
+    description.style.opacity = "0";
+    content.style.maxHeight = content.scrollHeight + "px";
+    content.style.opacity = "1";
+  }
+
+  function collapseContent() {
+    content.style.maxHeight = "20px";
+    content.style.opacity = "0";
+    description.style.opacity = "1";
+  }
+
+  // Expand on hover
+  section.addEventListener("mouseenter", expandContent);
+
+  // Start 10s countdown to close when mouse leaves
+  section.addEventListener("mouseleave", () => {
+    closeTimer = setTimeout(collapseContent, 10000);
+  });
+</script>
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const menuIcon = document.getElementById("menuIcon");
+    const blurOverlay = document.getElementById("blurOverlay");
+    const sidebar = document.querySelector("aside");
+
+    menuBtn.addEventListener("click", () => {
+      menuIcon.classList.toggle("fa-bars");
+      menuIcon.classList.toggle("fa-xmark");
+      sidebar.classList.toggle("hidden");
+      sidebar.classList.toggle("absolute", "z-40", "h-screen");
+      blurOverlay.classList.toggle("hidden");
+    });
+
+    blurOverlay.addEventListener("click", () => {
+      menuIcon.classList.add("fa-bars");
+      menuIcon.classList.remove("fa-xmark");
+      sidebar.classList.add("hidden");
+      sidebar.classList.remove("absolute", "z-40", "h-screen");
+      blurOverlay.classList.add("hidden");
+    });
+  </script>
+</body>
+</html>

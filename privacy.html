@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Control - Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; }
+    .glass { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .card-hover:hover { transform: translateY(-4px); transition: transform 0.3s ease-in-out; }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="flex h-screen bg-gradient-to-tr from-indigo-300 via-red-300 to-indigo-300">
+
+  <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden fixed top-2 right-0 p-4 z-50">
+    <button id="menuBtn" class="text-white p-2 rounded bg-transparent focus:outline-none">
+      <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+    </button>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 md:px-6 text-white fixed top-0 z-30 h-24 md:h-24
+                 w-full md:w-3/4 md:ml-80 md:rounded-b-3xl"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff);">
+
+    <div class="flex flex-col ml-16 items-center flex-1 text-center">
+      <h2 class="text-xl md:text-2xl font-bold flex items-center justify-center gap-2">
+        Privacy Control
+      </h2>
+	  <p class="text-gray-100 text-sm">Set up your privacy.</p>
+    </div>
+
+    <!-- Right spacer -->
+    <div class="w-20 md:w-28"></div>
+  </header>
+  <!-- Main Content -->
+<main class="flex-1 overflow-y-auto mt-32 md:ml-64 px-6 md:px-12 space-y-8">
+  <!-- Privacy Controls -->
+  <div class="bg-white rounded-3xl shadow-lg glass p-6 md:p-10 space-y-6">
+
+    <!-- Field Control -->
+    <div class="flex justify-between items-center border-b pb-3">
+      <div>
+        <h3 class="font-semibold text-gray-800">First Name</h3>
+        <p class="text-sm text-gray-500">Control who can see your first name.</p>
+      </div>
+      <select class="bg-gray-100 px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-400">
+        <option>Private</option>
+        <option>Public</option>
+      </select>
+    </div>
+
+    <div class="flex justify-between items-center border-b pb-3">
+      <div>
+        <h3 class="font-semibold text-gray-800">Phone</h3>
+        <p class="text-sm text-gray-500">Control who can see your phone number.</p>
+      </div>
+      <select class="bg-gray-100 px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-400">
+        <option>Private</option>
+        <option>Public</option>
+      </select>
+    </div>
+
+    <div class="flex justify-between items-center border-b pb-3">
+      <div>
+        <h3 class="font-semibold text-gray-800">School</h3>
+        <p class="text-sm text-gray-500">Control who can see your school info.</p>
+      </div>
+      <select class="bg-gray-100 px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-400">
+        <option>Private</option>
+        <option>Public</option>
+      </select>
+    </div>
+
+    <div class="flex justify-between items-center border-b pb-3">
+      <div>
+        <h3 class="font-semibold text-gray-800">Bio</h3>
+        <p class="text-sm text-gray-500">Control who can see your personal description.</p>
+      </div>
+      <select class="bg-gray-100 px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-400">
+        <option>Private</option>
+        <option>Public</option>
+      </select>
+    </div>
+
+    <div class="flex justify-between items-center">
+      <div>
+        <h3 class="font-semibold text-gray-800">Profile Picture</h3>
+        <p class="text-sm text-gray-500">Control who can see your profile picture. Setting it to Public allows us to use your picture in testimonials or for advertising.</p>
+      </div>
+      <select class="bg-gray-100 px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-400">
+       <option>Private</option>
+        <option>Public</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Save Button -->
+  <div class="flex justify-center">
+    <button id="savePrivacyBtn" class="bg-gradient-to-tr from-indigo-300 to-indigo-800 text-white px-8 py-3 rounded-2xl shadow hover:text-blue-700 transition">
+      Save Preferences
+    </button>
+  </div>
+
+</main>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+async function loadPrivacySettings() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  const { data, error } = await supabase
+    .from('privacy')
+    .select('privacy_settings')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Error loading privacy settings:', error);
+    return;
+  }
+
+  if (data && data.privacy_settings) {
+    const settings = data.privacy_settings;
+    const selects = document.querySelectorAll('select');
+    selects[0].value = settings.first_name || 'Public';
+    selects[1].value = settings.phone || 'Private';
+    selects[2].value = settings.school || 'Public';
+    selects[3].value = settings.bio || 'Public';
+    selects[4].value = settings.profile_picture || 'Public';
+  }
+}
+
+// Call load function on page load
+loadPrivacySettings();
+
+// Save button logic
+const saveBtn = document.getElementById('savePrivacyBtn');
+saveBtn.addEventListener('click', async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Not logged in',
+      text: 'Please log in to update your privacy settings.'
+    });
+    return;
+  }
+
+  const selects = document.querySelectorAll('select');
+  const privacySettings = {
+    first_name: selects[0].value,
+    phone: selects[1].value,
+    school: selects[2].value,
+    bio: selects[3].value,
+    profile_picture: selects[4].value
+  };
+
+  // Show SweetAlert loading
+  Swal.fire({
+    title: 'Saving...',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  const { data, error } = await supabase
+    .from('privacy')
+    .upsert({
+      id: user.id,
+      privacy_settings: privacySettings,
+      updated_at: new Date()
+    });
+
+  // Close loading alert
+  Swal.close();
+
+  if (error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Failed to save your preferences!',
+    });
+    console.error('Error saving privacy settings:', error);
+  } else {
+    Swal.fire({
+      icon: 'success',
+      title: 'Saved!',
+      html: `
+        <p>Your privacy settings:</p>
+        <ul style="text-align:left">
+          <li>First Name: ${privacySettings.first_name}</li>
+          <li>Phone: ${privacySettings.phone}</li>
+          <li>School: ${privacySettings.school}</li>
+          <li>Bio: ${privacySettings.bio}</li>
+          <li>Profile Picture: ${privacySettings.profile_picture}</li>
+        </ul>
+      `
+    });
+  }
+});
+</script>
+</body>
+</html>

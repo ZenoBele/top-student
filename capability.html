@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Capabilities - Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    }
+    .glass {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      transition: transform 0.3s ease-in-out;
+    }
+    
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    opacity: 0.8;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: fall 2s linear forwards;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(300px) rotate(360deg); opacity: 0; }
+  }
+
+  #capabilitiesAnimation {
+    position: relative;
+    overflow: hidden;
+  }
+  </style>
+</head>
+<body class="flex h-screen"
+      style="background: linear-gradient(60deg, white, #3e95be, white);">
+
+  <!-- Sidebar -->
+  <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden fixed top-2 right-0 p-4 z-50">
+    <button id="menuBtn" class="text-white p-2 rounded bg-transparent focus:outline-none">
+      <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+    </button>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+  
+  <header class="flex items-center justify-between px-4 md:px-6 text-white fixed top-0 z-30 h-24 md:h-24
+                 w-full md:w-3/4 md:ml-80 md:rounded-b-3xl"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff);">
+		  <div class="flex flex-col ml-16 items-center flex-1 text-center">
+      <h1 class="text-3xl font-bold text-center mt-6 text-white mb-6">My Capabilities</h1>
+      <p class="text-center text-white mb-6">
+        Track your progress, skills, and achievements.
+      </p>
+	  </div>
+    </header>
+  
+  <!-- Main Content -->
+<main id="capabilitiesPage" class="flex-1 flex flex-col overflow-y-auto relative z-0 mt-32 md:ml-64 px-6 md:px-12 space-y-8">
+
+  <!-- Capabilities Summary -->
+  <section id="capabilitiesSummary" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div data-capability="focus" class="bg-blue-400 text-white rounded-2xl p-6 shadow-lg card-hover">
+      <h3 class="text-xl font-bold mb-2">Focus & Discipline</h3>
+      <p class="text-sm opacity-90 mb-4">Your consistency in studying and daily habits.</p>
+      <div class="w-full bg-blue-200 rounded-full h-3">
+        <div class="progress-bar-inner bg-blue-600 h-3 rounded-full" style="width: 0%;"></div>
+      </div>
+      <p class="progress-label text-sm mt-2 font-semibold">0% Completed</p>
+    </div>
+
+    <div data-capability="problem_solving" class="bg-green-400 text-white rounded-2xl p-6 shadow-lg card-hover">
+      <h3 class="text-xl font-bold mb-2">Problem Solving</h3>
+      <p class="text-sm opacity-90 mb-4">Ability to solve Quiz effectively and quickly.</p>
+      <div class="w-full bg-green-200 rounded-full h-3">
+        <div class="progress-bar-inner bg-green-600 h-3 rounded-full" style="width: 0%;"></div>
+      </div>
+      <p class="progress-label text-sm mt-2 font-semibold">0% Completed</p>
+    </div>
+
+    <div data-capability="time_management" class="bg-purple-400 text-white rounded-2xl p-6 shadow-lg card-hover">
+      <h3 class="text-xl font-bold mb-2">Time Management</h3>
+      <p class="text-sm opacity-90 mb-4">Spending time and executing tasks efficiently.</p>
+      <div class="w-full bg-purple-200 rounded-full h-3">
+        <div class="progress-bar-inner bg-purple-600 h-3 rounded-full" style="width: 0%;"></div>
+      </div>
+      <p class="progress-label text-sm mt-2 font-semibold">Time on Average</p>
+    </div>
+  </section>
+
+  <!-- Academic Skills Centered Wide Card -->
+  <section class="flex justify-center">
+  <div class="w-full md:w-3/4 lg:w-2/3 bg-white rounded-3xl shadow-lg p-6 card-hover glass" data-capability="academic">
+    <h3 class="text-xl font-bold mb-2 text-center">Academic Skills</h3>
+    <p class="text-gray-700 text-sm mb-4 text-center">Tracking your mastery of subjects and exam readiness.</p>
+    
+    <!-- Subjects grid gets filled dynamically -->
+    <div id="subjectsGrid" class="grid grid-cols-2 gap-4 text-center text-gray-600 text-sm"></div>
+  </div>
+</section>
+
+  <!-- Empty State / Dynamic Updates -->
+<div id="capabilitiesPage">
+  <section class="w-full max-w-5xl bg-gradient-to-br from-green-200 to-blue-700 rounded-3xl shadow-lg p-6 glass  mb-24 mx-auto">
+      <h2 class="text-2xl font-bold text-center text-white mb-4">No Rewards</h2>
+      <div class="flex justify-center">
+        <div id="capabilitiesAnimation" class="w-64 h-64"></div>
+      </div>
+  </section>
+</div>
+</main>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+let currentUser = null;
+let userSubjects = [];
+let sessionStart = new Date();
+let liveElapsedMs = 0;
+let liveTimer = null;
+
+async function checkSubscription() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Not logged in → send to dashboard
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // Fetch subscription record
+  const { data, error } = await supabase
+    .from("subscription")
+    .select("current_plan")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !data) {
+    showUpgradeAlert();
+    return;
+  }
+
+  const allowedPlans = ["trial", "standard", "premium"];
+
+  if (!allowedPlans.includes(data.current_plan)) {
+    showUpgradeAlert();
+  }
+}
+
+function showUpgradeAlert() {
+  Swal.fire({
+    icon: 'warning',
+    title: 'Access Restricted',
+    text: 'This feature is available only for Trial, Standard, or Premium members. Upgrade or activate your plan to continue.',
+    confirmButtonText: 'View Plans',
+    showCancelButton: true,
+    cancelButtonText: 'Go Back',
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = "Subscription.html"; // Upgrade page
+    } else {
+      window.location.href = "dashboard.html"; // Back to dashboard
+    }
+  });
+}
+
+checkSubscription();
+
+async function getCurrentUser() {
+  const { data, error } = await supabase.auth.getUser();
+  if (error) console.error("Error fetching user:", error);
+  return data?.user || null;
+}
+
+currentUser = await getCurrentUser();
+
+// --- Build subject grid ---
+async function buildSubjectsGrid() {
+  if (!currentUser) return;
+
+  const { data: profileData, error } = await supabase
+    .from('profiles')
+    .select('subjects')
+    .eq('id', currentUser.id)
+    .single();
+
+  if (error) return console.error('Error fetching subjects:', error);
+
+  userSubjects = profileData?.subjects || [];
+  const subjectsGrid = document.getElementById('subjectsGrid');
+  subjectsGrid.innerHTML = '';
+
+  userSubjects.forEach(subj => {
+    const subjDiv = document.createElement('div');
+    subjDiv.dataset.subject = subj;
+    subjDiv.className = "p-2 bg-gray-100 rounded-lg";
+    subjDiv.textContent = `${subj}: 0%`;
+    subjectsGrid.appendChild(subjDiv);
+  });
+}
+
+// --- Calculate time spent today ---
+async function getTodayHours() {
+  if (!currentUser) return 0;
+
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+
+  const { data, error } = await supabase
+    .from('user_activity')
+    .select('started_at, ended_at')
+    .eq('user_id', currentUser.id)
+    .eq('page_name', '30DaysMaster')
+    .gte('started_at', startOfDay.toISOString());
+
+  if (error) {
+    console.error('Failed fetching user activity:', error);
+    return 0;
+  }
+
+  let totalMs = 0;
+  data.forEach(a => {
+    if (a.started_at && a.ended_at) {
+      totalMs += new Date(a.ended_at) - new Date(a.started_at);
+    }
+  });
+
+  totalMs += liveElapsedMs;
+  return totalMs / (1000 * 60 * 60); // hours
+}
+
+// --- Live timer ---
+function startLiveTimer() {
+  if (liveTimer) clearInterval(liveTimer);
+  liveTimer = setInterval(() => {
+    liveElapsedMs = new Date() - sessionStart;
+  }, 5000);
+}
+
+// --- Update capabilities ---
+async function updateCapabilities() {
+  if (!currentUser) return null;
+
+  try {
+    // --- Fetch user progress ---
+    const { data: progressData, error: progressError } = await supabase
+      .from('user_progress')
+      .select('subjects_progress')
+      .eq('user_id', currentUser.id)
+      .single();
+    if (progressError || !progressData) throw progressError;
+
+    const subjectsProgress = progressData.subjects_progress || {};
+    let totalDaysPossible = 0;
+    let completedDaysCount = 0;
+
+    // --- FOCUS %: cramming & skipped-day penalties ---
+    for (let subj in subjectsProgress) {
+      const completedDays = subjectsProgress[subj].completed_days || [];
+      const dayMap = {};
+      completedDays.forEach(d => {
+        const dayStr = new Date(d).toISOString().slice(0,10);
+        dayMap[dayStr] = (dayMap[dayStr] || 0) + 1;
+      });
+
+      // Count first completion, penalize extra completions
+      for (let dayStr in dayMap) {
+        completedDaysCount += 1;
+        const extra = dayMap[dayStr] - 1;
+        if (extra > 0) completedDaysCount -= extra; // -1% per extra completion
+      }
+
+      // Penalize skipped days beyond 2
+      const uniqueDays = Object.keys(dayMap).map(d => new Date(d)).sort((a,b)=>a-b);
+      for (let i = 1; i < uniqueDays.length; i++) {
+        const diffDays = Math.floor((uniqueDays[i] - uniqueDays[i-1]) / (1000*60*60*24));
+        if (diffDays > 2) completedDaysCount -= (diffDays - 2);
+      }
+
+      totalDaysPossible += 30; // max 30 days per subject
+    }
+
+    let focusPercent = totalDaysPossible > 0 ? Math.round((completedDaysCount / totalDaysPossible) * 100) : 0;
+    focusPercent = Math.max(0, Math.min(focusPercent, 100));
+
+    // --- PROBLEM SOLVING % ---
+    let totalScore = 0, totalPossible = 0;
+    const academicPercentages = {};
+    for (let subj in subjectsProgress) {
+      const quizzes = subjectsProgress[subj].quizzes || {};
+      let subScore = 0, subTotal = 0;
+      for (let q in quizzes) {
+        subScore += quizzes[q].score || 0;
+        subTotal += quizzes[q].total || 0;
+      }
+      totalScore += subScore;
+      totalPossible += subTotal;
+      academicPercentages[subj] = subTotal > 0 ? Math.round((subScore / subTotal) * 100) : 0;
+    }
+    const problemPercent = totalPossible > 0 ? Math.round((totalScore / totalPossible) * 100) : 0;
+
+    // --- TIME MANAGEMENT %: average-per-day ---
+    const { data: activityData, error: activityError } = await supabase
+      .from('user_activity')
+      .select('started_at, ended_at')
+      .eq('user_id', currentUser.id)
+      .eq('page_name', '30DaysMaster');
+
+    let totalMs = 0;
+    const activeDaysSet = new Set();
+
+    if (activityData) {
+      activityData.forEach(a => {
+        if (a.started_at && a.ended_at) {
+          totalMs += new Date(a.ended_at) - new Date(a.started_at);
+          const dayStr = new Date(a.started_at).toISOString().slice(0,10);
+          activeDaysSet.add(dayStr);
+        }
+      });
+    }
+    totalMs += liveElapsedMs;
+    const activeDays = Math.max(activeDaysSet.size, 1); // avoid divide by zero
+
+    const avgHours = totalMs / (1000*60*60) / activeDays;
+
+    const minHours = 1;
+    const maxHours = 6;
+    let timePercent = 0, timeMsg = '', timeColor = '';
+
+    if (avgHours < minHours) {
+      timePercent = (avgHours / minHours) * 50;
+      timeMsg = `Average too low: ${avgHours.toFixed(1)} hrs/day`;
+      timeColor = 'bg-red-800';
+    } else if (avgHours > maxHours) {
+      timePercent = 100;
+      timeMsg = `Average too high: ${avgHours.toFixed(1)} hrs/day`;
+      timeColor = 'bg-red-800';
+    } else {
+      const ratio = (avgHours - minHours) / (maxHours - minHours);
+      timePercent = Math.round(ratio * 100);
+      timeMsg = `Average study: ${avgHours.toFixed(1)} hrs/day`;
+      if (ratio < 0.4) timeColor = 'bg-green-400';
+      else if (ratio < 0.7) timeColor = 'bg-yellow-400';
+      else timeColor = 'bg-purple-500';
+    }
+
+    // --- UPDATE UI ---
+    const capabilitiesSummary = document.getElementById('capabilitiesSummary');
+
+    // Focus
+    const focusEl = capabilitiesSummary.querySelector('[data-capability="focus"]');
+    focusEl.querySelector('.progress-bar-inner').style.width = focusPercent + '%';
+    focusEl.querySelector('.progress-label').textContent = `${focusPercent}% Completed`;
+
+    // Problem Solving
+    const problemEl = capabilitiesSummary.querySelector('[data-capability="problem_solving"]');
+    problemEl.querySelector('.progress-bar-inner').style.width = problemPercent + '%';
+    problemEl.querySelector('.progress-label').textContent = `${problemPercent}% Completed`;
+
+    // Time Management
+    const timeEl = capabilitiesSummary.querySelector('[data-capability="time_management"]');
+    const progressInner = timeEl.querySelector('.progress-bar-inner');
+
+    // Decide card and bar colors based on avgHours
+let cardColor = '';
+let barColor = '';
+
+if (avgHours < minHours) {
+  cardColor = 'bg-red-600';
+  barColor = 'bg-red-300'; // lighter shade for contrast
+  timeMsg = `Average too low: ${avgHours.toFixed(1)} hrs/day`;
+} else if (avgHours > maxHours) {
+  cardColor = 'bg-red-600';
+  barColor = 'bg-red-300';
+  timeMsg = `Average too high: ${avgHours.toFixed(1)} hrs/day`;
+} else {
+  const ratio = (avgHours - minHours) / (maxHours - minHours);
+  if (ratio < 0.4) { cardColor = 'bg-yellow-400'; barColor = 'bg-yellow-100'; timeMsg = `Average study: ${avgHours.toFixed(1)} hrs/day`; }
+  else if (ratio < 0.7) { cardColor = 'bg-green-400'; barColor = 'bg-green-100'; timeMsg = `Average study: ${avgHours.toFixed(1)} hrs/day`; }
+  else { cardColor = 'bg-blue-500'; barColor = 'bg-blue-200'; timeMsg = `Average study: ${avgHours.toFixed(1)} hrs/day`; }
+}
+
+// Update progress bar
+progressInner.style.width = timePercent + '%';
+progressInner.className = `progress-bar-inner h-3 rounded-full ${barColor}`;
+
+// Update progress label
+timeEl.querySelector('.progress-label').textContent = timeMsg;
+
+// Update card background
+timeEl.classList.remove('bg-purple-400','bg-red-600','bg-yellow-400','bg-green-400','bg-blue-500');
+timeEl.classList.add(cardColor);
+
+    // Academic Skills Grid
+    const subjectsGrid = document.getElementById('subjectsGrid');
+    userSubjects.forEach(subj => {
+      const percent = academicPercentages[subj] || 0;
+      const subjDiv = subjectsGrid.querySelector(`[data-subject="${subj}"]`);
+      if (subjDiv) {
+        subjDiv.textContent = `${subj}: ${percent}%`;
+        subjDiv.className = "p-2 rounded-lg";
+        if (percent < 40) subjDiv.classList.add("bg-red-600","text-white");
+        else if (percent < 60) subjDiv.classList.add("bg-yellow-500","text-white");
+        else if (percent < 80) subjDiv.classList.add("bg-green-500","text-white");
+        else if (percent < 100) subjDiv.classList.add("bg-blue-500","text-white");
+        else subjDiv.classList.add("bg-black","text-white","font-bold","ring-2","ring-black");
+      }
+    });
+
+    return { focusPercent, problemPercent, academicPercentages, timePercent, timeMsg, timeColor };
+
+  } catch(err) {
+    console.error("Error updating capabilities:", err);
+    return null;
+  }
+}
+
+// --- Confetti animation ---
+function spawnConfetti(parent, totalCount = 1000, waveSize = 50, waveDelay = 200) {
+  if (!parent) return;
+
+  let spawned = 0;
+  const colors = ['#FF3F3F', '#FFBF3F', '#3FFF3F', '#3FC5FF', '#C53FFF', '#FF3FD1'];
+
+  const waveInterval = setInterval(() => {
+    const count = Math.min(waveSize, totalCount - spawned);
+
+    for (let i = 0; i < count; i++) {
+      const confetti = document.createElement('div');
+      const size = Math.random() * 6 + 6; // 6–12px squares
+      confetti.style.position = 'fixed';
+      confetti.style.zIndex = 10000;
+      confetti.style.width = size + 'px';
+      confetti.style.height = size + 'px';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.top = '0px';
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.opacity = Math.random() * 0.8 + 0.4;
+      confetti.style.borderRadius = '0';
+      confetti.style.pointerEvents = 'none';
+      confetti.style.boxShadow = `0 0 6px ${confetti.style.backgroundColor}`;
+
+      document.body.appendChild(confetti);
+
+      const fallDuration = 4000 + Math.random() * 2000;
+      const horizontalShift = (Math.random() - 0.5) * 200;
+      const rotateX = 360 + Math.random() * 720;
+      const rotateY = 360 + Math.random() * 720;
+
+      confetti.animate([
+        { transform: `translate(0,0) rotateX(0deg) rotateY(0deg)` },
+        { transform: `translate(${horizontalShift}px, ${window.innerHeight + 40}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)` }
+      ], {
+        duration: fallDuration,
+        easing: 'ease-in-out',
+        fill: 'forwards'
+      });
+
+      setTimeout(() => confetti.remove(), fallDuration);
+    }
+
+    spawned += count;
+    if (spawned >= totalCount) clearInterval(waveInterval);
+  }, waveDelay);
+}
+
+// --- Reward section ---
+async function showPerformanceRewardByScore(focusPercent, problemPercent, academicPercentages) {
+  if (!currentUser) return;
+
+  const storageKey = `rewardFeedback-${currentUser.id}`;
+  const storedData = JSON.parse(localStorage.getItem(storageKey) || "{}");
+  const now = Date.now();
+  const fiveDays = 5 * 24 * 60 * 60 * 1000; // 5 days in ms
+
+  const academicAvg = Object.values(academicPercentages).length > 0
+      ? Math.round(Object.values(academicPercentages).reduce((a,b)=>a+b,0)/Object.values(academicPercentages).length)
+      : 0;
+  const overallPercent = Math.round((focusPercent + problemPercent + academicAvg)/3);
+
+  // Check if there is an existing reward
+  if (storedData.timestamp && storedData.score) {
+    const age = now - storedData.timestamp;
+
+    // If still within 5 days AND no higher score, don't retrigger
+    if (age < fiveDays && overallPercent <= storedData.score) {
+      return; 
+    }
+  }
+
+  // --- Build message ---
+  let message = '', bgClass = '';
+
+if (overallPercent < 40) {
+    message = `Keep Going!\nYour efforts are being tracked, and You are on the path to unlocking exclusive rewards based on your performance.`;
+    bgClass = 'from-red-400 to-yellow-400';
+  } else if (overallPercent < 60) {
+    message = `Nice Work!\nThis performance could earn you special rewards.\n\nSee what’s possible → rewards.html`;
+    bgClass = 'from-yellow-400 to-green-300';
+  } else if (overallPercent < 80) {
+    message = `Great Job!\nYour hard work is paying off and opens doors to exclusive rewards.\n\nCheck more → rewards.html`;
+    bgClass = 'from-green-300 to-blue-400';
+  } else if (overallPercent < 100) {
+    message = `Awesome!\nYou’re performing at a high level, giving you a strong chance to win exciting rewards.\n\nExplore → rewards.html`;
+    bgClass = 'from-blue-400 to-purple-500';
+  } else {
+    message = `🏆 Outstanding!\nYour top performance qualifies you for elite rewards.\n\nFind out more → rewards.html`;
+    bgClass = 'from-purple-600 to-pink-500';
+  }
+
+const section = document.querySelector('#capabilitiesPage section:last-child');
+if (!section) return;
+
+const h2 = section.querySelector('h2');
+if (h2) h2.textContent = "Performance Update";
+
+// Remove any previous reward content
+const existingDiv = section.querySelector('.reward-content');
+if (existingDiv) existingDiv.remove();
+
+// Container for percentage + message
+const containerDiv = document.createElement('div');
+containerDiv.className = 'reward-content text-white text-center mt-2 whitespace-pre-line text-lg';
+
+// Show performance %
+const percentLine = document.createElement('p');
+percentLine.className = 'font-semibold mb-2';
+percentLine.textContent = `You are currently at ${overallPercent}% overall performance.`;
+
+// Message with link
+const messageDiv = document.createElement('div');
+messageDiv.innerHTML = message.replace(
+  /→ rewards.html/,
+  `<a href="rewards.html" class="underline font-semibold text-white">rewards page</a>`
+);
+
+// Append both
+containerDiv.appendChild(percentLine);
+containerDiv.appendChild(messageDiv);
+section.appendChild(containerDiv);
+
+  section.className = `w-full max-w-5xl rounded-3xl shadow-lg p-6 glass mb-24 mx-auto bg-gradient-to-br ${bgClass}`;
+
+  spawnConfetti(document.body, 1000, 50, 200);
+
+  // Save score + timestamp
+  localStorage.setItem(storageKey, JSON.stringify({
+    score: overallPercent,
+    timestamp: now
+  }));
+}
+
+// --- Hide expired rewards after 5 days ---
+function checkRewardExpiry() {
+  if (!currentUser) return;
+  const storageKey = `rewardFeedback-${currentUser.id}`;
+  const storedData = JSON.parse(localStorage.getItem(storageKey) || "{}");
+  if (!storedData.timestamp) return;
+
+  const now = Date.now();
+  const fiveDays = 5 * 24 * 60 * 60 * 1000;
+
+  if (now - storedData.timestamp >= fiveDays) {
+    // Remove reward content
+    const section = document.querySelector('#capabilitiesPage section:last-child');
+    if (section) {
+      const existingDiv = section.querySelector('.reward-content');
+      if (existingDiv) existingDiv.remove();
+      section.className = ""; // reset style
+    }
+    localStorage.removeItem(storageKey);
+  }
+}
+
+// Run expiry check on page load
+checkRewardExpiry();
+
+// --- Main ---
+if (currentUser) {
+  await buildSubjectsGrid();
+  startLiveTimer();
+
+  const percentages = await updateCapabilities();
+  if (percentages) {
+    const { focusPercent, problemPercent, academicPercentages } = percentages;
+
+    // Trigger reward based on overall score
+    const academicAvg = Object.values(academicPercentages).length > 0
+        ? Math.round(Object.values(academicPercentages).reduce((a,b)=>a+b,0)/Object.values(academicPercentages).length)
+        : 0;
+    const overallPercent = Math.round((focusPercent + problemPercent + academicAvg)/3);
+
+    if (overallPercent >= 60) { // adjust threshold as needed
+      showPerformanceRewardByScore(focusPercent, problemPercent, academicPercentages);
+    }
+  }
+}
+</script>
+<script>
+    // Example Lottie Animation for empty state
+    lottie.loadAnimation({
+      container: document.getElementById('capabilitiesAnimation'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'https://assets10.lottiefiles.com/packages/lf20_jtbfg2nb.json' // example JSON animation
+    });
+</script>
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const menuIcon = document.getElementById("menuIcon");
+  const blurOverlay = document.getElementById("blurOverlay");
+  const sidebar = document.querySelector("aside");
+
+  menuBtn.addEventListener("click", () => {
+    // Toggle icon
+    menuIcon.classList.toggle("fa-bars");
+    menuIcon.classList.toggle("fa-xmark");
+
+    // Toggle sidebar
+    sidebar.classList.toggle("hidden");
+    sidebar.classList.toggle("absolute");
+    sidebar.classList.toggle("z-40");
+    sidebar.classList.toggle("h-screen");
+
+    // Toggle blur overlay
+    blurOverlay.classList.toggle("hidden");
+  });
+
+  blurOverlay.addEventListener("click", () => {
+    menuIcon.classList.add("fa-bars");
+    menuIcon.classList.remove("fa-xmark");
+    sidebar.classList.add("hidden");
+    sidebar.classList.remove("absolute", "z-40", "h-screen");
+    blurOverlay.classList.add("hidden");
+  });
+</script>
+</body>
+</html>

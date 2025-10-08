@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Student Help</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-r from-blue-300 via-blue-100 to-blue-300 min-h-screen flex flex-col items-center">
+
+  <!-- Header with gradient -->
+  <header class="w-full bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 text-white p-6 shadow-md">
+    <h1 class="text-3xl font-bold text-center">Top Student Help Desk</h1>
+    <p class="text-center mt-1">Get study help, tips, and resources instantly</p>
+  </header>
+
+  <main class="w-full max-w-3xl mt-10 p-4">
+
+    <!-- Help Request Form with gradient card -->
+    <section class="bg-gradient-to-r from-purple-100 via-pink-100 to-yellow-100 p-6 rounded-xl shadow-lg">
+      <h2 class="text-xl font-semibold mb-4 text-purple-700">Ask a Question</h2>
+      <form id="helpForm" class="space-y-4">
+        <div>
+          <label class="block font-medium mb-1 text-gray-700">Your Name</label>
+          <input type="text" id="studentName" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-purple-400" placeholder="John Doe" required>
+        </div>
+        <div>
+          <label class="block font-medium mb-1 text-gray-700">Your Email</label>
+          <input type="email" id="studentEmail" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-purple-400" placeholder="john@example.com" required>
+        </div>
+        <div>
+          <label class="block font-medium mb-1 text-gray-700">Your Question</label>
+          <textarea id="studentQuestion" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-purple-400" rows="4" placeholder="Type your question here..." required></textarea>
+        </div>
+        <button type="submit" class="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-5 py-2 rounded-xl hover:scale-105 transform transition flex items-center justify-center">
+          <i class="fas fa-paper-plane mr-2"></i> Submit Question
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Footer with gradient -->
+  <footer class="w-full text-center p-4 mt-auto bg-gradient-to-r from-blue-400 to-purple-500 text-white">
+    <p>&copy; 2025 Top Student. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Handle form submission with SweetAlert
+    document.getElementById('helpForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('studentName').value;
+      const email = document.getElementById('studentEmail').value;
+      const question = document.getElementById('studentQuestion').value;
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Question Submitted!',
+        text: `Thanks ${name}, we will get back to you at ${email}.`,
+      });
+
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>

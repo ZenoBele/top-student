@@ -74,7 +74,7 @@
       message.textContent = '';
       
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/reset-password.html' // Adjust as needed
+        redirectTo: window.location.origin + 'reset.html' // Adjust as needed
       });
 
       loader.classList.add('hidden');

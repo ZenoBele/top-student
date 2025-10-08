@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Student - University Application (Step 2)</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.6s ease forwards;
+  }
+  .animate-fadeIn.delay-150 { animation-delay: 0.15s; }
+  .animate-fadeIn.delay-300 { animation-delay: 0.3s; }
+  .animate-fadeIn.delay-450 { animation-delay: 0.45s; }
+  .animate-fadeIn.delay-600 { animation-delay: 0.6s; }
+</style>
+
+</head>
+<body class="bg-white text-gray-800">
+  <!-- Header -->
+  <header class="bg-gray-700 shadow mb-6">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="text-lg font-bold text-white">Top Student</span>
+      </div>
+      <nav class="flex gap-6 text-base text-white">
+        <a href="https://www.google.com/search?q=south+african+universities" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Ex</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">Explore Universities</span>
+        </a>
+        <a href="https://www.google.com/search?q=university+application+tips+south+africa" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">App</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">Application Tips</span>
+        </a>
+        <a href="nsfas.html" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">NSFAS</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">NSFAS</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto p-6 text-center">
+    <h1 class="text-3xl font-bold text-blue-500 mb-2">Choose Your Universities</h1>
+    <p class="text-sm text-gray-600 mb-10">Step 2 of 5 – Select your top 3 public universities in South Africa that you wish to apply to.</p>
+
+    <!-- Hero Step Logic Section -->
+    <div class="flex flex-wrap justify-center gap-6 mb-12">
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold text-xl">Step</br>1</div>
+        <span class="mt-2 text-sm font-medium text-blue-500">How to Apply</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-green-500 text-white font-bold text-xl">Step</br>2</div>
+        <span class="mt-2 text-sm font-medium text-gray-600">Choose University</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-yellow-500 text-white font-bold text-xl">Step</br>3</div>
+        <span class="mt-2 text-sm font-medium text-gray-600">Agree to Terms</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-purple-500 text-white font-bold text-xl">Step</br>4</div>
+        <span class="mt-2 text-sm font-medium text-gray-600">Personal Info</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-red-500 text-white font-bold text-xl">Step</br>5</div>
+        <span class="mt-2 text-sm font-medium text-gray-600">What’s Next</span>
+      </div>
+    </div>
+	
+	<div class="flex justify-center">
+  <div class="mt-8 p-5 bg-blue-100/70 rounded-xl border border_blue-300 text-sm text-blue-900 shadow-sm max-w-xl w-full">
+    <div class="flex flex-col items-center text-center gap-3">
+      <i class="fa-solid fa-arrow-right text-blue-600 text-lg"></i>
+      <div>
+        <strong class="block text-blue-800 mb-1">Next Step: Step 2 – Choose University</strong>
+        <p>You'll Choose University and Courses. Check your selections, then continue.</p>
+        <div class="mt-4 flex gap-4 justify-center">
+		  <a href="dashboard.html" class="inline-block bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded">
+            ← Back
+          </a>
+          <a href="step2.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded">
+            Next →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="max-w-3xl mx-auto px-6 py-10 bg-white rounded-lg shadow-lg mb-16">
+  <ul class="space-y-8">
+    <li class="flex items-start space-x-4 text-blue-700 hover:text-blue-900 cursor-pointer transition-colors duration-300 animate-fadeIn">
+      <i class="fas fa-file-alt mt-1 text-2xl"></i>
+      <p class="font-semibold leading-relaxed">
+        You’ll start with clear, step-by-step instructions on preparing your application — including deadlines and required documents —<br>
+        so you feel confident and organized right from the beginning.
+      </p>
+    </li>
+    <li class="flex items-start space-x-4 text-blue-600 hover:text-blue-800 cursor-pointer transition-colors duration-300 animate-fadeIn delay-150">
+      <i class="fas fa-university mt-1 text-2xl"></i>
+      <p class="font-semibold leading-relaxed">
+        Then, choose your preferred universities carefully, weighing options like courses and admission criteria<br>
+        to make the best decisions for your future.
+      </p>
+    </li>
+    <li class="flex items-start space-x-4 text-blue-500 hover:text-blue-700 cursor-pointer transition-colors duration-300 animate-fadeIn delay-300">
+      <i class="fas fa-file-signature mt-1 text-2xl"></i>
+      <p class="font-semibold leading-relaxed">
+        Next, review and accept the important terms and conditions, ensuring you understand everything about the process and your commitments.
+      </p>
+    </li>
+    <li class="flex items-start space-x-4 text-blue-400 hover:text-blue-600 cursor-pointer transition-colors duration-300 animate-fadeIn delay-450">
+      <i class="fas fa-user-edit mt-1 text-2xl"></i>
+      <p class="font-semibold leading-relaxed">
+        After that, fill in your personal and academic details accurately — this is essential for a smooth application review.
+      </p>
+    </li>
+    <li class="flex items-start space-x-4 text-blue-300 hover:text-blue-500 cursor-pointer transition-colors duration-300 animate-fadeIn delay-600">
+      <i class="fas fa-check-circle mt-1 text-2xl"></i>
+      <p class="font-semibold leading-relaxed">
+        Finally, once submitted, you’ll get clear guidance on what comes next — timelines, interviews, and how to prepare for the next phase.
+      </p>
+    </li>
+  </ul>
+</section>
+
+<section id="universities" class="relative max-w-5xl mx-auto px-6 py-10">
+  <h2 class="text-3xl font-bold text-center text-blue-900 mb-6">Explore South African Universities</h2>
+  <div class="flex justify-center mt-4 mb-4 space-x-2">
+    <button class="dot w-3 h-3 bg-gray-400 rounded-full"></button>
+    <button class="dot w-3 h-3 bg-gray-400 rounded-full"></button>
+    <button class="dot w-3 h-3 bg-gray-400 rounded-full"></button>
+    <button class="dot w-3 h-3 bg-gray-400 rounded-full"></button>
+    <button class="dot w-3 h-3 bg-gray-400 rounded-full"></button>
+  </div>
+
+  <!-- Container with overflow-hidden -->
+  <div class="overflow-hidden relative rounded-2xl">
+    <div class="slides flex transition-transform duration-1000 ease-in-out gap-32">
+
+<div class="slide flex-shrink-0 w-full p-8 bg-gradient-to-br from-red-900 via-red-800 to-blue-900 text-white rounded-2xl shadow-lg space-y-6">
+  <!-- Header -->
+  <h2 class="text-3xl font-bold mb-2 text-center">University of South Africa (UNISA)</h2>
+  <p class="text-gray-200 text-center text-lg">
+    The largest open distance learning university in Africa, serving over <strong>400,000 students</strong>. Study at your own pace while working.
+  </p>
+
+  <!-- Info Cards Grid -->
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- Admissions -->
+    <div class="p-5 bg-white text-red-900 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Admissions</h3>
+      <p class="text-gray-700 mb-2">
+        Apply online twice a year. Ensure you meet minimum requirements and submit certified documents.
+      </p>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Applications usually open in <strong>September</strong></li>
+        <li>Apply at <a href="https://www.unisa.ac.za" target="_blank" class="text-red-900 underline">www.unisa.ac.za</a></li>
+        <li>NSFAS funding available for qualifying students</li>
+      </ul>
+    </div>
+
+    <!-- Faculties -->
+    <div class="p-5 bg-white text-red-900 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Faculties & Colleges</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>College of Science, Engineering & Technology</li>
+        <li>College of Human Sciences</li>
+        <li>College of Education</li>
+        <li>College of Law</li>
+        <li>College of Economic & Management Sciences</li>
+        <li>College of Accounting Sciences</li>
+        <li>College of Graduate Studies</li>
+      </ul>
+    </div>
+
+    <!-- Fees & Funding -->
+    <div class="p-5 bg-white text-red-900 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Fees & Funding</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Average module cost: <strong>ZAR 1,800 – 2,500</strong></li>
+        <li>Registration fees required before enrolment</li>
+        <li>NSFAS covers full costs for eligible students</li>
+      </ul>
+    </div>
+
+    <!-- Why Choose UNISA -->
+    <div class="p-5 bg-white text-red-900 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Why Choose UNISA?</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Flexible distance and online learning</li>
+        <li>Largest selection of courses in Africa</li>
+        <li>Affordable and accessible</li>
+        <li>Internationally recognized</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="text-center mt-6">
+    <a href="https://www.unisa.ac.za" target="_blank" 
+       class="bg-white text-red-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+      Visit UNISA Official Website
+    </a>
+  </div>
+</div>
+
+<div class="slide flex-shrink-0 w-full p-8 bg-gradient-to-br from-yellow-600 to-yellow-700 text-white rounded-2xl shadow-lg space-y-6">
+  <!-- Header -->
+  <h2 class="text-3xl font-bold mb-2 text-center">University of Johannesburg (UJ)</h2>
+  <p class="text-gray-100 text-center text-lg">
+    Modern, dynamic university with over <strong>50,000 students</strong>. Offers a wide range of programs across multiple campuses.
+  </p>
+
+  <!-- Info Cards Grid -->
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- Admissions -->
+    <div class="p-5 bg-white text-yellow-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Admissions</h3>
+      <p class="text-gray-700 mb-2">
+        Apply online for undergraduate or postgraduate programs. Ensure all academic transcripts and documents are ready.
+      </p>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Applications open around <strong>March</strong> for the following year</li>
+        <li>Apply at <a href="https://www.uj.ac.za" target="_blank" class="text-yellow-800 underline">www.uj.ac.za</a></li>
+        <li>NSFAS funding available for eligible students</li>
+      </ul>
+    </div>
+
+    <!-- Faculties -->
+    <div class="p-5 bg-white text-yellow-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Faculties & Colleges</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Faculty of Engineering & the Built Environment</li>
+        <li>Faculty of Health Sciences</li>
+        <li>Faculty of Science</li>
+        <li>Faculty of Humanities</li>
+        <li>Faculty of Law</li>
+        <li>Faculty of Education</li>
+        <li>Faculty of Economic & Financial Sciences</li>
+      </ul>
+    </div>
+
+    <!-- Fees & Funding -->
+    <div class="p-5 bg-white text-yellow-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Fees & Funding</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Tuition depends on program and modules selected</li>
+        <li>Registration fees required for official enrolment</li>
+        <li>NSFAS covers full costs for eligible South African students</li>
+      </ul>
+    </div>
+
+    <!-- Why Choose UJ -->
+    <div class="p-5 bg-white text-yellow-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Why Choose UJ?</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Modern, multi-campus university</li>
+        <li>Wide range of programs and disciplines</li>
+        <li>Strong industry links and research opportunities</li>
+        <li>Vibrant campus life and diversity</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="text-center mt-6">
+    <a href="https://www.uj.ac.za" target="_blank" 
+       class="bg-white text-yellow-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+      Visit UJ Official Website
+    </a>
+  </div>
+</div>
+
+<div class="slide flex-shrink-0 w-full p-8 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-700 text-white rounded-2xl shadow-lg space-y-6">
+  <!-- Header -->
+  <h2 class="text-3xl font-bold mb-2 text-center">University of Cape Town (UCT)</h2>
+  <p class="text-gray-200 text-center text-lg">
+    South Africa's oldest university, renowned for academic excellence with over <strong>30,000 students</strong>.
+  </p>
+
+  <!-- Info Cards Grid -->
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- Admissions -->
+    <div class="p-5 bg-white text-blue-900 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Admissions</h3>
+      <p class="text-gray-700 mb-2">
+        Apply online for undergraduate and postgraduate programs. Ensure you meet minimum requirements and submit certified documents.
+      </p>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Applications usually open in <strong>Mid-year</strong></li>
+        <li>Apply at <a href="https://www.uct.ac.za" target="_blank" class="text-blue-900 underline">www.uct.ac.za</a></li>
+        <li>Scholarships and financial aid available</li>
+      </ul>
+    </div>
+
+    <!-- Faculties -->
+    <div class="p-5 bg-white text-blue-900 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Faculties & Colleges</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Commerce</li>
+        <li>Engineering & the Built Environment</li>
+        <li>Health Sciences</li>
+        <li>Humanities</li>
+        <li>Law</li>
+        <li>Science</li>
+      </ul>
+    </div>
+
+    <!-- Fees & Funding -->
+    <div class="p-5 bg-white text-blue-900 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Fees & Funding</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Undergraduate fees: ~ZAR 60,000 – 70,000 per year</li>
+        <li>Postgraduate fees vary by program</li>
+        <li>Scholarships and NSFAS available for eligible students</li>
+      </ul>
+    </div>
+
+    <!-- Why Choose UCT -->
+    <div class="p-5 bg-white text-blue-900 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Why Choose UCT?</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>World-class academic programs</li>
+        <li>Beautiful campus at the foot of Table Mountain</li>
+        <li>Strong research focus</li>
+        <li>Internationally recognized degrees</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="text-center mt-6">
+    <a href="https://www.uct.ac.za" target="_blank" 
+       class="bg-white text-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+      Visit UCT Official Website
+    </a>
+  </div>
+</div>
+
+<div class="slide flex-shrink-0 w-full p-8 bg-gradient-to-br from-green-700 via-yellow-400 to-red-600 text-white rounded-2xl shadow-lg space-y-6">
+  <!-- Header -->
+  <h2 class="text-3xl font-bold mb-2 text-center">University of Venda (Univen)</h2>
+  <p class="text-gray-100 text-center text-lg">
+    A vibrant university located in Limpopo, offering a range of programs with strong community engagement and cultural heritage.
+  </p>
+
+  <!-- Info Cards Grid -->
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- Admissions -->
+    <div class="p-5 bg-white text-green-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Admissions</h3>
+      <p class="text-gray-700 mb-2">
+        Apply online for undergraduate and postgraduate programs. Ensure you meet entry requirements.
+      </p>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Applications open in <strong>September</strong> for the following year</li>
+        <li>Apply at <a href="https://www.univen.ac.za" target="_blank" class="text-green-800 underline">www.univen.ac.za</a></li>
+        <li>NSFAS funding available for qualifying students</li>
+      </ul>
+    </div>
+
+    <!-- Faculties -->
+    <div class="p-5 bg-white text-green-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Faculties & Colleges</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Faculty of Science, Engineering & Agriculture</li>
+        <li>Faculty of Health Sciences</li>
+        <li>Faculty of Humanities, Social Sciences & Education</li>
+        <li>Faculty of Management, Commerce & Law</li>
+      </ul>
+    </div>
+
+    <!-- Fees & Funding -->
+    <div class="p-5 bg-white text-green-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Fees & Funding</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Average annual fees: <strong>ZAR 15,000 – 25,000</strong> depending on program</li>
+        <li>Registration fees required for official enrollment</li>
+        <li>NSFAS covers full costs for eligible students</li>
+      </ul>
+    </div>
+
+    <!-- Why Choose Univen -->
+    <div class="p-5 bg-white text-green-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Why Choose Univen?</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Strong cultural and community focus</li>
+        <li>Modern campus facilities in a serene environment</li>
+		<li>One of the Top University in South Africa</li>
+        <li>Accessible and welcoming for all students</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="text-center mt-6">
+    <a href="https://www.univen.ac.za" target="_blank" 
+       class="bg-green-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300">
+      Visit Univen Official Website
+    </a>
+  </div>
+</div>
+
+<!-- CPUT Slide (Tailwind v2 compatible) -->
+<div class="slide flex-shrink-0 w-full p-8 bg-gradient-to-br from-blue-700 via-blue-500 to-blue-400 text-white rounded-2xl shadow-lg space-y-6">
+  <!-- Header -->
+  <h2 class="text-3xl font-bold mb-2 text-center">Cape Peninsula University of Technology (CPUT)</h2>
+  <p class="text-gray-100 text-center text-lg">
+    Located in Cape Town, CPUT is known for practical, technology-driven programs and its marine & ocean studies. Offers <strong>30,000+ students</strong> hands-on learning.
+  </p>
+
+  <!-- Info Cards Grid -->
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- Admissions -->
+    <div class="p-5 bg-white text-blue-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Admissions</h3>
+      <p class="text-gray-700 mb-2">
+        Applications open once a year. Ensure you meet program requirements and submit certified documents online.
+      </p>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Applications open in <strong>September</strong></li>
+        <li>Apply at <a href="https://www.cput.ac.za" target="_blank" class="text-blue-800 underline">www.cput.ac.za</a></li>
+        <li>NSFAS funding available for qualifying students</li>
+      </ul>
+    </div>
+
+    <!-- Faculties -->
+    <div class="p-5 bg-white text-blue-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Faculties & Programs</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Engineering & the Built Environment</li>
+        <li>Business & Management Sciences</li>
+        <li>Education & Social Sciences</li>
+        <li>Applied Sciences, including Marine & Ocean Studies</li>
+        <li>Health & Wellness programs</li>
+        <li>Design, Technology & Innovation</li>
+      </ul>
+    </div>
+
+    <!-- Fees & Funding -->
+    <div class="p-5 bg-white text-blue-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Fees & Funding</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Average annual tuition: <strong>ZAR 20,000 – 30,000</strong> depending on program</li>
+        <li>Registration fees required before enrolment</li>
+        <li>NSFAS covers full costs for eligible students</li>
+      </ul>
+    </div>
+
+    <!-- Why Choose CPUT -->
+    <div class="p-5 bg-white text-blue-800 rounded-lg shadow hover:shadow-lg transition duration-300">
+      <h3 class="text-xl font-semibold mb-2">Why Choose CPUT?</h3>
+      <ul class="list-disc list-inside text-gray-600 text-sm">
+        <li>Strong technology & applied science programs</li>
+        <li>Hands-on practical learning experience</li>
+        <li>Marine & ocean-focused research programs</li>
+        <li>Beautiful campuses in Cape Town</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="text-center mt-6">
+    <a href="https://www.cput.ac.za" target="_blank" 
+       class="bg-blue-200 text-blue-800 px-6 py-3 rounded-lg font-semibold hover:bg-blue-400 transition duration-300">
+      Visit CPUT Official Website
+    </a>
+  </div>
+</div>
+    </div>
+  </div>
+  <!-- Dots -->
+</section>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+async function checkSubscription() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Not logged in → send to dashboard
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // Fetch subscription record
+  const { data, error } = await supabase
+    .from("subscription")
+    .select("current_plan")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !data || data.current_plan !== "premium") {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Premium Required',
+      text: 'This feature is only available for Premium members. Upgrade now to continue.',
+      confirmButtonText: 'Upgrade to Premium',
+      showCancelButton: true,
+      cancelButtonText: 'Go Back',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "Subscription.html"; // Upgrade page
+      } else {
+        window.location.href = "dashboard.html"; // Back to dashboard
+      }
+    });
+  }
+}
+
+checkSubscription();
+</script>
+<script>
+  const slides = document.querySelector('.slides');
+const dots = document.querySelectorAll('.dot');
+const allSlides = document.querySelectorAll('.slide');
+const totalSlides = allSlides.length;
+let index = 0;
+
+// Get computed gap between slides
+const gap = parseInt(getComputedStyle(slides).gap) || 0;
+
+function showSlide(i) {
+  const slideWidth = allSlides[0].offsetWidth;
+  slides.style.transform = `translateX(-${i * (slideWidth + gap)}px)`;
+  dots.forEach(dot => dot.classList.remove('bg-blue-600'));
+  dots[i].classList.add('bg-blue-600');
+}
+
+dots.forEach((dot, i) => {
+  dot.addEventListener('click', () => {
+    index = i;
+    showSlide(index);
+  });
+});
+
+// Auto slide every 10 seconds (10000 ms)
+setInterval(() => {
+  index = (index + 1) % totalSlides;
+  showSlide(index);
+}, 100000);
+
+// Initialize
+showSlide(0);
+
+</script>
+
+</body>
+</html>

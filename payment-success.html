@@ -8,18 +8,18 @@
   <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gradient-to-br from-green-100 to-white min-h-screen flex items-center justify-center px-4 relative">
 
   <!-- Success Box -->
-  <div id="success-box" class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl text-center space-y-6 hidden">
+  <div id="success-box" class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl text-center space-y-6">
     <div class="text-green-600 text-5xl">
       <i class="ph ph-check-circle"></i>
     </div>
     <h2 class="text-2xl font-bold text-gray-800">Payment Successful</h2>
     <p id="success-message" class="text-gray-600">Thank you for joining Top Student. You're all set to begin!</p>
 
-    <!-- Buttons -->
     <div class="space-y-3">
       <button onclick="openLogin()" class="w-full py-2 px-4 text-white font-semibold rounded-lg shadow-md bg-green-600 hover:bg-green-700 transition">
         Log in now
@@ -30,20 +30,9 @@
     </div>
   </div>
 
-  <!-- Error Box -->
-  <div id="error-box" class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl text-center space-y-6 hidden">
-    <div class="text-red-600 text-5xl">
-      <i class="ph ph-x-circle"></i>
-    </div>
-    <h2 class="text-2xl font-bold text-gray-800">Payment Processing Failed</h2>
-    <p id="error-message" class="text-gray-600">Something went wrong. Please try again or contact support.</p>
-    <a href="/" class="inline-block mt-4 text-red-600 hover:underline">Back to Home</a>
-  </div>
-
   <!-- Login Modal -->
-  <div id="login-modal" class="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-[50] hidden">
+  <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[50] hidden">
     <div class="bg-white p-6 rounded-xl w-full max-w-md shadow-lg relative space-y-5">
-      <!-- Close Button -->
       <button onclick="closeLogin()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800" aria-label="Close login modal">
         <i class="ph ph-x text-xl"></i>
       </button>
@@ -51,167 +40,104 @@
       <h3 class="text-xl font-bold text-center text-gray-800">Log In</h3>
 
       <form id="login-form" class="space-y-4" novalidate>
-        <input
-          type="email"
-          id="email"
-          required
-          placeholder="Email"
-          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-400"
-          autocomplete="username"
-        />
-        <input
-          type="password"
-          id="password"
-          required
-          placeholder="Password"
-          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-400"
-          autocomplete="current-password"
-        />
+        <input type="email" id="email" required placeholder="Email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-400" autocomplete="username"/>
+        <div class="relative">
+          <input type="password" id="password" required placeholder="Password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-400" autocomplete="current-password"/>
+          <button type="button" onclick="togglePassword()" class="absolute top-2 right-2 text-gray-500">
+            <i id="eye-icon" class="ph ph-eye text-xl"></i>
+          </button>
+        </div>
         <button type="submit" class="w-full py-2 px-4 text-white bg-green-600 hover:bg-green-700 rounded-lg font-semibold">
           Sign In
         </button>
       </form>
 
-<p class="text-sm text-gray-600 text-center">
-        Forgot Pin?
-        <a href="reset.html" class="text-green-600 hover:underline">Contact support</a>
+      <p class="text-sm text-gray-600 text-center">
+        Forgot Pin? <a href="reset.html" class="text-green-600 hover:underline">Reset Password</a>
       </p>
 
       <p class="text-sm text-gray-600 text-center">
-        Need help?
-        <a href="mailto:info@topstudent.co.za" class="text-green-600 hover:underline">Contact support</a>
+        Need help? <a href="mailto:info@topstudent.co.za" class="text-green-600 hover:underline">Contact support</a>
       </p>
     </div>
   </div>
 
   <!-- Loader overlay -->
-  <div id="loader" class="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-[10000] hidden" aria-live="polite" aria-label="Loading">
+  <div id="loader" class="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-[10000] hidden">
     <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-600"></div>
   </div>
 
 <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { supabase } from './js/supabaseClient.js';
 
-  const supabase = createClient(
-    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
-  );
+  window.openLogin = () => document.getElementById('login-modal').classList.remove('hidden');
+  window.closeLogin = () => document.getElementById('login-modal').classList.add('hidden');
 
-  // Make openLogin and closeLogin globally accessible for inline onclick handlers
-  window.openLogin = function() {
-    const modal = document.getElementById('login-modal');
-    if (modal) modal.classList.remove('hidden');
-  };
-
-  window.closeLogin = function() {
-    const modal = document.getElementById('login-modal');
-    if (modal) modal.classList.add('hidden');
-  };
-
-  window.togglePassword = function () {
-    const password = document.getElementById("password");
+  window.togglePassword = () => {
+    const pw = document.getElementById("password");
     const icon = document.getElementById("eye-icon");
-    if (password.type === "password") {
-      password.type = "text";
-      icon.classList.remove("ph-eye");
-      icon.classList.add("ph-eye-slash");
-    } else {
-      password.type = "password";
-      icon.classList.remove("ph-eye-slash");
-      icon.classList.add("ph-eye");
-    }
+    if(pw.type === "password"){ pw.type="text"; icon.classList.replace("ph-eye","ph-eye-slash"); }
+    else { pw.type="password"; icon.classList.replace("ph-eye-slash","ph-eye"); }
   };
 
-  document.addEventListener('DOMContentLoaded', () => {
-    // Show success box on page load
-    const successBox = document.getElementById('success-box');
-    if (successBox) {
-      successBox.classList.remove('hidden');
-    }
-    
-    const form = document.getElementById('login-form');
-    const loader = document.getElementById('loader');
+  const loginForm = document.getElementById('login-form');
+  const loader = document.getElementById('loader');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      loader.classList.remove('hidden');
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+    // 1. Check if account exists
+    const { data: account, error } = await supabase
+      .from('accounts')
+      .select('*')
+      .eq('email', email)
+      .single();
 
-      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
-        email,
-        password
+    if (error || !account) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Account Not Found',
+        text: 'No account exists with this email.',
       });
+      return;
+    }
 
-      if (loginError) {
-        loader.classList.add('hidden');
-        return showToast("Login failed: " + loginError.message, "error");
-      }
+    // 2. Check if account is active
+    if (!account.is_active) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Account Inactive',
+        html: `Your account is either suspended, scheduled for deletion, or inactive.<br>
+               Please <a href="contact.html" class="text-blue-600 underline">contact support</a>.`,
+      });
+      return;
+    }
 
-      const userId = loginData.user.id;
+    // 3. Show loader while signing in
+    loader.classList.remove('hidden');
 
-      // 🔐 Fetch extended profile once
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('role, is_active, first_name, last_paid_at')
-        .eq('id', userId)
-        .single();
+    // 4. Sign in with Supabase auth
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
 
-      if (profileError) {
-        loader.classList.add('hidden');
-        return showToast("Error fetching profile: " + profileError.message, "error");
-      }
+    loader.classList.add('hidden');
 
-      if (!profileData.is_active) {
-        await supabase.auth.signOut();
-        loader.classList.add('hidden');
-        return showToast("Account is inactive or scheduled for deletion.", "error");
-      }
+    if (signInError) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: signInError.message,
+      });
+      return;
+    }
 
-      // ✅ Cache profile in sessionStorage
-      sessionStorage.setItem('user_profile', JSON.stringify(profileData));
-
-      loader.classList.add('hidden');
-
-      // 🚀 Redirect by role
-      switch (profileData.role) {
-        case 'standard':
-          window.location.href = 'standard/standard.html';
-          break;
-        case 'premium':
-          window.location.href = 'premium/premium.html';
-          break;
-        case 'free':
-          window.location.href = 'standard/manage.html';
-          break;
-        case 'unpaid':
-          window.location.href = 'premium/manage.html';
-          break;
-        case 'pending':
-          showToast("pending wait for your account to be approved, try again at 17h00", "error");
-          break;
-        default:
-          showToast("Unknown user role.", "error");
-          break;
-      }
-    });
+    // 5. Success, redirect
+    window.location.href = 'dashboard.html';
   });
-
-  function showToast(message, type = "info") {
-    const box = document.createElement('div');
-    box.textContent = message;
-    box.className = `fixed bottom-5 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded shadow-lg text-white text-sm z-50 transition ${
-      type === "error" ? "bg-red-600" : type === "success" ? "bg-green-600" : "bg-blue-600"
-    }`;
-
-    document.body.appendChild(box);
-    setTimeout(() => {
-      box.remove();
-    }, 3000);
-  }
 </script>
 </body>
 </html>
+
 
 

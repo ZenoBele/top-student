@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Profile - Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; }
+    html { scroll-behavior: smooth; }
+    .card-hover:hover {
+      transform: translateY(-6px);
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+    }
+  </style>
+</head>
+<body class="flex h-screen"
+      style="background: linear-gradient(60deg, white, #6b66c6, white);">
+
+  <!-- Sidebar -->
+  <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden fixed top-2 right-0 p-4 z-50">
+    <button id="menuBtn" class="text-white p-2 rounded bg-transparent focus:outline-none">
+      <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+    </button>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 md:px-6 text-white fixed top-0 z-30 h-24 md:h-24
+                 w-full md:w-3/4 md:ml-80 md:rounded-b-3xl"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff);">
+
+    <div class="flex flex-col ml-16 items-center flex-1 text-center">
+      <h2 class="text-xl md:text-2xl font-bold">Edit Profile</h2>
+    <p class="hidden md:block text-gray-200 text-sm">Update your account details easily</p>
+    </div>
+	  <div class="w-20 md:w-28"></div>
+  </header>
+
+<main class="flex-1 flex flex-col overflow-y-auto relative mt-28 md:ml-64 px-6 md:px-12 space-y-8">
+
+  <form id="profileForm" class="space-y-10">
+
+    <!-- Profile Picture & Personal Info -->
+    <section class="bg-white border border-blue-500 rounded-lg text-indigo-700 shadow rounded-2xl p-6 space-y-6">
+      <div class="flex flex-col items-center mb-6">
+  <img id="profileImage" src="https://mlwxxtvsozhwzjxmsvbg.supabase.co/storage/v1/object/sign/pictures/profile%20(2).png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV84MzZkM2M4Ny0zNGNiLTRmNTYtODAxYy05NmQ2ZGI5MTZiNzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwaWN0dXJlcy9wcm9maWxlICgyKS5wbmciLCJpYXQiOjE3NTU3MTA3NzQsImV4cCI6MTc4NzI0Njc3NH0.mBrVHisalR1v19pjQqE7yquacxhjkjTzz6BGRieiehk" alt="Profile" class="w-24 h-24 rounded-full object-cover border-4 border-indigo-500 shadow">
+  <label for="picture" class="mt-3 cursor-pointer text-sm text-indigo-600 hover:underline">
+    <i class="fa-solid fa-camera"></i> Change Photo
+    <input type="file" id="picture" accept="image/*" class="hidden">
+  </label>
+  
+  <small class="text-sm text-indigo-700">JPG, PNG. Max 2MB.</small>
+</div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="name" class="block mb-1 text-indigo-700 font-medium">First Name</label>
+          <input type="text" id="name" name="name" class="input w-full border border-gray-300 rounded-lg" required />
+        </div>
+        <div>
+          <label for="surname" class="block mb-1 font-medium">Surname</label>
+          <input type="text" id="surname" name="surname" class="input w-full border border-gray-300 rounded-lg" required />
+        </div>
+        <div>
+          <label for="email" class="block mb-1 font-medium">Email</label>
+          <input type="email" id="email" name="email" class="input w-full border border-gray-300 rounded-lg" disabled />
+        </div>
+        <div>
+          <label for="phone" class="block mb-1 font-medium">Phone</label>
+          <input type="tel" id="phone" name="phone" class="input w-full border border-gray-300 rounded-lg" required />
+        </div>
+        <div>
+          <label for="dob" class="block mb-1 font-medium">Date of Birth</label>
+          <input type="date" id="dob" name="dob" class="input w-full border border-gray-300 rounded-lg" required />
+        </div>
+        <div>
+          <label for="gender" class="block mb-1 font-medium">Gender</label>
+          <select id="gender" name="gender" class="input w-full border border-gray-300 rounded-lg" required>
+            <option value="">-- Select --</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education-section" class="bg-white border border-green-500 rounded-lg text-green-700 shadow rounded-2xl p-6 space-y-6">
+      <h3 class="text-xl font-semibold text-green-700 flex items-center gap-2">
+        <i class="fas fa-graduation-cap"></i> Education Details
+      </h3>
+
+      <div>
+        <label for="grade" class="block font-medium mb-1">Grade Level
+          <span class="required-star text-red-600">*</span>
+        </label>
+        <select id="grade" name="grade" class="input w-full border border-gray-300 rounded-lg" required>
+          <option value="">-- Select --</option>
+          <option>Grade 10</option>
+          <option>Grade 11</option>
+          <option>Grade 12</option>
+        </select>
+      </div>
+
+      <!-- Subjects -->
+      <div class="space-y-2">
+        <span id="subject-label" class="block font-medium mb-1">
+          Subjects (Choose up to 4) <span class="required-star text-red-600">*</span>
+        </span>
+        <button id="toggleDropdownBtn" type="button" aria-labelledby="subject-label" 
+          class="input w-full text-left bg-white border border-gray-300 px-3 py-2 rounded-lg hover:border-blue-400 focus:ring focus:ring-blue-200">
+          <span id="selectedSubjectsText">Select up to 4 Subjects</span>
+        </button>
+
+        <div id="subject-section" class="hidden transition-all duration-500 space-y-4 border border-gray-200 rounded-lg p-4 bg-gray-50">
+          <div id="subjects-dropdown" class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+            <label class="inline-flex items-center gap-2"><input type="checkbox" value="Mathematics" name="subjects"> Mathematics</label>
+            <label class="inline-flex items-center gap-2"><input type="checkbox" value="Mathematical Literacy" name="subjects"> Mathematical Literacy</label>
+            <label class="inline-flex items-center gap-2"><input type="checkbox" value="PhysicalSciences" name="subjects"> Physical Sciences</label>
+            <label class="inline-flex items-center gap-2"><input type="checkbox" value="EGD" name="subjects"> Engineering Graphics and Design (EGD)</label>
+            <label class="inline-flex items-center gap-2"><input type="checkbox" value="LifeSciences" name="subjects"> Life Sciences</label>
+            <label class="inline-flex items-center gap-2"><input type="checkbox" value="Accounting" name="subjects"> Accounting</label>
+            <label class="inline-flex items-center gap-2"><input type="checkbox" value="Geography" name="subjects"> Geography</label>
+            <label class="inline-flex items-center gap-2"><input type="checkbox" value="BusinessStudies" name="subjects"> Business Studies</label>
+            <label class="inline-flex items-center gap-2"><input type="checkbox" value="Economics" name="subjects"> Economics</label>
+            <label class="inline-flex items-center gap-2"><input type="checkbox" value="History" name="subjects"> History</label>
+          </div>
+
+          <button id="save-subjects-btn" class="w-full border border-gray-300 rounded-lg md:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+            Save Subjects
+          </button>
+
+          <div id="subject-locked-display" class="hidden flex items-center gap-2 text-green-700 mt-2">
+            <i class="fas fa-lock animate-pulse"></i>
+            <span id="subject-display" class="font-medium"></span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label for="school" class="block font-medium mb-1">School</label>
+        <input type="text" id="school" name="school" class="input w-full border border-gray-300 rounded-lg" />
+      </div>
+    </section>
+
+    <!-- Bio -->
+    <section class="bg-white text-pink-500 border border-pink-500 shadow rounded-2xl p-6 space-y-4">
+      <h3 class="text-xl font-semibold text-pink-500 flex items-center gap-2">
+        <i class="fas fa-info-circle"></i> About Me
+      </h3>
+      <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself..." class="input w-full border border-gray-300 rounded-lg resize-none"></textarea>
+    </section>
+
+    <!-- Parent Details -->
+    <section class="bg-white shadow text-red-500 border border-red-500 rounded-lg rounded-2xl p-6 space-y-4">
+      <label for="parent-phone" class="block text-red-500 mb-1 font-medium">Parent Phone</label>
+      <input type="tel" id="parent-phone" name="parent-phone" class="input w-full border border-gray-300 rounded-lg" />
+    </section>
+
+    <!-- Save Button -->
+    <div class="flex justify-center">
+      <button type="submit" class="bg-gradient-to-r from-indigo-600 mb-4 to-blue-400 hover:opacity-90 text-white font-semibold px-10 py-3 rounded-2xl shadow-lg flex items-center gap-2">
+        <i class="fa-solid fa-save"></i> Save Changes
+      </button>
+    </div>
+
+  </form>
+</main>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+const profileForm = document.getElementById("profileForm");
+const pictureInput = document.getElementById("picture");
+const profileImage = document.getElementById("profileImage");
+const selectedSubjectsText = document.getElementById("selectedSubjectsText");
+const toggleDropdownBtn = document.getElementById("toggleDropdownBtn");
+const subjectSection = document.getElementById("subject-section");
+const checkboxes = document.querySelectorAll("input[name='subjects']");
+const saveSubjectsBtn = document.getElementById("save-subjects-btn");
+
+let selectedSubjects = [];
+let subjectsLocked = false;
+
+// Instant preview on image change
+pictureInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 2 * 1024 * 1024) {
+    Swal.fire({
+      icon: "error",
+      title: "File Too Large",
+      text: "Please select an image smaller than 2MB.",
+      confirmButtonColor: "#EF4444"
+    });
+    pictureInput.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (event) => profileImage.src = event.target.result;
+  reader.readAsDataURL(file);
+});
+
+// Get current user
+async function getUser() {
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) {
+    Swal.fire({ icon: "error", title: "Auth Error", text: "Please log in again.", confirmButtonColor: "#EF4444" });
+    return null;
+  }
+  return user;
+}
+
+// Load profile
+async function loadProfile() {
+  const user = await getUser();
+  if (!user) return;
+  document.getElementById("email").value = user.email || "";
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (error && error.code !== "PGRST116") {
+    Swal.fire({ icon: "error", title: "Load Failed", text: "Could not load profile.", confirmButtonColor: "#EF4444" });
+    return;
+  }
+
+  if (data) {
+    document.getElementById("name").value = data.name || "";
+    document.getElementById("surname").value = data.surname || "";
+    document.getElementById("phone").value = data.phone || "";
+    document.getElementById("dob").value = data.dob || "";
+    document.getElementById("gender").value = data.gender || "";
+    document.getElementById("grade").value = data.grade || "";
+    document.getElementById("school").value = data.school || "";
+    document.getElementById("bio").value = data.bio || "";
+    document.getElementById("parent-phone").value = data.parent_phone || "";
+
+    selectedSubjects = data.subjects || [];
+    subjectsLocked = data.subjects_locked || false;
+
+    checkboxes.forEach(cb => {
+      cb.checked = selectedSubjects.includes(cb.value);
+      cb.disabled = subjectsLocked;
+    });
+    toggleDropdownBtn.disabled = subjectsLocked;
+    selectedSubjectsText.textContent = selectedSubjects.join(", ") || "Select up to 4 Subjects";
+
+    if (data.picture_url) profileImage.src = data.picture_url;
+  }
+}
+
+// Upload picture to private bucket and get signed URL
+async function uploadPicture(userId, file) {
+  const filePath = `${userId}/${file.name}`;
+  const { data, error } = await supabase.storage
+    .from("pictures")
+    .upload(filePath, file, { upsert: true });
+
+  if (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Upload Failed",
+      text: "Could not upload profile picture.",
+      confirmButtonColor: "#EF4444"
+    });
+    return null;
+  }
+
+  // Generate signed URL valid for 1 hour
+  const { data: signedData, error: signedError } = await supabase.storage
+    .from("pictures")
+    .createSignedUrl(filePath, 60 * 60 * 24 * 365);
+
+  if (signedError) {
+    console.error(signedError);
+    return null;
+  }
+
+  return signedData.signedUrl;
+}
+
+// Handle subject selection
+checkboxes.forEach(cb => {
+  cb.addEventListener("change", () => {
+    if (subjectsLocked) return;
+
+    const checked = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
+    if (checked.length > 4) {
+      cb.checked = false;
+      Swal.fire({ icon: "warning", title: "Limit Reached", text: "Select up to 4 subjects.", confirmButtonColor: "#3B82F6" });
+      return;
+    }
+    selectedSubjects = checked;
+  });
+});
+
+// Toggle dropdown
+toggleDropdownBtn.addEventListener("click", () => {
+  if (subjectsLocked) {
+    Swal.fire({ icon: "warning", title: "Subjects Locked", text: "You cannot change subjects.", confirmButtonColor: "#3B82F6" });
+    return;
+  }
+  subjectSection.classList.toggle("hidden");
+});
+
+// Save subjects & lock
+saveSubjectsBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+  if (selectedSubjects.length === 0) {
+    Swal.fire({ icon: "error", title: "No Subjects Selected", text: "Select at least one subject.", confirmButtonColor: "#EF4444" });
+    return;
+  }
+
+  const user = await getUser();
+  if (!user) return;
+
+  const { error } = await supabase.from("profiles").upsert({
+    id: user.id,
+    subjects: selectedSubjects,
+    subjects_locked: true
+  });
+
+  if (error) {
+    Swal.fire({ icon: "error", title: "Save Failed", text: "Could not save subjects.", confirmButtonColor: "#EF4444" });
+    return;
+  }
+
+  subjectsLocked = true;
+  checkboxes.forEach(cb => cb.disabled = true);
+  toggleDropdownBtn.disabled = true;
+  selectedSubjectsText.textContent = selectedSubjects.join(", ");
+
+  Swal.fire({ icon: "success", title: "Subjects Saved & Locked", text: `You selected: ${selectedSubjects.join(", ")}`, confirmButtonColor: "#10B981" });
+  subjectSection.classList.add("hidden");
+});
+
+// Save full profile
+profileForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const user = await getUser();
+  if (!user) return;
+
+Swal.fire({
+    title: 'Saving Profile...',
+    text: 'Please wait a moment',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  let pictureUrl = null;
+  if (pictureInput.files.length > 0) pictureUrl = await uploadPicture(user.id, pictureInput.files[0]);
+
+  const { error } = await supabase.from("profiles").upsert({
+    id: user.id,
+    name: document.getElementById("name").value,
+    surname: document.getElementById("surname").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    dob: document.getElementById("dob").value,
+    gender: document.getElementById("gender").value,
+    grade: document.getElementById("grade").value,
+    school: document.getElementById("school").value,
+    bio: document.getElementById("bio").value,
+    parent_phone: document.getElementById("parent-phone").value,
+    picture_url: pictureUrl || profileImage.src,
+    subjects: selectedSubjects,
+    subjects_locked: subjectsLocked
+  });
+
+Swal.close();
+
+  if (error) {
+    Swal.fire({ icon: "error", title: "Save Failed", text: "Could not save profile.", confirmButtonColor: "#EF4444" });
+    return;
+  }
+
+  Swal.fire({ icon: "success", title: "Profile Updated", text: "Profile saved successfully.", confirmButtonColor: "#10B981" });
+});
+
+// Initialize
+loadProfile();
+</script>
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const menuIcon = document.getElementById("menuIcon");
+  const blurOverlay = document.getElementById("blurOverlay");
+  const sidebar = document.querySelector("aside");
+
+  menuBtn.addEventListener("click", () => {
+    // Toggle icon
+    menuIcon.classList.toggle("fa-bars");
+    menuIcon.classList.toggle("fa-xmark");
+
+    // Toggle sidebar
+    sidebar.classList.toggle("hidden");
+    sidebar.classList.toggle("absolute");
+    sidebar.classList.toggle("z-40");
+    sidebar.classList.toggle("h-screen");
+
+    // Toggle blur overlay
+    blurOverlay.classList.toggle("hidden");
+  });
+
+  blurOverlay.addEventListener("click", () => {
+    menuIcon.classList.add("fa-bars");
+    menuIcon.classList.remove("fa-xmark");
+    sidebar.classList.add("hidden");
+    sidebar.classList.remove("absolute", "z-40", "h-screen");
+    blurOverlay.classList.add("hidden");
+  });
+</script>
+</body>
+</html>

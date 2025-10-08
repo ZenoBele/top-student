@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NSFAS Application</title>
+	<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+	<script type="module" src="js/security.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+<body class="relative text-gray-800">
+
+  <!-- Video Background -->
+  <video autoplay muted loop class="fixed inset-0 w-full h-full object-cover z-0">
+    <source src="videos/apply.MP4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Loader -->
+  <div id="fullscreen-loader" class="fixed inset-0 bg-white bg-opacity-70 z-[9999] hidden flex items-center justify-center">
+    <!-- loader content -->
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-20 bg-gray-700 bg-opacity-80 shadow mb-6">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="text-lg font-bold text-white">Top Student</span>
+      </div>
+      <nav class="flex gap-6 text-base text-white">
+        <a href="https://www.google.com/search?q=south+african+bursaries" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Ex</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">Explore bursaries</span>
+        </a>
+        <a href="university.html" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Un</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">University</span>
+        </a>
+        <a href="https://www.google.com/search?q=bursaries" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Bu</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">bursaries & Info</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Form Container -->
+   <div class="relative z-10 rounded-xl max-w-3xl mx-auto p-6 bg-white bg-opacity-50 backdrop-blur-sm shadow-lg">
+    <h1 class="text-4xl font-bold mb-4 text-indigo-700">NSFAS Application</h1>
+    <p class="text-white mb-6">
+      Apply for NSFAS funding easily through Top Student. We’ll help you upload what’s needed. We’ll contact you if there are issues or missing documents.
+    </p>
+
+    <form id="nsfasForm" class="space-y-6">
+      <!-- Personal Info -->
+      <div>
+        <label class="block font-semibold mb-1" for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required class="w-full px-4 py-2 bg-white rounded border border-gray-700 focus:outline-none focus:ring focus:ring-indigo-500" />
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1" for="idNumber">ID Number</label>
+        <input type="text" id="idNumber" name="idNumber" required class="w-full px-4 py-2 bg-white rounded border border-gray-700 focus:outline-none focus:ring focus:ring-indigo-500" />
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1" for="email">Email</label>
+        <input type="email" id="email" name="email" required class="w-full px-4 py-2 bg-white rounded border border-gray-700 focus:outline-none focus:ring focus:ring-indigo-500" />
+      </div>
+
+      <div>
+        <label class="block font-semibold mb-1" for="contact">Cell Number (Applicant)</label>
+        <input type="tel" id="contact" name="contact" placeholder="e.g. 071 234 5678" required class="w-full px-4 py-2 bg-white rounded border border-gray-700 focus:outline-none focus:ring focus:ring-green-500" />
+      </div>
+
+      <!-- Required Documents -->
+      <h2 class="text-2xl font-semibold mt-10 mb-2 text-indigo-700">Required Documents</h2>
+      <ul class="text-sm text-white list-disc list-inside mb-4">
+        <li>Copy of the applicant’s ID or birth certificate</li>
+        <li>Copy of parent(s)/guardian(s) ID</li>
+        <li>Proof of income (payslip, affidavit, etc.)</li>
+        <li>Latest academic results</li>
+        <li>Proof of address (e.g. municipal bill)</li>
+      </ul>
+
+      <!-- Upload Fields -->
+      <div class="space-y-4">
+        <div>
+          <label class="block mb-1">Applicant ID / Birth Certificate (PDF)</label>
+          <input type="file" name="applicant_id" accept=".pdf" required class="block w-full text-sm text-sm text-gray-900 bg-white rounded border border-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 hover:file:bg-indigo-700" />
+        </div>
+
+        <div>
+          <label class="block mb-1">Parent/Guardian ID (PDF)</label>
+          <input type="file" name="parent_id" accept=".pdf" required class="block w-full text-sm text-sm text-gray-900 bg-white rounded border border-gray-400 file:bg-indigo-600 hover:file:bg-indigo-700" />
+        </div>
+
+        <div>
+          <label class="block mb-1">Proof of Income (PDF)</label>
+          <input type="file" name="income_proof" accept=".pdf" class="block w-full text-sm text-gray-900 bg-white rounded border border-gray-400 file:bg-indigo-600 hover:file:bg-indigo-700" />
+        </div>
+
+        <div>
+          <label class="block mb-1">Latest Results (PDF)</label>
+          <input type="file" name="results" accept=".pdf" required class="block w-full text-sm text-gray-900 bg-white rounded border border-gray-400 file:bg-indigo-600 hover:file:bg-indigo-700" />
+        </div>
+
+        <div>
+          <label class="block mb-1">Proof of Address (PDF)</label>
+          <input type="file" name="address_proof" accept=".pdf" required class="block w-full text-sm text-gray-900 bg-white rounded border border-gray-400 file:bg-indigo-600 hover:file:bg-indigo-700" />
+        </div>
+      </div>
+
+      <!-- Contact Notice -->
+      <div class="mt-10 bg-yellow-900/30 border border-red-600 rounded-lg p-4 text-red-900">
+        <p class="font-semibold">⚠️ Important Notice</p>
+        <p class="text-sm mt-2">
+          If we need anything else, we will contact you using the cell number or email provided. <br/>
+          If you have questions or want to check progress, feel free to contact us on WhatsApp at <strong>072 730 6186</strong> or email <strong>info@topstudent.co.za</strong>.
+        </p>
+      </div>
+      <button type="submit" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition">Submit Application</button>
+    </form>
+  </div>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+let currentUser = null;
+
+async function checkSubscription() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Not logged in → send to dashboard
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // Fetch subscription record
+  const { data, error } = await supabase
+    .from("subscription")
+    .select("current_plan")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !data || data.current_plan !== "premium") {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Premium Required',
+      text: 'This feature is only available for Premium members. Upgrade now to continue.',
+      confirmButtonText: 'Upgrade to Premium',
+      showCancelButton: true,
+      cancelButtonText: 'Go Back',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "Subscription.html"; // Upgrade page
+      } else {
+        window.location.href = "dashboard.html"; // Back to dashboard
+      }
+    });
+  }
+}
+
+checkSubscription();
+
+
+// --- Get current user ---
+async function getCurrentUser() {
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) {
+    window.location.href = '../index.html';
+    return null;
+  }
+  return user;
+}
+
+// --- Validate terms acceptance ---
+async function validateTermsOrLogout() {
+  currentUser = await getCurrentUser();
+  if (!currentUser) return;
+
+  const { data, error } = await supabase
+    .from('nsfas_applications')
+    .select('terms_accepted')
+    .eq('user_id', currentUser.id)
+    .maybeSingle();
+
+  if (error || !data || data.terms_accepted !== true) {
+    await supabase.auth.signOut();
+    window.location.href = '../index.html';
+  }
+}
+
+validateTermsOrLogout();
+
+// --- File upload helper ---
+async function uploadFile(file, path) {
+  const { error } = await supabase.storage
+    .from('documents')
+    .upload(`nsfas/${path}`, file, { contentType: 'application/pdf', upsert: true });
+  if (error) throw error;
+  const { data } = supabase.storage.from('documents').getPublicUrl(`nsfas/${path}`);
+  return data.publicUrl;
+}
+
+// --- Track only submitted applications ---
+async function trackApplication(metadata = {}) {
+  if (!currentUser) return;
+  try {
+    await supabase.from('user_activity').insert([{
+      user_id: currentUser.id,
+      page_name: 'nsfasPage',
+      action: 'submit_application',
+      session_id: crypto.randomUUID(),
+      started_at: new Date().toISOString(),
+      ended_at: new Date().toISOString(),
+      metadata
+    }]);
+  } catch (err) {
+    console.error("Error tracking application:", err);
+  }
+}
+
+// --- Form submission ---
+const form = document.getElementById('nsfasForm');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!currentUser) return;
+
+  const submitBtn = form.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  document.getElementById('fullscreen-loader').classList.remove('hidden');
+
+  try {
+    const fullName = form.fullName.value.trim();
+    const idNumber = form.idNumber.value.trim();
+    const email = form.email.value.trim();
+    const contact = form.contact.value.trim();
+
+    if (!/^\d{13}$/.test(idNumber)) throw new Error('ID Number must be 13 digits.');
+    if (!/^\d{10}$/.test(contact)) throw new Error('Contact Number must be 10 digits.');
+    if (!form.applicant_id.files[0] || !form.parent_id.files[0] || !form.results.files[0] || !form.address_proof.files[0]) {
+      throw new Error('All required files must be uploaded.');
+    }
+
+    const timestamp = Date.now();
+    const folder = `${currentUser.id}/${timestamp}`;
+
+    const applicant_id_url = await uploadFile(form.applicant_id.files[0], `${folder}/applicant_id.pdf`);
+    const parent_id_url = await uploadFile(form.parent_id.files[0], `${folder}/parent_id.pdf`);
+    const income_proof_url = form.income_proof.files[0] 
+      ? await uploadFile(form.income_proof.files[0], `${folder}/income_proof.pdf`) 
+      : null;
+    const latest_results_url = await uploadFile(form.results.files[0], `${folder}/results.pdf`);
+    const proof_of_address_url = await uploadFile(form.address_proof.files[0], `${folder}/address_proof.pdf`);
+
+    const { error: dbError } = await supabase
+      .from('nsfas_applications')
+      .upsert({
+        user_id: currentUser.id,
+        full_name: fullName,
+        id_number: idNumber,
+        email,
+        contact_number: contact,
+        applicant_id_url,
+        parent_id_url,
+        income_proof_url,
+        latest_results_url,
+        proof_of_address_url,
+        status: 'submitted',
+        terms_accepted: true
+      }, { onConflict: ['user_id'] });
+
+    if (dbError) throw dbError;
+
+    // --- Track this submission ---
+    await trackApplication({ application_id: currentUser.id, status: 'submitted' });
+
+    await Swal.fire({ icon: 'success', title: 'Success!', text: 'Application submitted successfully!' });
+
+    form.reset();
+    window.location.href = 'submitted.html';
+
+  } catch (err) {
+    console.error(err);
+    await Swal.fire({ icon: 'error', title: 'Submission Failed', text: err.message });
+  } finally {
+    submitBtn.disabled = false;
+    document.getElementById('fullscreen-loader').classList.add('hidden');
+  }
+});
+</script>
+</body>
+</html>

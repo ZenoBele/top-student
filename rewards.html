@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Student Rewards</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Back Buttons -->
+
+  <!-- Header / Hero Section -->
+  <header class="bg-blue-600 text-white text-center py-16 px-4 animate-fade-in">
+    <h1 class="text-4xl font-bold">Top Student Rewards Program</h1>
+    <p class="mt-4 text-lg">Learn, Achieve, and Earn Exclusive Rewards!</p>
+  </header>
+  <div class="flex justify-between max-w-5xl mx-auto px-4 py-4">
+    <button onclick="window.history.back()" class="flex items-center text-blue-600 hover:text-blue-800 font-semibold">
+      <i class="fas fa-arrow-left mr-2"></i> Back
+    </button>
+    <a href="dashboard.html" class="flex items-center text-blue-600 hover:text-blue-800 font-semibold">
+      <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+    </a>
+  </div>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="py-16 px-4 max-w-5xl mx-auto">
+    <h2 class="text-3xl font-bold text-center text-blue-600 mb-12 animate-fade-in-up">How to Earn Rewards</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:scale-105 transition-transform duration-300 animate-fade-in">
+        <i class="fas fa-book text-4xl text-blue-500 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Study & Complete Tasks</h3>
+        <p>Complete study guides, past papers, and quizzes. Track your progress in your dashboard.</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:scale-105 transition-transform duration-300 animate-fade-in">
+        <i class="fas fa-medal text-4xl text-yellow-500 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Earn Points & Badges</h3>
+        <p>Points are awarded based on performance and consistency. Unlock badges for extra rewards.</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:scale-105 transition-transform duration-300 animate-fade-in">
+        <i class="fas fa-trophy text-4xl text-green-500 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Reach Milestones</h3>
+        <p>Hit point thresholds to unlock rewards like free guides, tips, or premium access.</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:scale-105 transition-transform duration-300 animate-fade-in">
+        <i class="fas fa-gift text-4xl text-pink-500 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Claim Your Reward</h3>
+        <p>Submit your achievements through our form and receive your reward in your account.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reward Types -->
+  <section id="rewards" class="py-16 px-4 max-w-5xl mx-auto animate-fade-in-up">
+    <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">Rewards You Can Earn</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white rounded-xl shadow-lg text-center">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="py-3 px-6">Reward Type</th>
+            <th class="py-3 px-6">Description</th>
+            <th class="py-3 px-6">Requirements</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b">
+            <td class="py-3 px-6">Free Guides</td>
+            <td class="py-3 px-6">Study guides for upcoming exams</td>
+            <td class="py-3 px-6">500 points</td>
+          </tr>
+          <tr class="border-b">
+            <td class="py-3 px-6">Exclusive Study Tips</td>
+            <td class="py-3 px-6">Personalized tips from Top Student</td>
+            <td class="py-3 px-6">800 points</td>
+          </tr>
+          <tr class="border-b">
+            <td class="py-3 px-6">Merch / Swag</td>
+            <td class="py-3 px-6">Branded items (stickers, notebooks, etc.)</td>
+            <td class="py-3 px-6">1000 points</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-6">Premium Upgrade</td>
+            <td class="py-3 px-6">Get 1-month Premium free</td>
+            <td class="py-3 px-6">Special promotion or top performer</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Reward Submission Process -->
+  <section id="claim-reward" class="py-16 px-4 max-w-5xl mx-auto animate-fade-in">
+    <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">How to Claim Your Reward</h2>
+    <ol class="list-decimal list-inside space-y-3 mb-6">
+      <li>Check your eligibility: Make sure you meet the point or performance requirement.</li>
+      <li>Fill out the submission form: Upload proof if necessary (screenshots, completed work).</li>
+      <li>Submit & wait for approval: Our team will verify your submission within 3–5 business days.</li>
+      <li>Receive your reward: Rewards are sent directly to your account or email.</li>
+    </ol>
+    <button onclick="submitReward()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-lg w-full md:w-auto mx-auto block">Submit My Reward</button>
+  </section>
+
+  <!-- Reward Promotions -->
+  <section id="promotions" class="py-16 px-4 max-w-5xl mx-auto animate-fade-in-up">
+    <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">Limited-Time Reward Promotions</h2>
+    <div class="space-y-6">
+      <div class="bg-yellow-100 border-l-4 border-yellow-500 p-6 rounded-xl hover:shadow-lg transition-shadow duration-300">
+        <h3 class="text-xl font-semibold mb-2">Spring Exam Bonus Week</h3>
+        <p>Earn double points on completed quizzes this week. Offer valid: 1–7 October 2025.</p>
+      </div>
+      <div class="bg-yellow-100 border-l-4 border-yellow-500 p-6 rounded-xl hover:shadow-lg transition-shadow duration-300">
+        <h3 class="text-xl font-semibold mb-2">Top 100 Submissions</h3>
+        <p>First 100 submissions this month receive an extra reward bonus. Don’t miss out!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rules & Terms -->
+  <section id="rules" class="py-16 px-4 max-w-5xl mx-auto animate-fade-in-up">
+    <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">Rules You Must Follow</h2>
+    <ul class="list-disc list-inside space-y-2">
+      <li>Only registered Top Student users are eligible.</li>
+      <li>Submission deadlines must be met to qualify.</li>
+      <li>No cheating or plagiarism is allowed.</li>
+      <li>Rewards are non-transferable unless stated.</li>
+      <li>Points may reset after reward redemption depending on type.</li>
+    </ul>
+  </section>
+
+  <!-- FAQs -->
+  <section id="faqs" class="py-16 px-4 max-w-5xl mx-auto animate-fade-in">
+    <h2 class="text-3xl font-bold text-center text-blue-600 mb-8">Frequently Asked Questions</h2>
+    <div class="space-y-6">
+      <div>
+        <h3 class="text-xl font-semibold text-blue-600 mb-2">Can I claim multiple rewards at once?</h3>
+        <p>Yes, but points will be deducted accordingly for each reward.</p>
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold text-blue-600 mb-2">How long does it take to receive my reward?</h3>
+        <p>Usually within 3–5 business days after verification.</p>
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold text-blue-600 mb-2">Can I transfer my rewards to someone else?</h3>
+        <p>No, rewards are non-transferable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section id="cta" class="py-16 px-4 text-center animate-fade-in">
+    <h2 class="text-3xl font-bold text-blue-600 mb-6">Start Earning Today!</h2>
+    <button onclick="submitReward()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-lg">View My Points / Claim Reward</button>
+  </section>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+async function checkSubscription() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Not logged in → send to dashboard
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // Fetch subscription record
+  const { data, error } = await supabase
+    .from("subscription")
+    .select("current_plan")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !data || data.current_plan !== "premium") {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Premium Required',
+      text: 'This feature is only available for Premium members. Upgrade now to continue.',
+      confirmButtonText: 'Upgrade to Premium',
+      showCancelButton: true,
+      cancelButtonText: 'Go Back',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "Subscription.html"; // Upgrade page
+      } else {
+        window.location.href = "dashboard.html"; // Back to dashboard
+      }
+    });
+  }
+}
+
+checkSubscription();
+</script>
+  <script>
+    function submitReward() {
+      Swal.fire({
+        title: 'Submit Reward',
+        text: "Are you sure you want to submit your reward claim?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f59e0b',
+        cancelButtonColor: '#d1d5db',
+        confirmButtonText: 'Yes, submit it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Submitted!',
+            'Your reward claim has been submitted. We will review it shortly.',
+            'success'
+          )
+        }
+      })
+    }
+  </script>
+
+  <!-- Animation CSS (example fade-ins) -->
+  <style>
+    .animate-fade-in {
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+    .animate-fade-in-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+
+</body>
+</html>
+

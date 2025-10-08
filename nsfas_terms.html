@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Top Student - Terms & Conditions</title>
+	<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+	<script type="module" src="js/security.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  </head>
+<body class="relative text-gray-800">
+
+  <!-- Video Background -->
+  <video autoplay muted loop class="fixed inset-0 w-full h-full object-cover z-0">
+    <source src="videos/sign.MP4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Loader -->
+  <div id="fullscreen-loader" class="fixed inset-0 bg-white bg-opacity-70 z-[9999] hidden flex items-center justify-center">
+    <!-- loader content -->
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-20 bg-gray-700 bg-opacity-80 shadow mb-6">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="text-lg font-bold text-white">Top Student</span>
+      </div>
+      <nav class="flex gap-6 text-base text-white">
+        <a href="https://www.google.com/search?q=south+african+bursaries" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Ex</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">Explore bursaries</span>
+        </a>
+        <a href="university.html" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Un</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">University</span>
+        </a>
+        <a href="https://www.google.com/search?q=bursaries" target="_blank" class="group transition-transform duration-200">
+          <span class="group-hover:hidden font-semibold">Bu</span>
+          <span class="hidden group-hover:inline-block font-medium text-blue-700 transition-all duration-500 ease-in">bursaries & Info</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="terms" class="max-w-3xl relative z-20 bg-white bg-opacity-80 mx-auto p-6">
+    <h1 class="text-4xl font-bold text-indigo-400 mb-6">Terms & Conditions</h1>
+
+    <p class="mb-6">
+      Welcome to Top Student. Please read these Terms & Conditions carefully before using our services.
+      By clicking <strong>"I Accept"</strong>, you agree to the following terms which are designed to protect Top Student (operated by Top Student Team) above all else.
+    </p>
+
+    <section class="mb-6 space-y-4 text-sm leading-relaxed">
+      <p><strong>1. Accuracy and Honesty</strong><br />
+      You confirm that all information and documents you provide are truthful, accurate, and belong to the applicant. Any falsification, misrepresentation, or fraudulent information may result in immediate termination of services and banning from Top Student.</p>
+
+      <p><strong>2. No Guarantee of Approval</strong><br />
+      Top Student provides guidance and assistance only. We do NOT guarantee NSFAS or any other funding approvals. All decisions rest solely with the funding authorities.</p>
+
+      <p><strong>3. Data Privacy and Usage</strong><br />
+      We will securely store your personal information and documents only to assist with your application. We do not share your data with third parties without your explicit consent. You agree that Top Student may contact you via phone, SMS, WhatsApp, or email for updates or clarifications.</p>
+
+      <p><strong>4. Limitation of Liability</strong><br />
+      Under no circumstances will Top Student, its owners, employees, or affiliates be held liable for any direct, indirect, incidental, consequential, or punitive damages arising out of your use of the services or reliance on information provided.</p>
+
+      <p><strong>5. User Conduct</strong><br />
+      You agree not to misuse or abuse the services, harass staff, or submit malicious or false documents. Violation of this will result in permanent removal from all services without refund.</p>
+
+      <p><strong>6. Intellectual Property</strong><br />
+      All content, branding, and materials are property of Top Student. You may not reproduce or use any materials without written permission.</p>
+
+      <p><strong>7. Changes to Terms</strong><br />
+      Top Student reserves the right to update or change these Terms & Conditions at any time. Your continued use after changes means you accept the new terms.</p>
+
+      <p><strong>8. Governing Law</strong><br />
+      These Terms are governed by the laws of South Africa. Any disputes will be resolved under South African jurisdiction.</p>
+    </section>
+
+<form id="acceptForm">
+  <div class="mt-6 mb-6">
+    <label class="flex items-start gap-2">
+      <input type="checkbox" id="agree" class="mt-1 py-3 px-3">
+      <span class="text-sm leading-relaxed text-gray-700">
+        I have read, understood, and agree to the Terms & Conditions of Top Student and the relevant universities.
+      </span>
+    </label>
+  </div>
+
+  <button
+    type="submit"
+    id="continueBtn"
+	disabled 
+	class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded opacity-50 cursor-not-allowed"
+  >
+    Continue to Application
+  </button>
+</form>
+
+</div>
+<div id="applicationReceivedMsg" class="hidden mt-4 p-4 bg-green-900 text-green-300 rounded-lg text-center font-semibold">
+  Your application is received. Check your WhatsApp, junk email, or contact <strong>072 730 6186</strong>.
+  <a href="dashboard.html"><button
+    type="submit"
+    class="w-full mt-4 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition shadow-lg"
+  >
+    Ok
+  </button></a>
+</div>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+async function checkSubscription() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Not logged in → send to dashboard
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // Fetch subscription record
+  const { data, error } = await supabase
+    .from("subscription")
+    .select("current_plan")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !data || data.current_plan !== "premium") {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Premium Required',
+      text: 'This feature is only available for Premium members. Upgrade now to continue.',
+      confirmButtonText: 'Upgrade to Premium',
+      showCancelButton: true,
+      cancelButtonText: 'Go Back',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "Subscription.html"; // Upgrade page
+      } else {
+        window.location.href = "dashboard.html"; // Back to dashboard
+      }
+    });
+  }
+}
+
+checkSubscription();
+ 
+async function checkUserApplication() {
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError || !session) {
+    // Safety fallback — but the second script already handles this
+    window.location.href = "login.html";
+    return;
+  }
+
+  const user = session.user;
+
+  const { data, error } = await supabase
+    .from('nsfas_applications')
+    .select('id_number')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  const terms = document.getElementById('terms');
+  const receivedMsg = document.getElementById('applicationReceivedMsg');
+
+  if (error) {
+    console.error('Error fetching application:', error);
+    terms.disabled = false;
+    return;
+  }
+
+  if (data && data.id_number) {
+    // Application exists, hide button & show message
+    terms.style.display = 'none';
+    receivedMsg.classList.remove('hidden');
+  } else {
+    // No application yet, enable button & hide message
+    terms.disabled = false;
+    receivedMsg.classList.add('hidden');
+  }
+}
+
+checkUserApplication();
+
+// ✅ Terms acceptance logic
+const agreeCheckbox = document.getElementById('agree');
+const continueBtn = document.getElementById('continueBtn');
+
+continueBtn.disabled = true; // start disabled
+
+agreeCheckbox.addEventListener('change', () => {
+  continueBtn.disabled = !agreeCheckbox.checked;
+  continueBtn.classList.toggle('opacity-50', !agreeCheckbox.checked);
+  continueBtn.classList.toggle('cursor-not-allowed', !agreeCheckbox.checked);
+});
+
+const form = document.getElementById('acceptForm');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const accepted = document.getElementById('agree').checked;
+  if (!accepted) {
+    await Swal.fire({
+      icon: 'warning',
+      title: 'Terms & Conditions',
+      text: 'Please accept the Terms & Conditions to continue.',
+      confirmButtonText: 'OK'
+    });
+    return;
+  }
+
+  const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user;
+
+  if (!user) {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Not Logged In',
+      text: 'You must be logged in to continue.',
+      confirmButtonText: 'OK'
+    });
+    return;
+  }
+
+  const { error } = await supabase
+    .from('nsfas_applications')
+    .upsert(
+      [{ user_id: user.id, terms_accepted: true }],
+      { onConflict: ['user_id'] }
+    );
+
+  if (error) {
+    await Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Error saving acceptance: ' + error.message,
+      confirmButtonText: 'OK'
+    });
+    return;
+  }
+
+  window.location.href = 'apply_nsfas.html';
+});
+
+</script>
+</body>
+</html>

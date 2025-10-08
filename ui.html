@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help Build Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Sci-fi glowing grid background */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: 0;
+      animation: gridmove 20s linear infinite;
+    }
+
+    @keyframes gridmove {
+      from { background-position: 0 0; }
+      to { background-position: 100px 100px; }
+    }
+
+    /* Neon border effect for card */
+    .sci-card {
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      box-shadow: 0 0 20px rgba(0, 200, 255, 0.2), inset 0 0 20px rgba(0, 200, 255, 0.1);
+    }
+
+    /* Inputs glowing neon */
+    .sci-input:focus {
+      outline: none;
+      border-color: #00eaff;
+      box-shadow: 0 0 12px #00eaff, inset 0 0 8px #00eaff44;
+    }
+
+    /* Neon button hover */
+    .sci-btn {
+      transition: all 0.3s ease;
+    }
+    .sci-btn:hover {
+      box-shadow: 0 0 20px #00eaff, 0 0 40px #00eaff66;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-950 via-blue-900 to-black min-h-screen flex items-center justify-center p-6 relative overflow-hidden text-cyan-100">
+
+  <!-- Floating hologram orbs -->
+  <div class="absolute w-72 h-72 bg-cyan-500 rounded-full blur-3xl opacity-10 top-10 left-10 animate-pulse"></div>
+  <div class="absolute w-96 h-96 bg-cyan-300 rounded-full blur-3xl opacity-10 bottom-10 right-10 animate-pulse"></div>
+
+  <!-- Main Card -->
+  <div class="bg-white/5 backdrop-blur-xl sci-card rounded-2xl p-8 max-w-3xl w-full relative z-10">
+    <!-- Header -->
+	<a href="javascript:history.back()" class="absolute top-6 left-6 flex items-center text-cyan-200 hover:text-cyan-400 transition transform hover:scale-110 z-20">
+  <i class="fa-solid fa-arrow-left text-2xl mr-2"></i>
+</a>
+
+    <h1 class="text-4xl font-extrabold text-cyan-300 mb-2 text-center tracking-widest uppercase">Be Part of Building Top Student</h1>
+    <p class="text-cyan-100 text-center mb-8">Suggest new features, improvements, or design ideas for future versions.</p>
+
+    <!-- Category -->
+    <label class="block text-cyan-200 mb-2">What area is your idea about?</label>
+    <select id="category" class="sci-input w-full p-3 bg-black/40 border border-cyan-400/30 rounded-lg mb-4 text-cyan-100 focus:ring-0">
+      <option value="">Select category</option>
+      <option>Study Resources</option>
+      <option>Website UI/Design</option>
+      <option>New Features</option>
+      <option>Rewards & Gamification</option>
+      <option>Other</option>
+    </select>
+
+    <!-- Title -->
+    <label class="block text-cyan-200 mb-2">Idea Title</label>
+    <input id="title" type="text" class="sci-input w-full p-3 bg-black/40 border border-cyan-400/30 rounded-lg mb-4 text-cyan-100 placeholder-cyan-400" placeholder="e.g., Dark Mode for Study Page">
+
+    <!-- Description -->
+    <label class="block text-cyan-200 mb-2">Describe your idea</label>
+    <textarea id="description" rows="2" class="sci-input w-full p-3 bg-black/40 border border-cyan-400/30 rounded-lg mb-4 text-cyan-100 placeholder-cyan-400" placeholder="Explain how it should work..."></textarea>
+
+    <!-- Priority -->
+    <label class="block text-cyan-200 mb-2">How important is this?</label>
+    <select id="priority" class="sci-input w-full p-3 bg-black/40 border border-cyan-400/30 rounded-lg mb-6 text-cyan-100">
+      <option value="">Select priority</option>
+      <option>Low</option>
+      <option>Medium</option>
+      <option>High</option>
+    </select>
+
+    <!-- Submit -->
+    <button id="submitIdea" class="sci-btn w-full bg-gradient-to-r from-blue-500 to-blue-300 text-white py-3 rounded-lg shadow-lg">
+      Submit Idea
+    </button>
+  </div>
+
+  <!-- Floating Action Buttons -->
+  <a href="dashboard.html">
+    <div class="fixed bottom-24 right-6 w-14 h-14 flex items-center justify-center rounded-full text-white text-2xl shadow-lg cursor-pointer transform transition duration-300 hover:scale-110"
+         style="background: linear-gradient(135deg, #00eaff, #0077ff); box-shadow: 0 0 15px #00eaff;">
+      <i class="fa-solid fa-house"></i>
+    </div>
+  </a>
+
+  <a href="faq.html">
+    <div class="fixed bottom-6 right-6 w-14 h-14 flex items-center justify-center rounded-full text-white text-2xl shadow-lg cursor-pointer transform transition duration-300 hover:scale-110"
+         style="background: linear-gradient(135deg, #00eaff, #0077ff); box-shadow: 0 0 15px #00eaff;">
+      ?
+    </div>
+  </a>
+  
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+    document.getElementById("submitIdea").addEventListener("click", async () => {
+      const category = document.getElementById("category").value;
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const priority = document.getElementById("priority").value;
+
+      if (!category || !title || !description) {
+        Swal.fire("Missing Info", "Please fill all required fields.", "warning");
+        return;
+      }
+
+      const { data, error } = await supabase.from("feature_suggestions").insert([{ 
+        category, title, description, priority 
+      }]);
+
+      if (error) {
+        console.error(error);
+        Swal.fire("Error", "Could not submit your idea.", "error");
+      } else {
+        Swal.fire("Thank you!", "Your idea has been submitted.", "success");
+        document.getElementById("category").value = "";
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("priority").value = "";
+      }
+    });
+  </script>
+</body>
+</html>
+

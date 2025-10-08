@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Account - Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .glass {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      transition: transform 0.3s ease-in-out;
+    }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="flex h-screen"
+      style="background: linear-gradient(60deg, white, #3e95be, white);">
+
+  <!-- Sidebar -->
+  <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden fixed top-2 right-0 p-4 z-50">
+    <button id="menuBtn" class="text-white p-2 rounded bg-transparent focus:outline-none">
+      <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+    </button>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 md:px-6 text-white fixed top-0 z-30 h-24 md:h-24
+                 w-full md:w-3/4 md:ml-80 md:rounded-b-3xl"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff);">
+
+    <div class="flex flex-col ml-16 items-center flex-1 text-center">
+      <h2 class="text-xl md:text-2xl font-bold flex items-center justify-center gap-2">
+       Account
+      </h2>
+	  <p class="text-gray-100 text-sm">Set up your account.</p>
+    </div>
+
+    <!-- Right spacer -->
+    <div class="w-20 md:w-28"></div>
+  </header>
+
+  <!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto relative z-0 mt-32 md:ml-64 px-6 md:px-12 space-y-8">
+
+  <!-- Profile Display Section -->
+  <div class="bg-white rounded-3xl p-6 shadow-md glass card-hover">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold">My Profile</h2>
+      <h3 class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700" id="role">
+        Loading...
+      </h3>
+    </div>
+
+    <!-- Profile Photo -->
+    <div class="flex items-center gap-4 mb-8">
+      <img id="profile-img" src="https://mlwxxtvsozhwzjxmsvbg.supabase.co/storage/v1/object/sign/pictures/profile%20(2).png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV84MzZkM2M4Ny0zNGNiLTRmNTYtODAxYy05NmQ2ZGI5MTZiNzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJwaWN0dXJlcy9wcm9maWxlICgyKS5wbmciLCJpYXQiOjE3NTU3MTA3NzQsImV4cCI6MTc4NzI0Njc3NH0.mBrVHisalR1v19pjQqE7yquacxhjkjTzz6BGRieiehk" alt="Profile"
+        class="w-24 h-24 rounded-full object-cover border">
+      <div>
+        <div class="flex space-x-2 items-center">
+  <h3 id="surname" class="text-xl font-semibold">Loading...</h3>
+  <h3 id="name" class="text-xl font-semibold"></h3>
+</div>
+        <p id="profile-grade" class="text-gray-500">grade...</p>
+		<p id="profile-email" class="text-gray-500">email...</p>
+      </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Profile -->
+      <div class="bg-white rounded-3xl p-6 shadow-md glass card-hover flex flex-col items-center justify-center">
+        <i class="fas fa-user text-4xl text-indigo-600 mb-2"></i>
+        <h2 class="text-xl font-bold mb-1">Profile</h2>
+        <p class="text-gray-500 text-sm text-center mb-3">View or update your profile info.</p>
+        <a href="profile.html" class="text-blue-600 font-semibold hover:underline">Go</a>
+      </div>
+
+      <!-- Change Password -->
+      <!-- Change Password -->
+<div class="max-w-sm w-full bg-white rounded-3xl p-6 shadow-md glass card-hover flex flex-col justify-between items-center text-center overflow-hidden">
+  <i class="fas fa-lock text-4xl text-green-600 mb-3"></i>
+  <h2 class="text-lg font-bold mb-1">Change Password</h2>
+  <p class="text-gray-500 text-sm mb-4">Securely update your password.</p>
+  <a href="change.html" class="text-green-600 font-semibold hover:underline">Update</a>
+</div>
+
+<!-- Sign Out -->
+<div class="max-w-sm w-full bg-white rounded-3xl p-6 shadow-md glass card-hover flex flex-col justify-between items-center text-center overflow-hidden">
+  <i class="fas fa-sign-out-alt text-4xl text-yellow-600 mb-3"></i>
+  <h2 class="text-lg font-bold mb-1">Sign Out</h2>
+  <p class="text-gray-500 text-sm mb-4">Log out from your account.</p>
+  <button onclick="logout()" class="text-yellow-600 font-semibold hover:underline">Log Out</button>
+</div>
+
+<!-- Subscription -->
+<div class="max-w-sm w-full bg-white rounded-3xl p-6 shadow-md glass card-hover flex flex-col justify-between items-center text-center overflow-hidden">
+  <i class="fas fa-credit-card text-4xl text-indigo-500 mb-3"></i>
+  <h2 class="text-lg font-bold mb-1">Subscription</h2>
+  <p class="text-gray-500 text-sm mb-4">Manage Subscription and Billing.</p>
+  <a href="manage.html" class="text-indigo-600 font-semibold hover:underline truncate">Manage</a>
+</div>
+
+<!-- Privacy -->
+<div class="max-w-sm w-full bg-white rounded-3xl p-6 shadow-md glass card-hover flex flex-col justify-between items-center text-center overflow-hidden">
+  <i class="fas fa-user-shield text-4xl text-red-500 mb-3"></i>
+  <h2 class="text-lg font-bold mb-1">Privacy</h2>
+  <p class="text-gray-500 text-sm mb-4">Control who sees your info.</p>
+  <a href="privacy.html" class="text-red-500 font-semibold hover:underline">Edit</a>
+</div>
+
+
+      <!-- Delete Account -->
+<div class="max-w-sm w-full bg-white rounded-3xl p-6 shadow-md glass card-hover flex flex-col items-center justify-center text-center h-64">
+  <i class="fas fa-trash-alt text-4xl text-red-500 mb-3"></i>
+  <h2 class="text-xl font-bold mb-2">Delete Account</h2>
+  <p class="text-gray-500 text-sm mb-4">Permanently remove your account.</p>
+  <button 
+    onclick="deleteAccount()" 
+    class="bg-red-100 text-red-600 font-semibold px-6 py-2 rounded-lg hover:bg-red-200 transition-colors"
+  >
+    Delete
+  </button>
+</div>
+
+    </div>
+  </div>
+</main>
+
+<script type="module">
+import { supabase } from './js/supabaseClient.js';
+
+let currentUser = null;
+// Generate a UUID fallback if crypto.randomUUID is not available
+function generateUUID() {
+  if (crypto.randomUUID) return crypto.randomUUID();
+  
+  // fallback version
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+// Replace sessionId assignment
+let sessionId = sessionStorage.getItem("sessionId") || generateUUID();
+sessionStorage.setItem("sessionId", sessionId);
+
+// ------------------------
+// Helper: Track Activity
+// ------------------------
+async function trackActivity(action, metadata = {}) {
+  if (!currentUser) return;
+
+  // Only track real logout or delete_account
+  if (action !== "logout" && action !== "delete_account") return;
+
+  try {
+    const now = new Date().toISOString();
+    const { error } = await supabase
+      .from("user_activity")
+      .insert([{
+        user_id: currentUser.id,
+        page_name: "accountPage",
+        session_id: sessionId,
+        action,
+        started_at: now,
+        ended_at: now,
+        metadata
+      }]);
+
+    if (error) console.error("Error tracking activity:", error);
+  } catch (err) {
+    console.error("Exception tracking activity:", err);
+  }
+}
+
+// ------------------------
+// Get current user
+// ------------------------
+async function getCurrentUser() {
+  const { data: { session }, error } = await supabase.auth.getSession();
+  if (error || !session) return null;
+  return session.user;
+}
+
+// ------------------------
+// Load profile and account
+// ------------------------
+async function loadUserInfo() {
+  if (!currentUser) return;
+
+  // Fetch account
+  let { data: account, error: accountError } = await supabase
+    .from("accounts")
+    .select("email, role")
+    .eq("user_id", currentUser.id)
+    .single();
+  if (accountError) console.warn("No account data:", accountError);
+  account = account || {};
+
+  // Fetch profile
+  let { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("surname, name, grade, picture_url")
+    .eq("id", currentUser.id)
+    .maybeSingle();
+  if (profileError) console.warn("Profile not found:", profileError);
+  profile = profile || {};
+
+  // Update DOM
+  const pictureUrl = profile.picture_url || "https://mlwxxtvsozhwzjxmsvbg.supabase.co/storage/v1/object/sign/pictures/profile%20(2).png";
+  document.getElementById("surname").textContent = profile.surname || "Top Student";
+  document.getElementById("name").textContent = profile.name || " ";
+  document.getElementById("profile-grade").textContent = `Grade: ${profile.grade || " "}`;
+  document.getElementById("profile-email").textContent = account.email || currentUser.email;
+  document.getElementById("profile-img").src = pictureUrl;
+  document.getElementById("role").textContent = account.role === "premium" ? "Premium" : "Standard";
+
+  if (!profile.surname) {
+    Swal.fire({
+      title: "Welcome! 🎉",
+      text: "Let's set up your profile.",
+      icon: "info",
+      confirmButtonColor: "#6366f1",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "profile.html";
+      }
+    });
+  }
+}
+
+// ------------------------
+// Logout
+// ------------------------
+window.logout = async function logout() {
+  await trackActivity("logout");
+
+  Swal.fire({
+    title: "Signing Out...",
+    didOpen: () => Swal.showLoading(),
+    allowOutsideClick: false,
+    showConfirmButton: false
+  });
+
+  const { error } = await supabase.auth.signOut();
+  Swal.close();
+
+  if (error) {
+    Swal.fire("Error", error.message, "error");
+  } else {
+    Swal.fire({
+      icon: "success",
+      title: "Signed Out",
+      text: "Redirecting...",
+      timer: 2000,
+      showConfirmButton: false
+    }).then(() => window.location.href = "login.html");
+  }
+};
+
+// ------------------------
+// Delete Account
+// ------------------------
+window.deleteAccount = async function deleteAccount() {
+  const confirm = await Swal.fire({
+    title: "Are you sure?",
+    text: "This will deactivate your account. You have 30 days to recover it.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, deactivate it!",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#d33"
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  await trackActivity("delete_account");
+
+  Swal.fire({
+    title: "Deactivating Account...",
+    didOpen: () => Swal.showLoading(),
+    allowOutsideClick: false,
+    showConfirmButton: false
+  });
+
+  const { error: updateError } = await supabase
+    .from("accounts")
+    .update({ is_active: false })
+    .eq("user_id", currentUser.id);
+
+  Swal.close();
+
+  if (updateError) {
+    Swal.fire("Error", updateError.message, "error");
+  } else {
+    await supabase.auth.signOut();
+    Swal.fire({
+      icon: "success",
+      title: "Account Deactivated",
+      text: "Your account is now inactive. You have 30 days to recover it.",
+      timer: 4000,
+      showConfirmButton: false
+    }).then(() => window.location.href = "login.html");
+  }
+};
+
+// ------------------------
+// Initialize
+// ------------------------
+document.addEventListener("DOMContentLoaded", async () => {
+  currentUser = await getCurrentUser();
+  if (!currentUser) {
+    Swal.fire("Error", "No active session found.", "error").then(() => window.location.href = "login.html");
+    return;
+  }
+
+  await loadUserInfo(); // loads profile, role, and email
+});
+</script>
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const menuIcon = document.getElementById("menuIcon");
+    const blurOverlay = document.getElementById("blurOverlay");
+    const sidebar = document.querySelector("aside");
+
+    menuBtn.addEventListener("click", () => {
+      menuIcon.classList.toggle("fa-bars");
+      menuIcon.classList.toggle("fa-xmark");
+      sidebar.classList.toggle("hidden");
+      sidebar.classList.toggle("absolute");
+      sidebar.classList.toggle("z-40");
+      sidebar.classList.toggle("h-screen");
+      blurOverlay.classList.toggle("hidden");
+    });
+
+    blurOverlay.addEventListener("click", () => {
+      menuIcon.classList.add("fa-bars");
+      menuIcon.classList.remove("fa-xmark");
+      sidebar.classList.add("hidden");
+      sidebar.classList.remove("absolute", "z-40", "h-screen");
+      blurOverlay.classList.add("hidden");
+    });
+  </script>
+
+</body>
+</html>

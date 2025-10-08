@@ -16,139 +16,126 @@
 </head>
 <body>
 
-<section>
-  <header class="navbar">
-    <div class="container nav-container">
-  <div class="nav-left">
-       <img src="images/logo.png" alt="Top Student Logo" class="logo"">
+<!-- Navbar Section -->
+<header class="navbar">
+  <div class="container nav-container">
+    <div class="nav-left">
+      <img src="images/logo.png" alt="Top Student Logo" class="logo">
+    </div>
+
+    <nav class="nav-center">
+      <ul class="nav-links" id="navLinks">
+        <li class="mobile-auth-buttons">
+          <button class="btn login-btn" onclick="window.location.href='login.html'">Login</button>
+          <button class="btn join-btn" onclick="window.location.href='sign-up.html'">Join</button>
+        </li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="service.html">Service</a></li>
+        <li class="resources-dropdown relative">
+          <a href="resource.html" id="resourceToggle" class="cursor-pointer">Resources ▾</a>
+          <ul class="dropdown absolute">
+            <li><a href="papers.html">Past Papers</a></li>
+            <li><a href="guides.html">Study Guides</a></li>
+            <li><a href="press.html">News</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="hamburger" id="hamburger">☰</div>
+
+    <div class="nav-right desktop-buttons">
+      <button class="btn login-btn" onclick="window.location.href='login.html'">Login</button>
+      <button class="btn join-btn" onclick="window.location.href='sign-up.html'">Join</button>
+    </div>
   </div>
-
-  <nav class="nav-center">
-    <ul class="nav-links" id="navLinks">
-  <!-- Login/Join at the top inside mobile menu -->
-  <li class="mobile-auth-buttons">
-    <button class="btn login-btn" onclick="window.location.href='login.html'">Login</button>
-    <button class="btn join-btn" onclick="window.location.href='service.html'">Join</button>
-  </li>
-
-  <li><a href="index.html">Home</a></li>
-  <li><a href="about.html">About Us</a></li>
-  <li><a href="contact.html">Contact</a></li>
-  <li><a href="service.html">Service</a></li>
-  <li class="resources-dropdown relative">
-  <a href="resource.html" id="resourceToggle" class="cursor-pointer">Resources ▾</a>
-  <ul class="dropdown absolute">
-    <li><a href="papers.html">Past Papers</a></li>
-    <li><a href="guides.html">Study Guides</a></li>
-    <li><a href="news.html">News</a></li>
-  </ul>
-</li>
-</ul>
-  </nav>
-
-<div class="hamburger" id="hamburger">☰</div>
-
-  <div class="nav-right desktop-buttons">
-    <button class="btn login-btn" onclick="window.location.href='login.html'">Login</button>
-    <button class="btn join-btn" onclick="window.location.href='service.html'">Join</button>
-  </div>
-</div>
-  </header>
-</section>
+</header>
 
 <div class="menu-overlay" id="menuOverlay"></div>
 
+<!-- Main Content -->
 <main>
+
 <section class="price-section">
-  <div class="price-content">
-    <h2>Choose Your Plan</h2>
-    <p class="subtitle">Free essentials or power-up with premium features.</p>
-  </div>
-</section>
+    <div class="price-content">
+      <h2>Choose Your Plan</h2>
+      <p class="subtitle">Free essentials or unlock full power with premium features.</p>
+    </div>
+  </section>
 
-<section class="price-plan">
-  <div class="plans-container">
-    <div class="subscription-plans">
-      <div class="free-plan plan-card">
-        <h3>Free Plan</h3>
-        <p>R0<span class="text-base font-normal"> /pm</span></p>
-        <ul>
-          <li><i class="fa-solid fa-check"></i> Study Guides</li>
-          <li><i class="fa-solid fa-check"></i> Past Exam Papers</li>
-          <li><i class="fa-solid fa-check"></i> Career News</li>
-        </ul>
-        <button class="tab-one">You're Subscribed</button>
+  <!-- Price Section -->
+  <section class="price-plan">
+    <div class="plans-container">
+      <div class="subscription-plans">
+
+        <!-- Free Plan -->
+        <div class="free-plan plan-card">
+          <h3>Free Plan</h3>
+          <p>R0<span class="text-base font-normal"> /pm</span></p>
+          <ul class="access-list">
+            <li><i class="fa-solid fa-check text-green-500"></i> Past Papers</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Study Guides</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> News & Tips</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Student Community</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Read Certificates</li>
+            <li><i class="fa-solid fa-xmark" style="color: #ff0000;"></i> Smart Reminders</li>
+            <li><i class="fa-solid fa-xmark" style="color: #ff0000;"></i> Study Scope</li>
+          </ul>
+          <a href="sign-up.html">
+            <button class="tab" style="color: blue;">Get Free</button>
+          </a>
+        </div>
+
+        <!-- Standard Plan -->
+        <div class="standard plan-card highlight">
+          <h3>Standard Plan</h3>
+          <p>R99<span class="text-base font-normal"> /pm</span></p>
+          <ul class="access-list">
+            <li><i class="fa-solid fa-check text-green-500"></i> Everything Free</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Daily Challenges</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Study Packs</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Capability Tests</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Career Options</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Read Certificates</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Student Community</li>
+          </ul>
+          <a href="sign-up.html">
+            <button class="tab-two">Get Standard</button>
+          </a>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="premium plan-card premium-highlight">
+          <h3>Premium Plan</h3>
+          <p>R199<span class="text-base font-normal"> /pm</span></p>
+          <ul class="access-list">
+            <li><i class="fa-solid fa-check text-green-500"></i> Everything Standard</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Study Scope</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Smart Reminders</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> NSFAS Help</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> University Info</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Instant Support</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Rewards & Points</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Daily Challenges</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Career Options</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Study Packs</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Student Community</li>
+            <li><i class="fa-solid fa-check text-green-500"></i> Read Certificates</li>
+          </ul>
+          <a href="sign-up.html">
+            <button class="tab-three">Get Premium</button>
+          </a>
+        </div>
+
       </div>
-
-      <div class="standard plan-card">
-        <h3>Standard Plan</h3>
-        <p>R199<span class="text-base font-normal"> /pm</span></p>
-        <ul class="space-y-2 text-gray-800">
-          <li><i class="fa-solid fa-check text-green-600 mr-2"></i>Includes all Free Plan features</li>
-          <li><i class="fa-solid fa-check text-green-600 mr-2"></i>Automated Study Reminders</li>
-          <li><i class="fa-solid fa-check text-green-600 mr-2"></i>Personalized Student Reports</li>
-          <li><i class="fa-solid fa-check text-green-600 mr-2"></i>Predicted Exam Performance</li>
-          <li><i class="fa-solid fa-check text-green-600 mr-2"></i>Expert Exam Tips & Scopes</li>
-        </ul>
-        <a href="trial.html?plan=standard"><button onclick="window.location.href='trial.html?plan=standard'" class="tab-two">Get Standard Trial</button></a>
-      </div>
-
-      <div class="premium plan-card">
-        <h3>Premium Plan</h3>
-        <p>R299<span class="text-base font-normal"> /pm</span></p>
-        <ul class="space-y-2 text-gray-800">
-          <li><i class="fa-solid fa-check text-green-600 mr-2"></i>Includes all Standard Plan features</li>
-          <li><i class="fa-solid fa-check text-green-600 mr-2"></i>Monthly Progress Updates for Parents</li>
-          <li><i class="fa-solid fa-check text-green-600 mr-2"></i>University Application Assistance</li>
-          <li><i class="fa-solid fa-check text-green-600 mr-2"></i>Guidance on Life After School</li>
-          <li><i class="fa-solid fa-check text-green-600 mr-2"></i>NSFAS Application Support</li>
-        </ul>
-        <a href="trial.html?plan=premium"><button onclick="window.location.href='trial.html?plan=premium'" class="tab-three">Get Premium Trial</button></a>
-      </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
-<section class="trial-container">
-  <h2 class="trial-title"><i class="fas fa-rocket"></i> Trial Journey</h2>
-  <div class="trial-steps">
-
-    <div class="trial-card start">
-      <i class="fas fa-user-plus"></i>
-      <h3>Start Trial</h3>
-      <p>Everyone begins with a <strong>7-day free trial</strong>.</p>
-    </div>
-
-    <div class="trial-card full-access">
-      <i class="fas fa-star"></i>
-      <h3>Full Access</h3>
-      <p>Use all features without restrictions while on trial.</p>
-    </div>
-
-    <div class="trial-card warning">
-      <i class="fas fa-bell"></i>
-      <h3>2-Day Alert</h3>
-      <p>We notify you <strong>2 days before</strong> your trial ends.</p>
-    </div>
-
-    <div class="trial-card expired">
-      <i class="fas fa-lock"></i>
-      <h3>Trial Ends</h3>
-      <p>Access is locked. You’re redirected to renew page.</p>
-    </div>
-
-    <div class="trial-card renew">
-      <i class="fas fa-unlock-alt"></i>
-      <h3>Unlock Access</h3>
-      <p>Pay to unlock your account and enjoy full features again.</p>
-    </div>
-
-  </div>
-</section>
-
-<section class="footer">
-  <footer>
+  <!-- Footer Section -->
+  <footer class="footer">
     <div class="footer-content">
       <div class="footer-left">
         <ul>
@@ -164,18 +151,18 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2025 BellsHire | All Rights Reserved</p>
+      <p>&copy; 2025 Bellshire | All Rights Reserved</p>
     </div>
   </footer>
-</section>
+
 </main>
 
+<!-- Scripts -->
 <script>
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
   const menuOverlay = document.getElementById('menuOverlay');
   const resourceToggle = document.getElementById('resourceToggle');
-  const resourceLink = document.getElementById('resourceLink');
 
   function toggleMenu() {
     const isOpen = navLinks.classList.toggle('open');
@@ -187,12 +174,10 @@
   hamburger.addEventListener('click', toggleMenu);
 
   resourceToggle?.addEventListener('click', function (e) {
-    // Mobile only (≤768px)
     if (window.innerWidth <= 768) {
-      e.preventDefault(); // prevent navigation
-      resourceToggle.classList.toggle('open'); // toggle dropdown
+      e.preventDefault();
+      resourceToggle.classList.toggle('open');
     }
-    // Else (desktop): allow normal link to resource.html
   });
 
   menuOverlay.addEventListener('click', () => {
@@ -203,6 +188,6 @@
     resourceToggle.classList.remove('open');
   });
 </script>
+
 </body>
 </html>
-

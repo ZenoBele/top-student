@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrepreneurship Guide</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Fixed Header -->
+  <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+    <div class="max-w-6xl mx-auto flex items-center justify-between p-4">
+      <h1 class="text-2xl font-bold text-red-600">Top Student</h1>
+      <nav class="space-x-6">
+        <a href="dashboard.html" class="text-gray-700 hover:text-red-600 font-medium">Dashboard</a>
+		<a href="options.html" class="text-gray-700 hover:text-indigo-600 font-medium">Back</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="bg-gradient-to-r from-red-500 to-red-600 text-white text-center py-28 px-6 mt-16 rounded-b-3xl shadow-md">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4">Learn to Build Your Own Business</h2>
+    <p class="max-w-2xl mx-auto text-lg opacity-90">
+      Entrepreneurship is about solving problems, creating value, and turning your ideas into reality. 
+      This guide will give you the knowledge and tools to start your journey.
+    </p>
+    <a href="#steps" class="mt-6 inline-block bg-white text-red-600 px-6 py-3 rounded-lg font-semibold shadow hover:bg-gray-100 transition">
+      Start Learning
+    </a>
+  </section>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto py-16 px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+    <!-- What is Entrepreneurship -->
+    <div class="bg-white rounded-2xl p-8 shadow-lg border-t-4 border-red-600 hover:shadow-xl transform hover:scale-105 transition">
+      <i class="fas fa-lightbulb text-red-600 text-4xl mb-4"></i>
+      <h3 class="text-2xl font-bold mb-3">What is Entrepreneurship?</h3>
+      <p class="text-gray-700 leading-relaxed">
+        Entrepreneurship is the process of creating and running a business, innovating solutions, and 
+        taking calculated risks. It’s the foundation of economic growth and independence.
+      </p>
+    </div>
+
+    <!-- Why It Matters -->
+    <div class="bg-red-50 rounded-2xl p-8 shadow-lg border-t-4 border-red-500 hover:shadow-xl transform hover:scale-105 transition">
+      <i class="fas fa-rocket text-red-600 text-4xl mb-4"></i>
+      <h3 class="text-2xl font-bold mb-3">Why It Matters</h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-2">
+        <li>Drives innovation and creativity</li>
+        <li>Creates jobs and economic growth</li>
+        <li>Promotes independence and leadership</li>
+        <li>Empowers communities</li>
+      </ul>
+    </div>
+
+    <!-- Steps to Start -->
+    <div id="steps" class="bg-white rounded-2xl p-8 shadow-lg border-t-4 border-red-600 hover:shadow-xl transform hover:scale-105 transition">
+      <i class="fas fa-list-ol text-red-600 text-4xl mb-4"></i>
+      <h3 class="text-2xl font-bold mb-3">Steps to Start a Business</h3>
+      <ol class="list-decimal list-inside text-gray-700 space-y-2">
+        <li>Identify a problem or opportunity</li>
+        <li>Develop a solution or product idea</li>
+        <li>Create a business plan</li>
+        <li>Secure funding or resources</li>
+        <li>Launch and market your business</li>
+      </ol>
+    </div>
+
+    <!-- Skills Needed -->
+    <div class="bg-red-50 rounded-2xl p-8 shadow-lg border-t-4 border-red-500 hover:shadow-xl transform hover:scale-105 transition">
+      <i class="fas fa-tools text-red-600 text-4xl mb-4"></i>
+      <h3 class="text-2xl font-bold mb-3">Key Entrepreneurial Skills</h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-2">
+        <li>Problem-solving & critical thinking</li>
+        <li>Leadership & teamwork</li>
+        <li>Financial literacy</li>
+        <li>Resilience & adaptability</li>
+        <li>Networking & communication</li>
+      </ul>
+    </div>
+
+    <!-- Resources -->
+    <div id="resources" class="bg-white rounded-2xl p-8 shadow-lg border-t-4 border-red-600 hover:shadow-xl transform hover:scale-105 transition col-span-1 md:col-span-2">
+      <i class="fas fa-book-open text-red-600 text-4xl mb-4"></i>
+      <h3 class="text-2xl font-bold mb-3">Resources & Tips</h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-2">
+        <li><a href="https://www.entrepreneur.com" target="_blank" class="underline hover:text-red-500">Entrepreneur Magazine</a></li>
+        <li><a href="https://www.seda.org.za" target="_blank" class="underline hover:text-red-500">SEDA - Small Enterprise Development Agency</a></li>
+      </ul>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white text-gray-700 text-center py-6 mt-12 border-t border-red-200">
+    <p>&copy; 2025 Entrepreneurship Guide. All Rights Reserved.</p>
+  </footer>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+async function checkSubscription() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Not logged in → send to dashboard
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // Fetch subscription record
+  const { data, error } = await supabase
+    .from("subscription")
+    .select("current_plan")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !data) {
+    showUpgradeAlert();
+    return;
+  }
+
+  const allowedPlans = ["trial", "standard", "premium"];
+
+  if (!allowedPlans.includes(data.current_plan)) {
+    showUpgradeAlert();
+  }
+}
+
+function showUpgradeAlert() {
+  Swal.fire({
+    icon: 'warning',
+    title: 'Access Restricted',
+    text: 'This feature is available only for Trial, Standard, or Premium members. Upgrade or activate your plan to continue.',
+    confirmButtonText: 'View Plans',
+    showCancelButton: true,
+    cancelButtonText: 'Go Back',
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = "Subscription.html"; // Upgrade page
+    } else {
+      window.location.href = "dashboard.html"; // Back to dashboard
+    }
+  });
+}
+
+checkSubscription();
+</script>
+</body>
+</html>

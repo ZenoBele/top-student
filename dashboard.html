@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Student Dashboard</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  /* ===== Animations (Tailwind v2 friendly) ===== */
+  .fade-in {
+    animation: fadeIn 200ms ease-out forwards;
+  }
+  .fade-out {
+    animation: fadeOut 150ms ease-in forwards;
+  }
+  .pop-in {
+    animation: popIn 220ms cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .pop-out {
+    animation: popOut 180ms cubic-bezier(.4,0,1,1) forwards;
+  }
+  @keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
+  @keyframes fadeOut { from {opacity: 1} to {opacity: 0} }
+  @keyframes popIn { 
+    0%   { transform: scale(.95) translateY(6px); opacity: 0 }
+    100% { transform: scale(1) translateY(0);     opacity: 1 }
+  }
+  @keyframes popOut {
+    0%   { transform: scale(1);   opacity: 1 }
+    100% { transform: scale(.98); opacity: 0 }
+  }
+  /* Thin custom scrollbar for the list */
+  .nice-scroll::-webkit-scrollbar { width: 8px; }
+  .nice-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 8px; }
+  html {
+  scroll-behavior: smooth;
+}
+    body {
+      font-family: 'Segoe UI', sans-serif;
+    }
+    
+    .glass {
+      backdrop-filter: blur(8px); /* blur strength */
+      -webkit-backdrop-filter: blur(8px); /* Safari support */
+    }
+
+    #phraseCard {
+      transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    }
+
+    aside::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  aside {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  </style>
+</head>
+<body class="flex h-screen"
+      style="background: linear-gradient(60deg, white, #3e95be, white);">
+
+  <!-- Sidebar -->
+  <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden fixed top-2 right-0 p-4 z-50">
+    <button id="menuBtn" class="text-white p-2 rounded bg-transparent focus:outline-none">
+      <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+    </button>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 md:px-6 text-white fixed top-0 z-30 h-24 md:h-24
+                 w-full md:w-3/4 md:ml-80 md:rounded-b-3xl"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff);">
+
+    <div class="flex flex-col ml-16 items-center flex-1 text-center">
+      <h2 class="text-xl md:text-2xl font-bold flex items-center justify-center gap-2">
+        Welcome Back <i class="fa-solid fa-hand-wave animate-bounce"></i>
+      </h2>
+      <p class="text-xs md:text-sm">Let’s make today count.</p>
+    </div>
+
+    <!-- Right spacer -->
+    <div class="w-20 md:w-28"></div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="mainContent" class="flex-1 flex flex-col overflow-y-auto relative z-0 mt-24 md:ml-64 px-6 md:px-12 space-y-8">
+
+    <!-- Quick Links Section -->
+    <section class="bg-white rounded-3xl p-6 md:p-8 m-4 md:m-8"
+             style="box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <a href="library.html">
+          <div class="bg-gradient-to-r from-purple-600 to-blue-400 rounded-2xl p-6 transform hover:scale-105 transition cursor-pointer relative">
+            <h3 class="text-white font-bold text-2xl mb-2">Library</h3>
+            <p class="text-white text-sm opacity-90">Showcase and explore study guides and notes.</p>
+          </div>
+        </a>
+		<a href="contact.html">
+        <div class="bg-gradient-to-r from-blue-600 to-green-200 rounded-2xl p-6 transform hover:scale-105 transition cursor-pointer relative">
+          <h3 class="text-white font-bold text-xl mb-2">Send a Message</h3>
+          <p class="text-white text-sm opacity-90">Contact support or admin.</p>
+        </div>
+      </a>
+      </div>
+	  <a href="manage.html">
+      <div class="bg-gradient-to-l from-pink-500 to-red-400 rounded-3xl p-6 mt-6 transform hover:-translate-y-1 transition cursor-pointer relative">
+        <h3 class="text-white font-bold text-xl mb-2">Manage Membership</h3>
+        <p class="text-white text-sm opacity-90">Upgrade or cancel your plan.</p>
+      </div>
+	  </a>
+	  <div>
+        <a href="rate.html">
+		  <div class="bg-gradient-to-l from-yellow-500 to-green-500 rounded-3xl p-6 mt-6 transform hover:-translate-y-1 transition cursor-pointer relative">
+            <h3 class="text-white font-bold text-2xl mb-2">Share</h3>
+            <p class="text-white text-sm opacity-90">Rate or Share with friends.</p>
+          </div>
+        </a>
+		<a href="news.html">
+		  <div class="bg-gradient-to-l from-indigo-500 to-red-500 rounded-3xl p-6 mt-6 transform hover:-translate-y-1 transition cursor-pointer relative">
+            <h3 class="text-white font-bold text-2xl mb-2">News</h3>
+            <p class="text-white text-sm opacity-90">Stay updated With latest news.</p>
+          </div>
+        </a>
+		</div>
+    </section>
+
+    <!-- Floating Action Buttons -->
+    <section>
+<div id="notifBell"
+     class="fixed bottom-24 right-6 w-16 h-16 flex items-center justify-center rounded-full text-white text-2xl font-bold shadow-lg cursor-pointer transform transition duration-300 hover:scale-110 hover:brightness-110"
+     style="background: linear-gradient(135deg, #92400E, #FACC15);">
+  <span class="text-white font-bold text-4xl">🔔</span>
+  <span id="notifCount"
+        class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full shadow-lg hidden">
+    0
+  </span>
+</div>
+
+<!-- 🪟 Centered Modal -->
+<div id="notifOverlay" class="fixed inset-0 hidden items-center justify-center z-50">
+  <!-- Backdrop -->
+  <div id="backdrop" class="absolute inset-0 bg-black bg-opacity-50"></div>
+
+  <!-- Modal Card -->
+  <div id="notifModal"
+       class="relative bg-white w-11/12 max-w-md rounded-2xl shadow-2xl overflow-hidden transform">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-5 py-4"
+         style="background: linear-gradient(135deg, #92400E, #FACC15);">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-full bg-yellow-200 bg-opacity-30 flex items-center justify-center text-2xl">🔔</div>
+        <h2 class="text-white text-lg font-bold tracking-wide">Notifications</h2>
+      </div>
+      <button id="closeNotif" class="text-white text-2xl leading-none font-bold focus:outline-none">&times;</button>
+    </div>
+
+    <!-- List -->
+    <div id="notifList" class="p-4 max-h-96 overflow-y-auto nice-scroll space-y-3 bg-gray-50">
+      <!-- Items injected here -->
+      <div class="text-center text-gray-500 py-8 italic">Loading…</div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-4 py-3 bg-gray-100 border-t">
+      <div class="flex items-center justify-between">
+        <div id="markAll"
+                class="px-4 py-2 rounded-lg font-semibold text-white focus:outline-none">
+        </div>
+        <button id="closeFooter"
+                class="px-4 py-2 rounded-lg font-semibold text-gray-700 bg-white border hover:bg-gray-50">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+	  <a href="faq.html">
+      <div class="fixed bottom-6 right-6 w-16 h-16 flex items-center justify-center rounded-full text-white text-2xl font-bold shadow-lg cursor-pointer transform transition duration-300 hover:scale-110 hover:brightness-110"
+           style="background: linear-gradient(135deg, #0a0059, #3e95be);">
+        ?
+      </div>
+	  </a>
+    </section>
+
+  </main>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+// DOM Elements
+const bell        = document.getElementById('notifBell');
+const badge       = document.getElementById('notifCount');
+const overlay     = document.getElementById('notifOverlay');
+const modal       = document.getElementById('notifModal');
+const backdrop    = document.getElementById('backdrop');
+const closeBtn    = document.getElementById('closeNotif');
+const closeFooter = document.getElementById('closeFooter');
+const markAllBtn  = document.getElementById('markAll');
+const listEl      = document.getElementById('notifList');
+
+let currentUser = null;
+let channel = null;
+let cache = [];
+
+// -------------------
+// Helpers
+// -------------------
+function timeAgo(iso) {
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+  return new Date(iso).toLocaleString();
+}
+
+function pickEmoji(n) {
+  return '🟡'; // default accent
+}
+
+function renderItem(n) {
+  const readClass = n.is_read ? 'bg-white border' : 'bg-yellow-50 border-yellow-200';
+  const dot = n.is_read ? '' : '<span class="w-2 h-2 bg-red-500 rounded-full ml-2"></span>';
+
+  const wrapper = document.createElement('div');
+  wrapper.className = `p-4 rounded-xl border shadow-sm hover:shadow-md transition ${readClass}`;
+  wrapper.innerHTML = `
+    <div class="flex items-start">
+      <div class="mr-3 text-2xl leading-none">${pickEmoji(n)}</div>
+      <div class="flex-1">
+        <div class="flex items-center">
+          <p class="font-semibold text-gray-800">${n.title || 'Notification'}</p>
+          ${dot}
+        </div>
+        <p class="text-gray-700 text-sm mt-1">${n.message || ''}</p>
+        <div class="text-gray-400 text-xs mt-2">${timeAgo(n.created_at)}</div>
+      </div>
+    </div>
+  `;
+  return wrapper;
+}
+
+function renderList(items) {
+  listEl.innerHTML = '';
+  if (!items || items.length === 0) {
+    listEl.innerHTML = `
+      <div class="py-12 flex flex-col items-center justify-center">
+        <div class="text-5xl mb-3">✨</div>
+        <div class="text-gray-500 text-sm italic">No notifications yet</div>
+      </div>`;
+    badge.classList.add('hidden');
+    return;
+  }
+
+  let unread = 0;
+  items.forEach(n => {
+    if (!n.is_read) unread++;
+    listEl.appendChild(renderItem(n));
+  });
+
+  if (unread > 0) {
+    badge.textContent = unread;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+// -------------------
+// Fetch notifications
+// -------------------
+async function fetchNotifications() {
+  if (!currentUser) return;
+
+  const { data, error } = await supabase
+    .from('notifications')
+    .select('*')
+    .or(`user_id.eq.${currentUser.id},user_id.is.null`)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Fetch notifications error:', error);
+    return;
+  }
+
+  cache = data || [];
+  renderList(cache);
+}
+
+// -------------------
+// Mark all as read
+// -------------------
+async function markAllAsRead() {
+  if (!currentUser) return;
+
+  const { error } = await supabase
+    .from('notifications')
+    .update({ is_read: true })
+    .or(`user_id.eq.${currentUser.id},user_id.is.null`)
+    .eq('is_read', false);
+
+  if (error) {
+    console.error('Mark all as read error:', error);
+    return;
+  }
+
+  cache = cache.map(n => ({ ...n, is_read: true }));
+  renderList(cache);
+}
+
+// -------------------
+// Real-time subscription
+// -------------------
+async function subscribeRealtime() {
+  if (!currentUser) return;
+  if (channel) await supabase.removeChannel(channel);
+
+  channel = supabase
+    .channel('realtime:notifications')
+    .on('postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'notifications' },
+      (payload) => {
+        const notif = payload.new;
+        // Only add if for this user or global
+        if (notif.user_id === currentUser.id || notif.user_id === null) {
+          cache = [notif, ...cache];
+          renderList(cache);
+        }
+      }
+    )
+    .subscribe();
+}
+
+// -------------------
+// Modal open/close
+// -------------------
+function openModal() {
+  overlay.classList.remove('hidden');
+  overlay.classList.add('flex');
+  modal.classList.add('pop-in');
+  setTimeout(markAllAsRead, 120);
+}
+
+function closeModal() {
+  overlay.classList.add('hidden');
+  modal.classList.remove('pop-in');
+}
+
+// Close triggers
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+backdrop.addEventListener('click', closeModal);
+closeBtn.addEventListener('click', closeModal);
+closeFooter.addEventListener('click', closeModal);
+
+// Open triggers
+bell.addEventListener('click', openModal);
+markAllBtn.addEventListener('click', markAllAsRead);
+
+// -------------------
+// Initialize
+// -------------------
+(async function init() {
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) {
+    console.log("No authenticated user found");
+    return;
+  }
+
+  currentUser = data.user;
+  await fetchNotifications();
+  await subscribeRealtime();
+})();
+</script>
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const menuIcon = document.getElementById("menuIcon");
+  const blurOverlay = document.getElementById("blurOverlay");
+  const sidebar = document.querySelector("aside");
+
+  menuBtn.addEventListener("click", () => {
+    // Toggle icon
+    menuIcon.classList.toggle("fa-bars");
+    menuIcon.classList.toggle("fa-xmark");
+
+    // Toggle sidebar
+    sidebar.classList.toggle("hidden");
+    sidebar.classList.toggle("absolute");
+    sidebar.classList.toggle("z-40");
+    sidebar.classList.toggle("h-screen");
+
+    // Toggle blur overlay
+    blurOverlay.classList.toggle("hidden");
+  });
+
+  blurOverlay.addEventListener("click", () => {
+    menuIcon.classList.add("fa-bars");
+    menuIcon.classList.remove("fa-xmark");
+    sidebar.classList.add("hidden");
+    sidebar.classList.remove("absolute", "z-40", "h-screen");
+    blurOverlay.classList.add("hidden");
+  });
+</script>
+</body>
+</html>

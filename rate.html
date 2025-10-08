@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share & Rate - Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      scroll-behavior: smooth;
+      background: linear-gradient(135deg, #38b6ff, #1c3c72);
+    }
+    .glass {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    #starRating span {
+      transition: color 0.2s;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start py-12 space-y-8">
+
+  <!-- Header -->
+  <header class="text-center mb-8">
+    <h1 class="text-3xl md:text-4xl font-bold text-white">Help Top Student Grow!</h1>
+    <p class="text-gray-200 mt-2">Rate our service and share with your friends to help others grow too.</p>
+  </header>
+
+  <!-- Rate Section -->
+  <section class="max-w-md w-full bg-white rounded-3xl p-6 shadow-md space-y-2">
+  
+    <h2 class="text-xl font-semibold text-gray-700">Rate Us</h2>
+	<p class="text-xs font-semibold text-gray-700">Select A Star</p>
+    <div id="starRating" class="flex space-x-2 text-yellow-400 text-3xl cursor-pointer">
+      <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+    </div>
+    <textarea placeholder="Leave a comment (optional)"
+      class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+    <button class="w-full bg-gradient-to-r from-blue-800 to-blue-400 text-white py-2 rounded-lg hover:bg-blue-700 transition">Submit Rating</button>
+  </section>
+
+  <!-- Share Section -->
+  <section class="max-w-md w-full bg-white rounded-3xl p-6 shadow-md space-y-4">
+    <h2 class="text-xl font-semibold text-gray-800">Share with Friends</h2>
+    <p class="text-gray-600">Help your classmates succeed! Share Top Student now.</p>
+    <div class="flex flex-col space-y-3">
+      <button onclick="shareWhatsApp()" class="flex items-center justify-center gap-2 bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">
+        <i class="fab fa-whatsapp"></i> Share on WhatsApp
+      </button>
+      <button onclick="shareFacebook()" class="flex items-center justify-center gap-2 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+        <i class="fab fa-facebook-f"></i> Share on Facebook
+      </button>
+      <button onclick="copyLink()" class="flex items-center justify-center gap-2 bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition">
+        Copy Link
+      </button>
+    </div>
+
+  <a href="dashboard.html">
+  <div class="fixed bottom-6 right-6 w-16 h-16 flex items-center justify-center rounded-full text-white text-2xl font-bold shadow-lg cursor-pointer transform transition duration-300 hover:scale-110 hover:brightness-110"
+           style="background: linear-gradient(135deg, #0a0059, #3e95be);">
+        <i class="fa-solid fa-house"></i>
+  </div>
+  </a>
+
+  </section>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+const stars = document.querySelectorAll('#starRating span');
+  let rating = 0;
+  stars.forEach((star, index) => {
+    star.addEventListener('click', () => {
+      rating = index + 1;
+      stars.forEach((s, i) => {
+        s.style.color = i < rating ? '#facc15' : '#ddd';
+      });
+    });
+  });
+
+  // Submit Rating
+  const submitBtn = document.querySelector("button.w-full");
+  const commentBox = document.querySelector("textarea");
+
+  submitBtn.addEventListener("click", async () => {
+    if (rating === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Pick a star!',
+        text: 'Please select at least one star before submitting.'
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: 'Submitting...',
+      text: 'Please wait while we save your rating.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    const { error } = await supabase
+      .from("ratings")
+      .insert([{ stars: rating, comment: commentBox.value, account_uid: user.id }]);
+
+    if (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.message,
+      });
+    } else {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thank you!',
+        text: 'Your rating has been submitted.',
+        confirmButtonColor: '#3085d6',
+      });
+      commentBox.value = "";
+      rating = 0;
+      stars.forEach(s => s.style.color = "#ddd");
+    }
+  });
+
+  // ✅ Make share functions global
+  window.shareWhatsApp = function () {
+    const shareUrl = window.location.href;
+    window.open(`https://wa.me/?text=Check out Top Student: ${shareUrl}`, '_blank');
+  }
+
+  window.shareFacebook = function () {
+    const shareUrl = window.location.href;
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, '_blank');
+  }
+
+  window.copyLink = function () {
+    const shareUrl = window.location.href;
+    navigator.clipboard.writeText(shareUrl);
+    Swal.fire({
+      icon: 'info',
+      title: 'Link copied!',
+      text: 'You can now share it with friends.'
+    });
+  }
+</script>
+</body>
+</html>

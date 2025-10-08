@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Pack - Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+  html {
+  scroll-behavior: smooth;
+}
+    body {
+      font-family: 'Segoe UI', sans-serif;
+    }
+    
+    .glass {
+      backdrop-filter: blur(8px); /* blur strength */
+      -webkit-backdrop-filter: blur(8px); /* Safari support */
+    }
+
+    #phraseCard {
+      transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    }
+
+    aside::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  aside {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  </style>
+</head>
+<body class="min-h-screen"
+      style="background: linear-gradient(60deg, white, #3e95be, white);">
+
+  <!-- Sidebar -->
+   <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden fixed top-2 right-0 p-4 z-50">
+    <button id="menuBtn" class="text-white p-2 rounded bg-transparent focus:outline-none">
+      <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+    </button>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 md:px-6 text-white fixed top-0 z-30 h-24 md:h-24
+                 w-full md:w-3/4 md:ml-80 md:rounded-b-3xl"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff);">
+
+    <div class="flex flex-col ml-16 items-center flex-1 text-center">
+      <h2 class="text-xl md:text-2xl font-bold flex items-center justify-center gap-2">
+       Study Package
+      </h2>
+      <p class="text-xs md:text-sm">Full Package and plans carefully curated.</p>
+    </div>
+
+    <!-- Right spacer -->
+    <div class="w-20 md:w-28"></div>
+  </header>
+
+
+<main class="flex flex-col items-center pt-24 px-6 mt-12 md:ml-64 md:px-12 space-y-8">
+
+  <!-- Page Header -->
+  <section class="w-full max-w-5xl bg-white rounded-3xl shadow-lg p-6 glass mb-8">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">Smart Pack</h1>
+    <p class="text-gray-600 text-center max-w-3xl mx-auto">
+      Download full study packages carefully curated to help you excel in your chosen subjects.  
+      Each pack includes selected past papers, memos, and guides combined into a subject-specific study kit.
+    </p>
+  </section>
+
+  <!-- Dynamic Packs Grid -->
+  <div id="packsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mx-auto"></div>
+
+  <!-- Empty State / Lottie Animation -->
+  <div id="smartPackEmpty" class="w-full col-span-full flex justify-center items-center h-64 mt-6">
+  <div id="smartPackAnimation" class="w-64 h-64"></div>
+  </div>
+
+</main>
+
+<script type="module">
+import { supabase } from './js/supabaseClient.js';
+
+const grid = document.getElementById('packsGrid');
+const loader = document.getElementById('smartPackEmpty');
+
+loader.classList.remove("hidden");
+
+// Card gradient colors
+const cardColors = [
+  "from-purple-400 to-purple-200",
+  "from-yellow-400 to-yellow-200",
+  "from-pink-400 to-pink-200",
+  "from-green-400 to-green-200"
+];
+
+async function checkSubscription() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("subscription")
+    .select("current_plan")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !data || !["trial", "standard", "premium"].includes(data.current_plan)) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Access Restricted',
+      text: 'Upgrade or activate your plan to continue.',
+      confirmButtonText: 'View Plans',
+      showCancelButton: true,
+      cancelButtonText: 'Go Back'
+    }).then(result => {
+      if (result.isConfirmed) window.location.href = "Subscription.html";
+      else window.location.href = "dashboard.html";
+    });
+  }
+}
+
+checkSubscription();
+
+async function loadSmartPacks() {
+  grid.innerHTML = "";
+
+  try {
+    // 1️⃣ Get logged-in user
+    const { data: { user: currentUser }, error: authError } = await supabase.auth.getUser();
+    if (authError || !currentUser) {
+      loader.classList.add("hidden");
+      Swal.fire("Error", "No logged-in user found.", "error");
+      return;
+    }
+
+    // 2️⃣ Fetch subjects
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('subjects')
+      .eq('id', currentUser.id)
+      .single();
+
+    if (profileError || !profile?.subjects?.length) {
+      loader.classList.add("hidden");
+      Swal.fire({
+        title: "No Subjects Selected",
+        text: "Please select your subjects in your Profile.",
+        icon: "warning",
+        confirmButtonText: "Go to Profile"
+      }).then((result) => {
+        if (result.isConfirmed) window.location.href = "profile.html";
+      });
+      return;
+    }
+
+    const subjects = profile.subjects.slice(0, 4); // max 4 subjects
+    let anyFiles = false;
+    let colorIndex = 0;
+
+    for (const subject of subjects) {
+      const folderName = subject;
+      let packFiles = [];
+
+      // --- Fetch all papers (only November) ---
+      const { data: paperFiles } = await supabase.storage.from("papers").list(folderName, { limit: 100 });
+      if (paperFiles?.length) {
+        const novFiles = paperFiles.filter(f => f.name.toLowerCase().includes("nov"));
+        const qpFiles = novFiles.filter(f => f.name.toLowerCase().includes("_qp"));
+        const memoFiles = novFiles.filter(f => f.name.toLowerCase().includes("_memo"));
+        const addendumFiles = novFiles.filter(f => f.name.toLowerCase().includes("_addendum"));
+
+        // Sort by year descending
+        const sortByYear = arr => arr.sort((a, b) => {
+          const yearA = parseInt(a.name.match(/_(\d{4})_/)?.[1] || 0);
+          const yearB = parseInt(b.name.match(/_(\d{4})_/)?.[1] || 0);
+          return yearB - yearA;
+        });
+
+        const latestQPs = sortByYear(qpFiles).slice(0, 2); // latest 2 QPs
+
+        latestQPs.forEach(qp => {
+          packFiles.push(qp);
+
+          // Extract year_month and paper number
+          const parts = qp.name.split('_');
+          const yearMonth = parts[3] + '_' + parts[4]; // e.g., 2021_June
+          const paperNum = parts[5]; // e.g., P1
+
+          // Find corresponding memo and addendum
+          const memo = memoFiles.find(m => m.name.includes(yearMonth) && m.name.includes(paperNum) && m.name.toLowerCase().includes('memo'));
+          const addendum = addendumFiles.find(a => a.name.includes(yearMonth) && a.name.includes(paperNum) && a.name.toLowerCase().includes('addendum'));
+
+          if (memo) packFiles.push(memo);
+          if (addendum) packFiles.push(addendum);
+        });
+      }
+
+      // --- Fetch all guides ---
+      const { data: guideFiles } = await supabase.storage.from("guides").list(folderName, { limit: 100 });
+      if (guideFiles?.length) packFiles.push(...guideFiles);
+
+      if (!packFiles.length) continue;
+      anyFiles = true;
+
+      // --- Build card ---
+      const colorClass = cardColors[colorIndex % cardColors.length];
+      colorIndex++;
+
+      const card = document.createElement("div");
+      card.className = `bg-gradient-to-r ${colorClass} rounded-3xl shadow-lg p-6 glass hover:shadow-2xl transition transform hover:scale-105 flex flex-col justify-between`;
+
+      card.innerHTML = `
+        <h3 class="text-xl font-bold mb-2 text-white">${subject} Pack</h3>
+        <p class="text-white text-sm mb-4">
+          Package Contains 2 November QPs, their Memos & Addendums, and all Guides.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <button class="downloadBtn bg-white text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-100 flex-1 min-w-[120px]">Download All</button>
+          <button class="viewBtn bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200 flex-1 min-w-[120px]">View Files</button>
+        </div>
+      `;
+
+      // --- Download ZIP ---
+      card.querySelector(".downloadBtn").addEventListener("click", async (e) => {
+        const btn = e.currentTarget;
+        btn.disabled = true;
+        const originalText = btn.innerText;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Preparing…';
+
+        const zip = new JSZip();
+        const folder = zip.folder(subject);
+
+        for (const file of packFiles) {
+          const bucket = file.name.toLowerCase().includes("guide") ? "guides" : "papers";
+          const url = `https://mlwxxtvsozhwzjxmsvbg.supabase.co/storage/v1/object/public/${bucket}/${folderName}/${file.name}`;
+
+          try {
+            const response = await fetch(url);
+            if (!response.ok) continue;
+            const blob = await response.blob();
+            folder.file(file.name, blob);
+          } catch (err) {
+            console.error("Failed to fetch file for zip:", file.name, err);
+          }
+        }
+
+        zip.generateAsync({ type: "blob" }).then(content => {
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(content);
+          a.download = `${subject}_Pack.zip`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          btn.innerHTML = 'Download Complete ✅';
+          setTimeout(() => btn.innerText = originalText, 2000);
+          btn.disabled = false;
+        }).catch(err => {
+          console.error(err);
+          Swal.fire("Error", "Failed to create ZIP file.", "error");
+          btn.innerText = originalText;
+          btn.disabled = false;
+        });
+      });
+
+      // --- View files popup ---
+      card.querySelector(".viewBtn").addEventListener("click", () => {
+        let html = `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[60vh] overflow-y-auto pr-2">`;
+
+        packFiles.forEach(file => {
+          const bucket = file.name.toLowerCase().includes("guide") ? "guides" : "papers";
+          let typeLabel = bucket === "guides" ? "Guide" : "Paper";
+          if (file.name.toLowerCase().includes("memo")) typeLabel = "Memo";
+          if (file.name.toLowerCase().includes("addendum")) typeLabel = "Addendum";
+
+          const colorClass = typeLabel === "Guide" ? "bg-green-500" :
+                             typeLabel === "Memo" ? "bg-blue-500" :
+                             typeLabel === "Addendum" ? "bg-yellow-500" : "bg-purple-500";
+
+          const url = `https://mlwxxtvsozhwzjxmsvbg.supabase.co/storage/v1/object/public/${bucket}/${folderName}/${file.name}`;
+
+          html += `
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 rounded-xl shadow-md hover:shadow-xl transition bg-gradient-to-r from-white to-gray-100">
+              <div class="mb-2 sm:mb-0">
+                <span class="font-semibold text-gray-800 break-all">${file.name}</span>
+                <span class="ml-2 px-2 py-0.5 ${colorClass} rounded text-white text-xs">${typeLabel}</span>
+              </div>
+              <a href="${url}" download class="w-full sm:w-auto text-center bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition">
+                <i class="fas fa-download text-lg"></i>
+              </a>
+            </div>
+          `;
+        });
+
+        html += "</div>";
+
+        Swal.fire({
+          title: `${subject} Pack Files`,
+          html: html,
+          width: '100%',
+          showCloseButton: true,
+          showConfirmButton: false,
+          background: 'linear-gradient(135deg, #c0c8e8, #60a0c0)',
+          customClass: { popup: 'rounded-3xl p-4 sm:p-6' }
+        });
+      });
+
+      grid.appendChild(card);
+
+      // Center the 4th card
+      if (grid.children.length === 4) {
+        const lastCard = grid.children[3];
+        lastCard.classList.add("md:col-span-3", "md:justify-self-center");
+      }
+    }
+
+    loader.classList.add("hidden");
+
+    if (!anyFiles) {
+      Swal.fire("Empty", "No study packs available for your subjects.", "info");
+      document.getElementById("smartPackAnimation").style.display = "block";
+    }
+
+  } catch (err) {
+    console.error(err);
+    loader.classList.add("hidden");
+    Swal.fire("Error", "Something went wrong while loading your Smart Packs.", "error");
+  }
+}
+
+loadSmartPacks();
+</script>
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const menuIcon = document.getElementById("menuIcon");
+  const blurOverlay = document.getElementById("blurOverlay");
+  const sidebar = document.querySelector("aside");
+
+  menuBtn.addEventListener("click", () => {
+    // Toggle icon
+    menuIcon.classList.toggle("fa-bars");
+    menuIcon.classList.toggle("fa-xmark");
+
+    // Toggle sidebar
+    sidebar.classList.toggle("hidden");
+    sidebar.classList.toggle("absolute");
+    sidebar.classList.toggle("z-40");
+    sidebar.classList.toggle("h-screen");
+
+    // Toggle blur overlay
+    blurOverlay.classList.toggle("hidden");
+  });
+
+  blurOverlay.addEventListener("click", () => {
+    menuIcon.classList.add("fa-bars");
+    menuIcon.classList.remove("fa-xmark");
+    sidebar.classList.add("hidden");
+    sidebar.classList.remove("absolute", "z-40", "h-screen");
+    blurOverlay.classList.add("hidden");
+  });
+</script>
+</body>
+</html>

@@ -1,152 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Explore South Africa’s top student-focused news hub. Get expert career advice, university tips, and Matric success strategies to shape your future with confidence." />
-  <meta name="keywords" content="Top Student news, career guidance South Africa, student news updates, Matric advice, university applications, study tips, Grade 12 education, student success" />
-  <meta name="author" content="Top Student by Bellshire" />
-  <title>Career & Education News – Top Student South Africa</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png" />
-  <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
-  <link rel="canonical" href="https://topstudent.co.za/news.html" />
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Hub</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* Tailwind + simple masonry using column-count */
+    #newsGrid {
+      column-count: 1;
+      column-gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      #newsGrid {
+        column-count: 2;
+      }
+    }
+    @media (min-width: 1024px) {
+      #newsGrid {
+        column-count: 3;
+      }
+    }
+
+    .news-card {
+      display: inline-block; /* needed for masonry */
+      width: 100%;
+      margin-bottom: 1.5rem;
+      break-inside: avoid; /* prevent breaking inside column */
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+<body class="bg-gradient-to-r from-pink-200 to-blue-500 font-sans min-h-screen flex flex-col">
 
-  <nav class="bg-gradient-to-r from-blue-800 to-blue-400 shadow-md">
-  <div class="container px-4 py-4 flex items-center justify-between">
-    <!-- Left: Logo -->
-    <div class="flex-shrink-0">
-      <img src="images/logo2.png" alt="Top Student Logo" class="h-20 w-auto transition-transform duration-300 hover:scale-105 cursor-pointer" />
+<!-- Header -->
+<header class="fixed top-0 left-0 w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 rounded-b-3xl text-white p-6 shadow-lg z-50">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div>
+      <h1 class="text-4xl font-extrabold flex items-center gap-3">News Hub</h1>
+      <p class="mt-1 text-lg opacity-90">Stay updated with the latest education & tech stories.</p>
     </div>
-
-    <!-- Center: Navigation Links -->
-    <ul class="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6 text-white text-sm font-medium">
-      <li><a href="papers.html" class="hover:underline">Papers</a></li>
-      <li><a href="guides.html" class="hover:underline">Study Guides</a></li>
-      <li><a href="news.html" class="hover:underline">News</a></li>
-    </ul>
-
-    <!-- Right: Call and Back -->
-    <div class="flex items-center space-x-4 flex-shrink-0">
-      <a href="tel:0727306186" title="Call us" class="text-white hover:text-gray-100">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.6a1 1 0 01.94.658l1.4 3.743a1 1 0 01-.21 1.049L9.38 10.2a11.042 11.042 0 005.42 5.42l1.75-1.35a1 1 0 011.049-.21l3.743 1.4a1 1 0 01.658.94V19a2 2 0 01-2 2h-.5C10.074 21 3 13.926 3 5.5V5z" />
-        </svg>
-      </a>
-      <a href="resource.html" title="Back to Resources" class="text-white hover:text-gray-100">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
+    <div class="flex items-center gap-4 w-full md:w-auto">
+      <div class="flex w-full md:w-72">
+        <input type="text" id="searchInput" placeholder="Search news..." 
+               class="flex-1 px-4 py-2 rounded-l-lg text-gray-800 focus:outline-none">
+        <button onclick="searchNews()" 
+                class="px-4 py-2 bg-yellow-400 text-gray-900 rounded-r-lg hover:bg-yellow-500">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+      <a href="dashboard.html" 
+         class="ml-auto px-4 py-2 bg-white backdrop-blur-lg rounded-full text-black hover:bg-gray-100 flex items-center gap-2">
+         Home
       </a>
     </div>
   </div>
+</header>
 
-  <!-- Mobile nav -->
-  <div class="md:hidden bg-blue-700 text-white px-4 py-2 space-y-2 text-center">
-    <a href="papers.html" class="block hover:underline">Papers</a>
-    <a href="guides.html" class="block hover:underline">Study Guides</a>
-    <a href="news.html" class="block hover:underline">News</a>
-  </div>
+<!-- Categories -->
+<nav class="max-w-6xl mx-auto flex flex-wrap gap-3 p-6 justify-center mt-48">
+  <button onclick="filterNews('all', this)" class="category-btn px-4 py-1 bg-gray-200 rounded-full text-gray-800 text-sm">All</button>
+  <button onclick="filterNews('education', this)" class="category-btn px-4 py-1 bg-green-200 rounded-full text-green-900 text-sm">Education</button>
+  <button onclick="filterNews('technology', this)" class="category-btn px-4 py-1 bg-purple-200 rounded-full text-purple-900 text-sm">Technology</button>
+  <button onclick="filterNews('other', this)" class="category-btn px-4 py-1 bg-pink-200 rounded-full text-pink-900 text-sm">Other</button>
 </nav>
 
-  <!-- Main Message -->
-<main class="flex-grow px-4 py-12 max-w-3xl mx-auto">
- <h2 class="text-3xl font-extrabold mb-6 text-center text-blue-800 tracking-tight">
-  🔥Gossipies
-</h2>
-  <div id="newsList" class="space-y-6">
-    <p class="text-gray-500 text-center">Loading stories that matter to you...</p>
-  </div>
+<!-- News Grid -->
+<main id="newsGrid" class="max-w-6xl mx-auto p-6 flex-1 mt-4">
+  <!-- Cards inserted dynamically -->
 </main>
 
-  <!-- Footer -->
-  <footer class="text-center text-gray-500 py-4 text-sm">
-    &copy; 2025 Top Student. All rights reserved.
-  </footer>
+<div id="loader" class="fixed inset-0 flex items-center justify-center bg-white opacity-50 z-50">
+  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-b-4 border-gray-300"></div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-200 rounded-t-3xl text-gray-600 text-center py-6 mt-10">
+  <p class="text-sm">© 2025 News Hub (Top Student). All rights reserved.</p>
+</footer>
 
 <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    import { supabase } from './js/supabaseClient.js';
 
-  const supabaseUrl = 'https://mlwxxtvsozhwzjxmsvbg.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU';
-  const supabase = createClient(supabaseUrl, supabaseKey);
+const loader = document.getElementById('loader');
 
-  function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  async function fetchNews() {
+    console.log("Fetching news from Supabase...");
+    loader.style.display = 'flex'; // show loader
+    try {
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .order('date_posted', { ascending: false });
+
+      if (error) throw error;
+
+      // Randomize news order
+      data.sort(() => Math.random() - 0.5);
+
+      console.log("News fetched:", data);
+      displayNews(data);
+    } catch (err) {
+      console.error('Error fetching news:', err.message);
+      Swal.fire("Error", "Failed to fetch news: " + err.message, "error");
+    } finally {
+      loader.style.display = 'none'; // hide loader
+    }
   }
 
-  async function loadNews() {
-    const listContainer = document.getElementById('newsList');
-    listContainer.innerHTML = '';
+  function displayNews(newsItems) {
+    console.log("Displaying news, items:", newsItems.length);
+    const newsGrid = document.getElementById('newsGrid');
+    newsGrid.innerHTML = '';
 
-    const { data, error } = await supabase
-      .from('news')
-      .select('title, body, date_posted, author, audience, image_url, source_url')
-      .order('date_posted', { ascending: false });
-
-    if (error) {
-      listContainer.innerHTML = `<p class="text-red-500">Couldn't load news. Please refresh.</p>`;
-      return;
-    }
-
-    if (!data || data.length === 0) {
-      listContainer.innerHTML = `<p class="text-gray-500">No news yet. Check back soon!</p>`;
-      return;
-    }
-
-    data.forEach(post => {
-      const card = document.createElement('div');
-      card.className = `
-        bg-white rounded-xl shadow-md 
-        transition transform duration-300 ease-in-out 
-        hover:scale-105 
-        hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
-        overflow-hidden max-w-5xl mx-auto mb-6
-      `;
-
-      const date = new Date(post.date_posted).toLocaleDateString('en-ZA', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric'
-      });
-
-      const audience = post.audience ? ` • For: ${capitalize(post.audience)}` : '';
-      const meta = `📅 ${date} • ✍️ ${post.author || 'Top Student'}${audience}`;
-
-      const image = post.image_url
-        ? `<img src="${post.image_url}" alt="news image" class="w-full h-55 object-cover">`
-        : '';
-
-      const sourceButton =
-        post.source_url && post.source_url !== '#' && post.source_url.startsWith('http')
-          ? `
-            <div class="flex justify-center mt-4">
-              <a href="${post.source_url}" target="_blank" rel="noopener"
-                 class="inline-block text-sm font-semibold text-white bg-blue-400 
-                        hover:bg-blue-800 px-4 py-2 rounded shadow hover:shadow-md transition">
-                🔗 View Full News
-              </a>
-            </div>
-          `
-          : '';
+    newsItems.forEach((item) => {
+      const card = document.createElement('article');
+      card.className = 'news-card bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden flex flex-col';
+      card.dataset.category = item.category || 'other';
 
       card.innerHTML = `
-        ${image}
-        <div class="p-4">
-          <h3 class="text-xl font-bold text-blue-800 mb-2">📰 ${post.title}</h3>
-          <p class="text-sm text-gray-500 mb-3">${meta}</p>
-          <div class="text-gray-800 leading-relaxed whitespace-pre-line">${post.body}</div>
-          ${sourceButton}
+        <img src="${item.image_url || 'https://via.placeholder.com/600x300/cccccc/ffffff?text=No+Image'}" 
+             alt="${item.title}" class="w-full object-cover">
+        <div class="p-5 flex flex-col">
+          <h2 class="text-lg font-semibold text-blue-700">${item.title}</h2>
+          <p class="text-gray-500 text-xs mb-2">${new Date(item.date_posted).toLocaleDateString()} • ${item.audience || 'Everyone'}</p>
+          <p class="text-gray-600 text-sm mb-3">${item.body}</p>
+          <button onclick="openNews('${item.source_url || '#'}')" 
+                  class="text-blue-600 hover:underline text-sm mt-2">Read more →</button>
         </div>
       `;
-
-      listContainer.appendChild(card);
+      newsGrid.appendChild(card);
     });
   }
 
-  loadNews();
+  function openNews(url) {
+    if(url && url !== '#'){
+      window.open(url, '_blank');
+    } else {
+      Swal.fire({
+        title: 'No source available',
+        text: 'This news item does not have an external link.',
+        icon: 'info',
+        confirmButtonText: 'Close'
+      });
+    }
+  }
+
+  function filterNews(category, btn) {
+    console.log("Filtering news by category:", category);
+    const cards = document.querySelectorAll('.news-card');
+    cards.forEach(card => {
+      card.style.display = (category === 'all' || card.dataset.category === category) ? 'inline-block' : 'none';
+    });
+    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('ring-2', 'ring-indigo-400'));
+    btn.classList.add('ring-2', 'ring-indigo-400');
+  }
+
+  function searchNews() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    console.log("Searching for:", query);
+    const cards = document.querySelectorAll('.news-card');
+    let found = false;
+
+    cards.forEach(card => {
+      const text = card.innerText.toLowerCase();
+      if (text.includes(query)) {
+        card.style.display = "inline-block";
+        found = true;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    if (!found && query.trim() !== "") {
+      Swal.fire("No results", "No news found for: " + query, "warning");
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.category-btn').classList.add('ring-2', 'ring-indigo-400');
+    fetchNews();
+  });
+
+  window.filterNews = filterNews;
+  window.searchNews = searchNews;
+  window.openNews = openNews;
 </script>
 </body>
 </html>

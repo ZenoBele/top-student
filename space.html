@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astronaut Career Path</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Fixed Header -->
+  <header class="fixed top-0 left-0 w-full bg-gradient-to-r from-blue-700 to-indigo-800 text-white shadow-lg z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
+      <h1 class="text-xl font-bold">Astronaut Career Path</h1>
+      <div class="space-x-3">
+        <a href="dashboard.html" class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-200 transition">Dashboard</a>
+        <button onclick="history.back()" class="bg-blue-500 px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-600 transition">Back</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-r from-indigo-800 via-blue-700 to-indigo-900 text-white h-[500px] flex items-center justify-center pt-20">
+    <div class="text-center px-6">
+      <h1 class="text-5xl font-extrabold mb-6">Explore the Astronaut Career Path</h1>
+      <p class="text-xl max-w-3xl mx-auto mb-6 leading-relaxed">
+        From Earth to the stars — astronauts represent humanity’s greatest journey of exploration. 
+        Learn what it takes to become one, what life in space is like, and how the future of space exploration is unfolding.
+      </p>
+      <a href="#intro" class="bg-white text-blue-800 px-6 py-3 rounded-xl font-semibold shadow hover:bg-gray-200 transition">
+        Start Learning
+      </a>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="pt-16 max-w-6xl mx-auto px-6">
+
+    <!-- Introduction -->
+    <section id="intro" class="mb-16">
+      <h2 class="text-3xl font-bold text-blue-800 mb-6">Introduction</h2>
+      <p class="text-lg leading-relaxed">
+        Astronauts are more than space travelers — they are scientists, engineers, doctors, pilots, and explorers representing the peak of human achievement. 
+        Becoming an astronaut requires a combination of advanced education, professional experience, exceptional health, and personal resilience. 
+        This page will guide you through the history of astronauts, what it takes to become one, the challenges of the career, and the exciting future of space exploration.
+      </p>
+    </section>
+
+    <!-- History of Astronauts -->
+    <section class="mb-16">
+      <h3 class="text-2xl font-semibold text-indigo-700 mb-6">History of Astronauts</h3>
+      <p class="text-lg leading-relaxed mb-6">
+        The journey of astronauts began with the **Space Race** in the mid-20th century. 
+        - In **1961**, Yuri Gagarin from the Soviet Union became the first human to orbit Earth.  
+        - In **1969**, Neil Armstrong and Buzz Aldrin became the first humans to set foot on the Moon.  
+        - From the 1980s to the 2000s, astronauts flew aboard the Space Shuttle, conducting missions that deployed satellites and built the International Space Station (ISS).  
+        Today, astronauts represent not only national agencies like NASA and ESA but also private companies exploring space tourism and interplanetary travel.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <img src="images/appolo.jpg" alt="Apollo 11" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h4 class="text-lg font-bold">Apollo 11</h4>
+            <p>The first successful Moon landing in 1969 by NASA astronauts Armstrong, Aldrin, and Collins.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <img src="images/satalight.jpg" alt="ISS" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h4 class="text-lg font-bold">International Space Station</h4>
+            <p>A global collaboration where astronauts live and conduct experiments in low Earth orbit.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <img src="images/space.jpg" alt="SpaceX Crew" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h4 class="text-lg font-bold">Commercial Astronauts</h4>
+            <p>Private companies like SpaceX now launch astronauts, expanding opportunities in space.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Requirements -->
+    <section class="mb-16">
+      <h3 class="text-2xl font-semibold text-indigo-700 mb-6">Requirements to Become an Astronaut</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h4 class="text-lg font-bold mb-4">Education</h4>
+          <p>A bachelor’s degree in engineering, physical science, computer science, mathematics, or medicine is the minimum. 
+          Most astronauts also hold master’s or doctoral degrees.</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h4 class="text-lg font-bold mb-4">Professional Experience</h4>
+          <p>At least 3 years of relevant work experience, or 1,000 hours as a jet pilot-in-command. Many are engineers, scientists, or military pilots.</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h4 class="text-lg font-bold mb-4">Physical Requirements</h4>
+          <p>Excellent health, vision, and physical fitness are essential. Candidates must endure G-forces, isolation, and microgravity challenges.</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h4 class="text-lg font-bold mb-4">Skills & Language</h4>
+          <p>Astronauts need teamwork, leadership, problem-solving, and adaptability. Russian is often required for ISS missions.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Training -->
+    <section class="mb-16">
+      <h3 class="text-2xl font-semibold text-indigo-700 mb-6">Astronaut Training</h3>
+      <p class="text-lg leading-relaxed mb-6">
+        Training lasts several years and prepares astronauts for spacecraft operations, emergencies, and long missions. It includes:
+      </p>
+      <ul class="list-disc list-inside text-lg space-y-3">
+        <li>Classroom studies in spacecraft systems, physics, and engineering.</li>
+        <li>Flight training and underwater simulations to mimic weightlessness.</li>
+        <li>Robotics and EVA (spacewalk) practice in neutral buoyancy pools.</li>
+        <li>Survival training in jungles, deserts, and oceans.</li>
+        <li>International teamwork training with other agencies.</li>
+      </ul>
+    </section>
+
+    <!-- Life in Space -->
+    <section class="mb-16">
+      <h3 class="text-2xl font-semibold text-indigo-700 mb-6">Life as an Astronaut</h3>
+      <p class="text-lg leading-relaxed mb-6">
+        Living in space is unlike anything on Earth. Astronauts adapt to floating in microgravity, eating pre-packaged meals, exercising daily, and conducting 
+        experiments in unique conditions. Sleep cycles follow strict schedules, and astronauts rely on communication with Earth to stay connected.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h4 class="text-lg font-bold mb-4">Daily Routine</h4>
+          <p>Workdays include maintenance, science experiments, exercise, and planning for spacewalks.</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h4 class="text-lg font-bold mb-4">Challenges</h4>
+          <p>Isolation, radiation, bone density loss, and confinement make mental and physical health crucial.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Opportunities -->
+    <section class="mb-16">
+      <h3 class="text-2xl font-semibold text-indigo-700 mb-6">Career Opportunities in Space</h3>
+      <p class="text-lg mb-6">
+        Astronauts are only one part of the space industry. Careers exist in aerospace engineering, robotics, medicine, planetary science, and space law.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h4 class="text-lg font-bold mb-4">Engineering</h4>
+          <p>Design spacecraft, habitats, and life-support systems.</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h4 class="text-lg font-bold mb-4">Mission Control</h4>
+          <p>Guide spacecraft and astronauts from Earth-based operations centers.</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h4 class="text-lg font-bold mb-4">Medical</h4>
+          <p>Ensure astronaut health, develop treatments, and study medicine in space.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Future -->
+    <section class="mb-16">
+      <h3 class="text-2xl font-semibold text-indigo-700 mb-6">Future of Astronaut Careers</h3>
+      <p class="text-lg leading-relaxed">
+        The 21st century is opening new doors for astronauts. NASA’s Artemis missions aim for the Moon, while private companies are planning Mars missions, space hotels, and asteroid mining. 
+        The next generation of astronauts may help build permanent colonies on the Moon or even Mars.
+      </p>
+    </section>
+
+    <!-- References -->
+    <section class="mb-16">
+      <h3 class="text-2xl font-semibold text-indigo-700 mb-6">References</h3>
+      <ul class="list-disc list-inside text-lg space-y-2">
+        <li><a href="https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Astronauts" target="_blank" class="text-blue-600 hover:underline">ESA: Astronauts</a></li>
+        <li><a href="https://www.cnsa.gov.cn" target="_blank" class="text-blue-600 hover:underline">China National Space Administration</a></li>
+        <li><a href="https://www.spacex.com" target="_blank" class="text-blue-600 hover:underline">SpaceX</a></li>
+      </ul>
+    </section>
+
+  </main>
+
+</body>
+</html>

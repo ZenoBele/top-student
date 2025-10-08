@@ -6,6 +6,7 @@
   <title>Login - Top Student</title>
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
   <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script> <!-- Icon library -->
 </head>
@@ -54,17 +55,17 @@
           class="mt-1 block w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
         />
         <!-- Toggle Eye Icon -->
-        <button type="button" onclick="togglePassword()" class="absolute top-9 right-3 text-gray-500" aria-label="Toggle password visibility">
+        <button type="button" id="toggle-password" class="absolute top-9 right-3 text-gray-500" aria-label="Toggle password visibility">
           <i id="eye-icon" class="ph ph-eye text-xl"></i>
         </button>
       </div>
 
       <!-- Login Button -->
       <button
-  type="submit"
-  class="w-full py-2 px-4 text-white font-semibold rounded-lg shadow-md transition duration-300 
-         bg-gradient-to-r from-blue-700 to-blue-300 hover:from-blue-400 hover:to-blue-700"
->
+        type="submit"
+        class="w-full py-2 px-4 text-white font-semibold rounded-lg shadow-md transition duration-300 
+               bg-gradient-to-r from-blue-700 to-blue-300 hover:from-blue-400 hover:to-blue-700"
+      >
         Log In
       </button>
     </form>
@@ -73,7 +74,7 @@
     <div class="mt-6 text-center text-sm text-gray-600 space-y-2">
       <p>
         Don’t have an account?
-        <a href="service.html" class="text-blue-600 hover:underline font-medium">Sign up</a>
+        <a href="sign-up.html" class="text-blue-600 hover:underline font-medium">Sign up</a>
       </p>
       <p>
         <a href="forgot-pin.html" class="text-blue-600 hover:underline font-medium">Forgot Password?</a>
@@ -81,145 +82,72 @@
     </div>
   </div>
 
-<script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  <!-- Module Script -->
+  <script type="module">
+    import { supabase } from './js/supabaseClient.js';
 
-  const supabase = createClient(
-    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
-  );
+    // Elements
+    const loginForm = document.getElementById('login-form');
+  const loader = document.getElementById('loader');
+  const togglePasswordBtn = document.getElementById('toggle-password');
+  const passwordInput = document.getElementById('password');
+  const eyeIcon = document.getElementById('eye-icon');
 
-async function getUserProfile(userId) {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('role, is_active, first_name, last_paid_at')
-      .eq('id', userId)
-      .single();
+  // Password toggle
+  togglePasswordBtn.addEventListener('click', () => {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      eyeIcon.classList.replace('ph-eye', 'ph-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      eyeIcon.classList.replace('ph-eye-slash', 'ph-eye');
+    }
+  });
 
-    if (error) throw new Error(error.message);
-    return data;
-  }
+  // Login form submit
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  // Check session and redirect if already logged in
-  async function checkSession() {
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    if (sessionError) {
-      console.error("Session error:", sessionError);
+    const email = document.getElementById('email').value;
+    const password = passwordInput.value;
+
+    // Show loader
+    loader.classList.remove('hidden');
+
+    // Attempt login
+    const { data: signInData, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    loader.classList.add('hidden');
+
+    if (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: error.message,
+      });
       return;
     }
 
-    if (session && session.user) {
-      try {
-        const profile = await getUserProfile(session.user.id);
-        if (!profile.is_active) {
-          await supabase.auth.signOut();
-          return;
-        }
+    // Check if account is active via user_metadata
+    // Make sure you set is_active in user_metadata in Supabase Auth
+    const isActive = signInData.user.user_metadata?.is_active;
 
-        // Redirect by role
-        switch (profile.role) {
-          case 'standard':
-            window.location.href = 'standard/standard.html';
-            break;
-          case 'premium':
-            window.location.href = 'premium/premium.html';
-            break;
-          case 'free':
-            window.location.href = 'standard/manage.html';
-            break;
-          case 'unpaid':
-            window.location.href = 'premium/manage.html';
-            break;
-          case 'pending':
-            alert("Your account is pending approval. Try again later.");
-            break;
-          default:
-            console.warn("Unknown user role.");
-        }
-      } catch (err) {
-        console.error("Error fetching profile:", err.message);
-      }
+    if (!isActive) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Account Inactive',
+        html: `Your account is either suspended, scheduled for deletion, or inactive.<br>
+               Please <a href="contact.html" class="text-blue-600 underline">contact support</a>.`,
+      });
+      return;
     }
-  }
 
-  checkSession();
-
-  // Login form handler
-  document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('login-form');
-    const loader = document.getElementById('loader');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      loader.classList.remove('hidden');
-
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-
-      try {
-        const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({ email, password });
-        if (loginError) throw new Error(loginError.message);
-
-        const profile = await getUserProfile(loginData.user.id);
-        if (!profile.is_active) {
-          await supabase.auth.signOut();
-          throw new Error("Account is inactive or scheduled for deletion.");
-        }
-
-        sessionStorage.setItem('user_profile', JSON.stringify(profile));
-        loader.classList.add('hidden');
-
-        // Redirect by role
-        switch (profile.role) {
-          case 'standard':
-            window.location.href = 'standard/standard.html';
-            break;
-          case 'premium':
-            window.location.href = 'premium/premium.html';
-            break;
-          case 'free':
-            window.location.href = 'standard/manage.html';
-            break;
-          case 'unpaid':
-            window.location.href = 'premium/manage.html';
-            break;
-          case 'pending':
-            showToast("Your account is pending approval. Try again later.", "error");
-            break;
-          default:
-            showToast("Unknown user role.", "error");
-        }
-
-      } catch (err) {
-        loader.classList.add('hidden');
-        showToast(err.message, "error");
-      }
-    });
+    // Success - redirect to dashboard
+    window.location.href = 'dashboard.html';
   });
-
-  function showToast(message, type = "info") {
-    const box = document.createElement('div');
-    box.textContent = message;
-    box.className = `fixed bottom-5 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded shadow-lg text-white text-sm z-50 transition ${
-      type === "error" ? "bg-red-600" : type === "success" ? "bg-green-600" : "bg-blue-600"
-    }`;
-    document.body.appendChild(box);
-    setTimeout(() => box.remove(), 3000);
-  }
-
-  window.togglePassword = function () {
-    const password = document.getElementById("password");
-    const icon = document.getElementById("eye-icon");
-    if (password.type === "password") {
-      password.type = "text";
-      icon.classList.remove("ph-eye");
-      icon.classList.add("ph-eye-slash");
-    } else {
-      password.type = "password";
-      icon.classList.remove("ph-eye-slash");
-      icon.classList.add("ph-eye");
-    }
-  };
 </script>
 </body>
 </html>

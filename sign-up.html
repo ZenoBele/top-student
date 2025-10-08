@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Create an Account - Sign Up</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -11,7 +12,7 @@
 
   <!-- Video Background -->
   <video id="bg-video" autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
-    <source src="sign-up.mp4" type="video/mp4">
+    <source src="videos/sign-up.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <div id="overlay" class="absolute inset-0 bg-black/40"></div>
@@ -109,14 +110,8 @@
     </p>
   </div>
 
-  <!-- Script -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-    const supabase = createClient(
-      'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
-    );
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
 
     const form = document.getElementById('signup-form');
     const planOptions = document.querySelectorAll("input[name='plan']");
@@ -261,7 +256,7 @@ form.addEventListener('submit', async (e) => {
 
         case "trial":
           signupBox.className =
-            "relative z-10 flex flex-col w-full max-w-md bg-gradient-to-r from-green-400 to-green-200 p-8 rounded-2xl shadow-xl transition-all";
+            "relative z-10 flex flex-col w-full max-w-md bg-gradient-to-r from-indigo-300 to-green-300 p-8 rounded-2xl shadow-xl transition-all";
           signupBtn.className =
             "w-full py-2 px-4 rounded-lg bg-green-600 text-black font-semibold hover:bg-green-700";
           planHint.textContent = "🔒 No card needed. Your 7-day free trial gives full access.";

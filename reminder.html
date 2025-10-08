@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What I Missed - Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fdfbfb, #ebedee);
+    }
+    .glass {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-purple-400 to-green-400 flex flex-col md:flex-row">
+
+  <!-- Sidebar -->
+  <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden fixed top-2 right-0 p-4 z-50">
+    <button id="menuBtn" class="text-white p-2 rounded bg-transparent focus:outline-none">
+      <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+    </button>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 md:px-6 text-white fixed top-0 z-30 h-24 md:h-24
+                 w-full md:w-3/4 md:ml-80 md:rounded-b-3xl"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff);">
+
+    <div class="flex flex-col ml-16 items-center flex-1 text-center">
+      <h2 class="text-xl md:text-2xl font-bold flex items-center justify-center gap-2">
+        What You missed
+      </h2>
+      <p class="text-xs md:text-sm">Let’s track Everything.</p>
+    </div>
+
+    <!-- Right spacer -->
+    <div class="w-20 md:w-28"></div>
+  </header>
+
+  <!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto relative z-0 mt-32 md:ml-64 px-6 md:px-12 space-y-8">
+
+  <!-- Filter / Tabs -->
+<div class="flex justify-center space-x-4 mb-6">
+  <button id="tab-all" class="bg-blue-500 text-white px-5 py-2 rounded-2xl shadow hover:bg-blue-600 transition">All</button>
+  <button id="tab-study" class="bg-green-500 text-white px-5 py-2 rounded-2xl shadow hover:bg-green-600 transition">Study Hub</button>
+  <button id="tab-updates" class="bg-yellow-500 text-white px-5 py-2 rounded-2xl shadow hover:bg-yellow-600 transition">Updates</button>
+</div>
+
+  <!-- Missed / Due Items Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hide-scrollbar">
+
+    <!-- Empty State / Lottie Animation Placeholder -->
+    <div id="missedEmpty" class="w-full col-span-full flex flex-col justify-center items-center h-64">
+      <!-- Lottie container -->
+      <div id="missedAnimation" class="w-40 h-40 mb-4"></div>
+      <p class="text-gray-400 text-center font-medium"></p>
+    </div>
+
+  </div>
+
+</main>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+	
+const lastLoginTime = new Date(Date.now() - (7 * 24 * 60 * 60 * 1000)).toISOString() // last 7 days
+
+  let masterData = []      // 30 Days Master data
+  let remindersData = []   // Global reminders data
+  
+async function checkSubscription() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Not logged in → send to dashboard
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // Fetch subscription record
+  const { data, error } = await supabase
+    .from("subscription")
+    .select("current_plan")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !data || data.current_plan !== "premium") {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Premium Required',
+      text: 'This feature is only available for Premium members. Upgrade now to continue.',
+      confirmButtonText: 'Upgrade to Premium',
+      showCancelButton: true,
+      cancelButtonText: 'Go Back',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "Subscription.html"; // Upgrade page
+      } else {
+        window.location.href = "dashboard.html"; // Back to dashboard
+      }
+    });
+  }
+}
+
+checkSubscription();
+
+  // --- Fetch user progress ---
+  async function getUserProgress(userId) {
+    if (!userId) return []
+
+    const { data, error } = await supabase
+      .from('user_progress')
+      .select('subjects_progress, updated_at')
+      .eq('user_id', userId)
+      .single()
+
+    if (error) {
+      Swal.fire("Error", "Failed to fetch progress: " + error.message, "error")
+      return []
+    }
+
+    if (!data) return []
+
+    const progress = data.subjects_progress || {}
+    const results = []
+
+    const today = new Date()
+    const weekStart = new Date(today)
+    weekStart.setDate(today.getDate() - today.getDay()) // Sunday
+
+    for (const [subject, info] of Object.entries(progress)) {
+      const lastDay = info.last_day || 0
+      const completed = info.completed_days || []
+
+      // Count skipped days in this week
+      const skippedThisWeek = Array.from({length:lastDay}, (_, i) => i+1)
+        .filter(day => !completed.includes(day))
+        .length
+
+      if (skippedThisWeek > 2) {
+        Swal.fire("⚠️ Warning", `You skipped ${skippedThisWeek} days this week in ${subject}!`, "error")
+      }
+
+      for (let day = 1; day <= lastDay; day++) {
+        if (!completed.includes(day)) {
+          const status = skippedThisWeek > 2 ? "missed" : "due"
+          results.push({ subject, day, status })
+        }
+      }
+    }
+
+    return results
+  }
+
+  // --- Fetch global reminders ---
+  async function getReminders() {
+    const { data, error } = await supabase
+      .from('reminders')
+      .select('*')
+      .gt('created_at', lastLoginTime)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      Swal.fire("Error", "Failed to fetch reminders: " + error.message, "error")
+      return []
+    }
+    return data || []
+  }
+
+  // --- Render filtered reminders ---
+  function renderReminders(master = [], reminders = []) {
+    const grid = document.querySelector('.grid')
+    if (!grid) return
+
+    grid.innerHTML = ''
+    let hasData = false
+
+    // --- 30 Days Master ---
+    master.forEach(item => {
+      hasData = true
+      grid.innerHTML += `
+        <div class="p-4 rounded-2xl shadow bg-red-50">
+          <h3 class="font-semibold text-lg mb-2">30 Days Master</h3>
+          <p class="text-gray-600">${item.subject} — Day ${item.day}</p>
+          <span class="text-sm ${item.status === 'missed' ? 'text-red-500' : 'text-yellow-500'}">
+            ${item.status === 'missed' ? 'Missed' : 'Due'}
+          </span>
+        </div>`
+    })
+
+    // --- Global Reminders ---
+reminders.forEach(item => {
+  hasData = true
+  const gradients = {
+    nsfas: 'bg-gradient-to-r from-pink-300 to-pink-100 text-white',
+    university: 'bg-gradient-to-r from-purple-300 to-purple-100 text-white',
+    scope: 'bg-gradient-to-r from-blue-300 to-blue-100 text-white',
+    hack: 'bg-gradient-to-r from-yellow-300 to-yellow-100 text-white'
+  }
+  const style = gradients[item.category] || 'bg-gray-50 text-gray-500'
+
+  const links = {
+    nsfas: 'nsfas.html',
+    university: 'university.html',
+    scope: 'scopes.html',
+    hack: 'scopes.html'
+  }
+  const link = links[item.category] || '#'
+
+  grid.innerHTML += `
+    <a href="${link}" class="block hover:opacity-90 transition">
+      <div class="p-4 rounded-2xl shadow ${style}">
+        <h3 class="font-semibold text-lg mb-2 capitalize">${item.category}</h3>
+        <p class="text-gray-800">${item.title}</p>
+        ${item.description ? `<p class="text-sm text-gray-700 mt-1">${item.description}</p>` : ""}
+        <span class="text-red-600 text-sm">New</span>
+      </div>
+    </a>`
+})
+
+    // --- Empty State / All Good Card ---
+    if (!hasData) {
+      grid.innerHTML = `
+        <div class="col-span-full p-6 rounded-2xl shadow bg-green-50 flex flex-col items-center justify-center">
+          <h3 class="font-semibold text-xl text-green-600 mb-2">🎉 All Caught Up!</h3>
+          <p class="text-gray-600 text-center">You have no missed sessions or new updates. Keep up the great work!</p>
+        </div>`
+    }
+  }
+
+  // --- Attach tab listeners ---
+  function attachTabListeners() {
+    const allBtn = document.querySelector('#tab-all')
+    const studyBtn = document.querySelector('#tab-study')
+    const updatesBtn = document.querySelector('#tab-updates')
+
+    allBtn?.addEventListener('click', () => renderReminders(masterData, remindersData))
+    studyBtn?.addEventListener('click', () => renderReminders(masterData, []))
+    updatesBtn?.addEventListener('click', () => renderReminders([], remindersData))
+  }
+
+  // --- On page load ---
+  document.addEventListener('DOMContentLoaded', async () => {
+    const { data: userData, error: userError } = await supabase.auth.getUser()
+    if (userError || !userData?.user) {
+      Swal.fire("Error", "No logged-in user found.", "error")
+      return
+    }
+
+    const userId = userData.user.id
+    masterData = await getUserProgress(userId)
+    remindersData = await getReminders()
+
+    renderReminders(masterData, remindersData)
+    attachTabListeners()
+  })
+</script>
+
+  <script>
+    // Example Lottie animation for empty state
+    lottie.loadAnimation({
+      container: document.getElementById('missedAnimation'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'https://assets9.lottiefiles.com/packages/lf20_j1adxtyb.json' // Example animation
+    });
+  </script>
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const menuIcon = document.getElementById("menuIcon");
+  const blurOverlay = document.getElementById("blurOverlay");
+  const sidebar = document.querySelector("aside");
+
+  menuBtn.addEventListener("click", () => {
+    // Toggle icon
+    menuIcon.classList.toggle("fa-bars");
+    menuIcon.classList.toggle("fa-xmark");
+
+    // Toggle sidebar
+    sidebar.classList.toggle("hidden");
+    sidebar.classList.toggle("absolute");
+    sidebar.classList.toggle("z-40");
+    sidebar.classList.toggle("h-screen");
+
+    // Toggle blur overlay
+    blurOverlay.classList.toggle("hidden");
+  });
+
+  blurOverlay.addEventListener("click", () => {
+    menuIcon.classList.add("fa-bars");
+    menuIcon.classList.remove("fa-xmark");
+    sidebar.classList.add("hidden");
+    sidebar.classList.remove("absolute", "z-40", "h-screen");
+    blurOverlay.classList.add("hidden");
+  });
+</script>
+</body>
+</html>

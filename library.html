@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top Student Library</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+<script type="module" src="js/security.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+html {
+  scroll-behavior: smooth;
+}
+  body {
+    background: linear-gradient(60deg, #3b82f6, #8b5cf6);
+  }
+
+  /* Custom scroll for sidebar */
+  aside::-webkit-scrollbar {
+    width: 6px;
+  }
+  aside::-webkit-scrollbar-thumb {
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 3px;
+  }
+
+  /* Card hover effects */
+  .library-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+  }
+  .backdrop-blur-sm {
+  backdrop-filter: blur(6px);
+}
+
+  /* Smooth truncation */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+  }
+</style>
+</head>
+<body class="min-h-screen font-sans text-gray-900">
+
+<!-- Sidebar -->
+  <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+<div class="md:hidden fixed top-2 right-0 p-4 z-50">
+  <button id="menuBtn" class="text-white p-2 rounded bg-transparent focus:outline-none">
+    <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+  </button>
+</div>
+
+<!-- Blur Overlay -->
+<div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+
+<div id="loader" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-30 z-50 backdrop-filter backdrop-blur-sm">
+  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-300 border-b-4 border-purple-900"></div>
+</div>
+
+<main class="md:ml-72 p-6">
+  <section class="max-w-6xl mx-auto px-4 py-8">
+  <h1 class="text-4xl md:text-5xl font-extrabold mb-8 pb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500 drop-shadow-lg">
+    Library: Papers & Guides Grade 12
+  </h1>
+
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-4 mb-8 p-4 bg-white bg-opacity-10 backdrop-filter backdrop-blur-md rounded-2xl shadow-lg border border-white border-opacity-20">
+    <select id="typeFilter" class="appearance-none bg-white bg-opacity-80 border border-transparent rounded-full px-4 py-2 text-sm font-medium text-gray-800 hover:bg-opacity-100 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-70 transition">
+      <option value="">All Types</option>
+      <option value="past-paper">Past Paper</option>
+      <option value="study-guide">Study Guide</option>
+    </select>
+
+    <select id="subjectFilter" class="appearance-none bg-white bg-opacity-80 border border-transparent rounded-full px-4 py-2 text-sm font-medium text-gray-800 hover:bg-opacity-100 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-70 transition">
+      <option value="">All Subjects</option>
+      <!-- Subjects will be populated dynamically -->
+    </select>
+  </div>
+
+  <!-- Grid container -->
+  <ul id="libraryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></ul>
+</section>
+
+</main>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+  const buckets = ['papers', 'guides'];
+  const grid = document.getElementById('libraryGrid');
+  const subjectFilter = document.getElementById('subjectFilter');
+  const loader = document.getElementById('loader');
+  let allItems = [];
+
+  async function loadLibrary() {
+    allItems = [];
+    grid.innerHTML = '';
+    const subjectsSet = new Set();
+	
+	 loader.style.display = 'flex';
+
+    for (const bucketName of buckets) {
+      const { data: folders, error: folderError } = await supabase.storage.from(bucketName).list('', { limit: 100 });
+      if (folderError) { console.error(folderError); continue; }
+
+      for (const folder of folders) {
+        subjectsSet.add(folder.name); // collect subjects
+        const { data: files, error: fileError } = await supabase.storage.from(bucketName).list(folder.name, { limit: 100 });
+        if (fileError) continue;
+
+        files.forEach(file => {
+          const publicUrl = `https://mlwxxtvsozhwzjxmsvbg.supabase.co/storage/v1/object/public/${bucketName}/${folder.name}/${file.name}`;
+          const typeTag = bucketName === 'papers' ? 'past-paper' : 'study-guide';
+          const match = file.name.match(/(Grd\d{2}_.*)/);
+          const displayName = match ? match[1] : file.name;
+
+          allItems.push({
+            type: typeTag,
+            grade: folder.name,
+            subject: folder.name,
+            name: displayName,
+            url: publicUrl,
+            filename: file.name
+          });
+        });
+      }
+    }
+
+    loader.style.display = 'none';
+	
+    subjectsSet.forEach(subject => {
+      const opt = document.createElement('option');
+      opt.value = subject.toLowerCase();
+      opt.textContent = subject;
+      subjectFilter.appendChild(opt);
+    });
+
+    renderLibrary(allItems);
+  }
+
+  function renderLibrary(items) {
+    grid.innerHTML = '';
+    items.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'library-card bg-white rounded-xl shadow-md p-5 hover:shadow-xl transform transition flex flex-col justify-between';
+      li.innerHTML = `
+        <div class="mb-3">
+          <span class="bg-gradient-to-r from-blue-400 to-purple-500 text-white px-2 py-1 rounded text-xs font-semibold">${item.type === 'past-paper' ? 'Past Paper' : 'Study Guide'}</span>
+        </div>
+        <h3 class="font-bold text-gray-900 mb-2 truncate" title="${item.filename}">${item.name}</h3>
+        <p class="text-gray-700 text-sm mb-3">subject: ${item.subject}</p>
+        <div class="mt-auto flex justify-end">
+          <a href="${item.url}" target="_blank" rel="noopener" download
+             class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white px-3 py-1 rounded text-sm font-semibold transition">Download</a>
+        </div>
+      `;
+      grid.appendChild(li);
+    });
+  }
+
+  function applyFilters() {
+    const type = document.getElementById('typeFilter').value.toLowerCase();
+    const subject = subjectFilter.value.toLowerCase();
+
+    const filtered = allItems.filter(item => {
+      const matchesType = !type || item.type === type;
+      const matchesSubject = !subject || item.subject.toLowerCase() === subject;
+      return matchesType && matchesSubject;
+    });
+
+    renderLibrary(filtered);
+  }
+
+  document.getElementById('typeFilter').addEventListener('change', applyFilters);
+  subjectFilter.addEventListener('change', applyFilters);
+
+  loadLibrary();
+</script>
+
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const menuIcon = document.getElementById("menuIcon");
+  const blurOverlay = document.getElementById("blurOverlay");
+  const sidebar = document.querySelector("aside");
+
+  menuBtn.addEventListener("click", () => {
+    // Toggle icon
+    menuIcon.classList.toggle("fa-bars");
+    menuIcon.classList.toggle("fa-xmark");
+
+    // Toggle sidebar
+    sidebar.classList.toggle("hidden");
+    sidebar.classList.toggle("absolute");
+    sidebar.classList.toggle("z-40");
+    sidebar.classList.toggle("h-screen");
+
+    // Toggle blur overlay
+    blurOverlay.classList.toggle("hidden");
+  });
+
+  blurOverlay.addEventListener("click", () => {
+    menuIcon.classList.add("fa-bars");
+    menuIcon.classList.remove("fa-xmark");
+    sidebar.classList.add("hidden");
+    sidebar.classList.remove("absolute", "z-40", "h-screen");
+    blurOverlay.classList.add("hidden");
+  });
+</script>
+</body>
+</html>

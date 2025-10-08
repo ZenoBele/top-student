@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Student FAQs</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  /* Shrink section initially */
+  .faq-section {
+    max-height: 100px;       /* collapsed height */
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+
+  /* Expand on hover or focus within */
+  .faq-section:hover,
+  .faq-section:focus-within {
+    max-height: 800px;      /* expanded height */
+  }
+    .rotate-180 { transform: rotate(180deg); }
+    .transition-height { transition: height 0.3s ease; }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-blue-300 to-purple-300 text-gray-800 font-sans">
+
+<main class="max-w-5xl mx-auto p-6 mt-24">
+
+  <!-- Page Header -->
+  <header class="text-center mb-12">
+    <h1 class="text-5xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 mb-4">
+  Frequently Asked Questions
+</h1>
+    <p class="text-gray-700 text-lg">Get instant answers or submit your own questions to help others learn faster.</p>
+  </header>
+
+<section class="faq-section bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl shadow-lg text-white mb-12 p-4">
+  <h2 class="text-3xl font-bold mb-2">Submit Your Question</h2>
+  <p class="mb-6 text-white text-sm md:text-base italic tracking-wide leading-relaxed">
+  Have a question we didn’t cover? Send it to us!
+</p>
+
+  <form id="faqForm" class="space-y-4">
+    <input type="text" id="name" placeholder="Your Name" required
+      class="w-full rounded-lg p-4 border-none focus:outline-none text-gray-800">
+    <input type="email" id="email" placeholder="Email Address" required
+      class="w-full rounded-lg p-4 border-none focus:outline-none text-gray-800">
+    <textarea id="question" rows="4" placeholder="Type your question here..." required
+      class="w-full rounded-lg p-4 border-none focus:outline-none text-gray-800"></textarea>
+
+    <button type="submit"
+      class="w-full bg-indigo-400 text-white font-bold py-3 rounded-lg hover:text-purple-600 transition-colors duration-200">
+      Submit Question
+    </button>
+  </form>
+</section>
+
+  <!-- FAQ Section -->
+  <section id="faqSection" class="grid gap-6 mb-12">
+    <!-- FAQ items will be injected dynamically -->
+  </section>
+
+  <!-- Home Button -->
+  <a href="dashboard.html">
+    <div class="fixed bottom-6 right-6 w-16 h-16 flex items-center justify-center rounded-full text-white text-2xl font-bold shadow-lg cursor-pointer transform transition duration-300 hover:scale-110 hover:brightness-110"
+         style="background: linear-gradient(135deg, #0a0059, #3e95be);">
+      <i class="fa-solid fa-house"></i>
+    </div>
+  </a>
+
+</main>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+const faqSection = document.getElementById('faqSection')
+const faqForm = document.getElementById('faqForm')
+
+// -----------------
+// 1️⃣ Fetch and display FAQs (official + answered submissions)
+// -----------------
+async function loadFAQs() {
+  const { data: faqs, error } = await supabase
+    .from('faqs')
+    .select('*')
+    .or('type.eq.official,answer.not.is.null')
+    .order('created_at', { ascending: true })
+
+  if (error) {
+    console.error(error)
+    Swal.fire('Error', 'Could not load FAQs.', 'error')
+    return
+  }
+
+  faqSection.innerHTML = ''
+  faqs.forEach(faq => createFAQCard(faq))
+}
+
+// -----------------
+// Create FAQ Card
+// -----------------
+function createFAQCard(faq) {
+  // Avoid creating duplicate cards
+  if (document.getElementById(`faq-card-${faq.id}`)) return
+
+  const card = document.createElement('div')
+  card.className = 'bg-white rounded-xl shadow-md overflow-hidden transform hover:scale-102 transition-transform'
+  card.id = `faq-card-${faq.id}`
+
+  card.innerHTML = `
+    <button class="w-full flex justify-between items-center p-5 font-semibold text-left faq-btn focus:outline-none" data-faq-id="${faq.id}">
+      <span class="text-gray-800 text-lg">${faq.question}</span>
+      <i class="fas fa-chevron-down text-blue-500 transition-transform duration-200"></i>
+    </button>
+    <div class="px-5 pb-5 hidden faq-answer text-gray-700 text-base" id="answer-${faq.id}">
+      <i class="fas fa-circle text-blue-500"></i> ${faq.answer || 'Not answered yet.'}
+    </div>
+  `
+
+  faqSection.prepend(card)
+}
+
+// -----------------
+// Toggle FAQ answers
+// -----------------
+faqSection.addEventListener('click', (e) => {
+  const btn = e.target.closest('.faq-btn')
+  if (!btn) return
+
+  const answer = btn.nextElementSibling
+  const icon = btn.querySelector('i')
+
+  answer.classList.toggle('hidden')
+  if (icon) icon.classList.toggle('rotate-180')
+})
+
+// -----------------
+// 2️⃣ Handle form submission with SweetAlert2 loader
+// -----------------
+faqForm.addEventListener('submit', async (e) => {
+  e.preventDefault()
+
+  const name = document.getElementById('name').value.trim()
+  const email = document.getElementById('email').value.trim()
+  const question = document.getElementById('question').value.trim()
+
+  if (!name || !email || !question) {
+    Swal.fire('Error', 'Please fill out all fields.', 'error')
+    return
+  }
+
+  // Show SweetAlert loader
+  Swal.fire({
+    title: 'Submitting...',
+    didOpen: () => {
+      Swal.showLoading()
+    },
+    allowOutsideClick: false,
+    allowEscapeKey: false
+  })
+
+  try {
+    // Get authenticated user
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    if (userError || !user) {
+      Swal.close()
+      Swal.fire('Error', 'You must be logged in to submit a question.', 'error')
+      return
+    }
+
+    // Insert submission
+    const { data, error } = await supabase
+      .from('faqs')
+      .insert([{ uid: user.id, name, email, question, type: 'submission' }])
+      .select()
+
+    if (error) {
+      console.error(error)
+      Swal.close()
+      Swal.fire('Error', 'Could not submit your question.', 'error')
+      return
+    }
+
+    Swal.close()
+    Swal.fire({
+      icon: 'success',
+      title: 'Thank you!',
+      text: 'Your question has been submitted.'
+    })
+
+    faqForm.reset()
+    createFAQCard(data[0])
+
+  } catch (err) {
+    Swal.close()
+    Swal.fire('Error', 'Something went wrong.', 'error')
+  }
+})
+
+// -----------------
+// 3️⃣ Realtime updates for answered submissions
+// -----------------
+supabase
+  .channel('public:faqs')
+  .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'faqs' }, payload => {
+    const updatedFAQ = payload.new
+    const answerDiv = document.getElementById(`answer-${updatedFAQ.id}`)
+    if (answerDiv) {
+      answerDiv.innerText = updatedFAQ.answer
+    } else {
+      // If card doesn't exist yet (newly answered submission), create it
+      if (updatedFAQ.answer) createFAQCard(updatedFAQ)
+    }
+  })
+  .subscribe()
+
+// -----------------
+// Load FAQs on page load
+// -----------------
+loadFAQs()
+</script>
+  <script>
+    // FAQ toggle
+    const faqButtons = document.querySelectorAll('.faq-btn');
+    faqButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const answer = btn.nextElementSibling;
+        const icon = btn.querySelector('i');
+        answer.classList.toggle('hidden');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+
+    // Form submission (demo)
+    const form = document.getElementById('faqForm');
+    const formMessage = document.getElementById('formMessage');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      formMessage.classList.remove('hidden');
+      form.reset();
+    });
+  </script>
+
+</body>
+</html>

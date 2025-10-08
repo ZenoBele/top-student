@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Subscription - Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .glass {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      transition: transform 0.3s ease-in-out;
+    }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+  }
+  .animate-bounce {
+    animation: bounce 1.4s infinite ease-in-out both;
+  }
+  .animation-delay-200 { animation-delay: 0.2s; }
+  .animation-delay-400 { animation-delay: 0.4s; }
+</style>
+</head>
+<body class="bg-gray-100"
+      style="background: linear-gradient(60deg, white, #3e95be, white);">
+<!-- Header -->
+  <header class="flex items-center justify-between px-6 py-8 text-white fixed top-0 w-full z-40"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff); border-radius:0 0 24px 24px;">
+    <h1 class="text-2xl font-bold">Manage Subscription</h1>
+    <a href="dashboard.html">
+	<button class="bg-white text-blue-900 px-4 py-2 rounded-lg hover:bg-gray-100 transition">
+      Dashboard
+    </button>
+	</a>
+  </header>
+
+  <!-- Main Content -->
+<main class="mt-32 px-6 md:px-12 space-y-8">
+
+  <!-- Current Plan -->
+  <section class="bg-white rounded-3xl p-6 shadow-md glass">
+    <h2 class="text-xl font-bold mb-4">Current Plan</h2>
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <p class="text-gray-700">Plan: <strong id="plan-name">Loading...</strong></p>
+		<p class="text-gray-600 text-sm">Status: <span id="account-status">Loading...</span></p>
+        <p class="text-gray-500 text-sm">Next billing: <span id="next-billing">Loading...</span></p>
+      </div>
+      <div class="flex gap-4">
+        <a href="subscription.html">
+          <button id="upgrade-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Upgrade</button>
+        </a>  
+        <a href="subscription.html">
+          <button id="downgrade-btn" class="bg-red-400 text-gray-800 px-4 py-2 rounded-lg hover:bg-red-500 transition">Downgrade</button>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Actions: Pause / Resume -->
+  <section class="bg-white rounded-3xl p-6 shadow-md glass flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h2 class="text-xl font-bold mb-2">Manage Actions</h2>
+      <p class="text-gray-600 text-sm">Pause or resume your subscription anytime.</p>
+    </div>
+    <div class="flex gap-4 mt-4 md:mt-0">
+      <button id="pause-btn" class="bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-yellow-500 transition">Pause</button>
+      <button id="resume-btn" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">Resume</button>
+    </div>
+  </section>
+
+  <!-- Billing History -->
+  <section class="bg-white rounded-3xl p-6 shadow-md glass">
+    <h2 class="text-xl font-bold mb-4">Billing History</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white">
+        <thead>
+          <tr>
+            <th class="py-2 px-4 text-left text-gray-600 text-sm">Date</th>
+            <th class="py-2 px-4 text-left text-gray-600 text-sm">Plan</th>
+            <th class="py-2 px-4 text-left text-gray-600 text-sm">Amount</th>
+            <th class="py-2 px-4 text-left text-gray-600 text-sm">Save</th>
+          </tr>
+        </thead>
+        <tbody id="billing-tbody">
+        </tbody>
+      </table>
+    </div>
+	<div id="billing-loader" class="text-center py-4 hidden">
+  <div class="inline-flex items-center space-x-2">
+    <div class="w-4 h-4 bg-red-500 rounded-full animate-bounce"></div>
+    <div class="w-4 h-4 bg-yellow-400 rounded-full animate-bounce animation-delay-200"></div>
+    <div class="w-4 h-4 bg-green-500 rounded-full animate-bounce animation-delay-400"></div>
+    <span class="text-gray-700 font-semibold ml-2">Loading billing history...</span>
+  </div>
+</div>
+  </section>
+
+  <!-- Summary / Dashboard -->
+<section class="backdrop-blur-md rounded-3xl p-6 flex flex-col md:flex-row md:justify-between gap-6">
+  
+<a href="support.html" class="flex-1">
+  <div class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-700 hover:to-green-800 transition-colors duration-300 rounded-2xl p-6 shadow-md flex flex-col justify-between h-full card-hover">
+    <h3 class="text-white font-bold text-xl mb-2">Connect With Us</h3>
+    <p class="text-white text-sm opacity-90">Share your thoughts or ask questions to help build Top Student further.</p>
+  </div>
+</a>
+
+<a href="rewards.html" class="flex-1">
+  <div id="status" data-service="rewards.html" class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 transition-colors duration-300 rounded-2xl p-6 shadow-md flex flex-col justify-between h-full card-hover">
+    <h3 class="text-white font-bold text-xl mb-2">Achievements & Rewards</h3>
+    <p class="text-white text-sm opacity-90">Unlock badges, milestones, and exclusive perks as you engage with Top Student.</p>
+  </div>
+</a>
+
+  <a href="ui.html" class="flex-1">
+    <div id="renew" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-700 hover:to-blue-800 transition-colors duration-300 rounded-2xl p-6 shadow-md flex flex-col justify-between h-full card-hover">
+  <h3 class="text-white font-bold text-xl mb-2">UI/UX Ideas</h3>
+  <p class="text-white text-sm opacity-90">Submit your suggestions to improve the platform’s design and interface.</p>
+</div>
+
+  </a>
+
+</section>
+</main>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+const planNameEl = document.getElementById('plan-name');
+const nextBillingEl = document.getElementById('next-billing');
+const pauseBtn = document.getElementById('pause-btn');
+const resumeBtn = document.getElementById('resume-btn');
+const tbodyEl = document.getElementById('billing-tbody');
+const accountStatusEl = document.getElementById('account-status');
+const loaderEl = document.getElementById('billing-loader');
+
+let billingData = [];
+
+// Unified helper: show alert
+function showAlert(message, icon = 'info') {
+  return Swal.fire({
+    icon: icon,
+    title: message,
+    timer: 2500,
+    showConfirmButton: false
+  });
+}
+
+// Update buttons based on subscription status
+function updateButtons(status) {
+  switch (status) {
+    case 'free':
+      pauseBtn.disabled = true;
+      resumeBtn.disabled = true;
+      pauseBtn.style.cursor = 'not-allowed';
+      resumeBtn.style.cursor = 'not-allowed';
+      accountStatusEl.textContent = 'Active';
+      break;
+    case 'paused':
+      pauseBtn.disabled = true;
+      resumeBtn.disabled = false;
+      pauseBtn.style.cursor = 'not-allowed';
+      resumeBtn.style.cursor = 'pointer';
+      accountStatusEl.textContent = 'Paused';
+      break;
+    case 'active':
+      pauseBtn.disabled = false;
+      resumeBtn.disabled = true;
+      pauseBtn.style.cursor = 'pointer';
+      resumeBtn.style.cursor = 'not-allowed';
+      accountStatusEl.textContent = 'Active';
+      break;
+    default:
+      pauseBtn.disabled = true;
+      resumeBtn.disabled = true;
+      pauseBtn.style.cursor = 'not-allowed';
+      resumeBtn.style.cursor = 'not-allowed';
+      accountStatusEl.textContent = 'No subscription';
+  }
+}
+
+// Load subscription data
+async function loadSubscription() {
+  loaderEl.classList.remove('hidden');
+  tbodyEl.innerHTML = '';
+  
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) {
+    console.error("No authenticated user:", error);
+    await showAlert('You must log in to access your subscription.', 'warning');
+    window.location.href = "/login.html";
+    return;
+  }
+
+  const { data, error: subError } = await supabase
+    .from('subscription')
+    .select('current_plan, subscription_status, next_billing_date')
+    .eq('user_id', user.id)
+    .single();
+
+  if (subError) {
+    console.error("Subscription error:", subError);
+    await showAlert('Error loading subscription.', 'error');
+    updateButtons(null);
+    return;
+  }
+
+  if (!data) {
+    planNameEl.textContent = 'N/A';
+    nextBillingEl.textContent = 'N/A';
+    updateButtons(null);
+    return;
+  }
+
+  planNameEl.textContent = data.current_plan || 'N/A';
+  nextBillingEl.textContent = data.next_billing_date
+    ? new Date(data.next_billing_date).toLocaleDateString()
+    : 'N/A';
+
+  updateButtons(data.subscription_status);
+
+  if (data.subscription_status === 'free') {
+    await showAlert('You are on a free account.', 'info');
+  }
+}
+
+// Load billing history
+async function loadBillingHistory() {
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) {
+    loaderEl.classList.add('hidden');
+    return;
+  }
+
+  const { data, error: billError } = await supabase
+    .from('billing')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('date', { ascending: false });
+
+  loaderEl.classList.add('hidden');
+
+  if (billError) {
+    console.error("Billing error:", billError);
+    await showAlert('Error loading billing history.', 'error');
+    return;
+  }
+
+  billingData = data;
+
+  tbodyEl.innerHTML = ''; // clear table
+  data.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.classList.add('border-t');
+    tr.innerHTML = `
+      <td class="py-2 px-4 text-gray-700 text-sm">${new Date(row.date).toLocaleDateString()}</td>
+      <td class="py-2 px-4 font-semibold text-sm ${
+        row.plan.toLowerCase() === 'premium' ? 'text-pink-500' :
+        row.plan.toLowerCase() === 'standard' ? 'text-blue-500' :
+        'text-gray-700'
+      }">${row.plan}</td>
+      <td class="py-2 px-4 text-green-600 font-semibold text-sm">R${row.amount}</td>
+      <td class="py-2 px-4 text-purple-600 font-semibold text-sm">
+        <button class="download-btn px-2 py-1 bg-purple-100 rounded" data-id="${row.id}">
+          Download
+        </button>
+      </td>
+    `;
+    tbodyEl.appendChild(tr);
+  });
+}
+
+// Generate PDF function
+async function generateAndStorePDF(user, amount, plan = 'Standard Plan', invoiceId = null) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const paidAt = new Date();
+  const paidAtString = paidAt.toLocaleString();
+
+  invoiceId = invoiceId || `IN${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+  const lineY = (y) => doc.line(15, y, 195, y);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(0, 0, 0);
+  doc.setDrawColor(150);
+
+  // HEADER
+  doc.setFontSize(18);
+  doc.text('Top Student Invoice', 15, 20);
+  doc.setFontSize(12);
+  doc.text(`Invoice #: ${invoiceId}`, 135, 20);
+  lineY(25);
+
+  // BILL TO & FROM
+  doc.setFontSize(10);
+  doc.text('From:', 15, 32);
+  doc.text('Top Student', 15, 37);
+  doc.text('info@topstudent.co.za', 15, 42);
+  doc.text('topstudent.co.za', 15, 47);
+
+  doc.text('Billed To:', 110, 32);
+  doc.text(user.email, 110, 37);
+  doc.text(user.id, 110, 42);
+  lineY(52);
+
+  // INVOICE DETAILS GRID
+  doc.setFont('helvetica', 'bold');
+  doc.text('Description', 15, 60);
+  doc.text('Plan', 95, 60);
+  doc.text('Amount (ZAR)', 150, 60);
+  lineY(62);
+
+  doc.setFont('helvetica', 'normal');
+  doc.text('Top Student Subscription', 15, 70);
+  doc.text(plan, 95, 70);
+  doc.text(`R${amount}`, 150, 70);
+  lineY(75);
+
+  doc.text(`Payment Method: PayFast`, 15, 82);
+
+  // FOOTER
+  doc.setFontSize(10);
+  doc.text(`Date: ${paidAtString}`, 15, 95);
+  doc.text(`User ID: ${user.id}`, 15, 100);
+
+  doc.setFont('helvetica', 'italic');
+  doc.text("Thank you for your payment!", 15, 115);
+  doc.text("Need help? Contact us at info@topstudent.co.za", 15, 120);
+
+  // WATERMARK
+  doc.setFontSize(50);
+  doc.setTextColor(240);
+  doc.text('Top Student', 105, 180, { align: 'center', angle: 45 });
+
+  // OUTPUT
+  doc.save(`receipt-${invoiceId}-${user.id}.pdf`);
+
+  return invoiceId;
+}
+
+// Download button click
+document.addEventListener('click', async (e) => {
+  if (!e.target.classList.contains('download-btn')) return;
+
+  const btn = e.target;
+  const originalText = btn.textContent;
+  btn.textContent = 'Downloading...';
+  btn.disabled = true;
+  btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+  try {
+    const rowId = btn.dataset.id;
+    const row = billingData.find(r => r.id == rowId);
+    if (!row) throw new Error('Billing row not found');
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
+    let invoiceId = row.invoice;
+
+    if (!invoiceId) {
+      invoiceId = `IN${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      const { error } = await supabase
+        .from('billing')
+        .update({ invoice: invoiceId })
+        .eq('id', row.id);
+      if (error) throw error;
+      row.invoice = invoiceId;
+    }
+
+    await generateAndStorePDF(user, row.amount, row.plan, invoiceId);
+    await showAlert('PDF downloaded successfully!', 'success');
+
+  } catch (err) {
+    console.error("Error generating PDF:", err);
+    await showAlert("Something went wrong. Try again.", 'error');
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
+    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+  }
+});
+
+// Pause subscription
+pauseBtn.addEventListener('click', async () => {
+  const { isConfirmed } = await Swal.fire({
+    title: 'Pause Subscription?',
+    text: 'Are you sure you want to pause your subscription?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, pause it',
+    cancelButtonText: 'Cancel'
+  });
+
+  if (!isConfirmed) return;
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  // Show loader while pausing
+  Swal.fire({
+    title: 'Pausing...',
+    text: 'Please wait while we pause your subscription.',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  const { error } = await supabase
+    .from('subscription')
+    .update({ subscription_status: 'paused' })
+    .eq('user_id', user.id);
+
+  Swal.close(); // close loader
+
+  if (error) {
+    await showAlert('Error pausing subscription.', 'error');
+  } else {
+    await showAlert('Subscription paused.', 'success');
+    window.location.reload(); // refresh after action
+  }
+});
+
+// Resume subscription
+resumeBtn.addEventListener('click', async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  Swal.fire({
+    title: 'Resuming...',
+    text: 'Please wait while we resume your subscription.',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  const { error } = await supabase
+    .from('subscription')
+    .update({ subscription_status: 'active' })
+    .eq('user_id', user.id);
+
+  Swal.close();
+
+  if (error) {
+    await showAlert('Error resuming subscription.', 'error');
+  } else {
+    await showAlert('Subscription resumed.', 'success');
+    window.location.reload(); // refresh after action
+  }
+});
+
+// Initialize dashboard
+async function initDashboard() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    await showAlert('Please log in to access your dashboard.', 'warning');
+    window.location.href = "/login.html";
+    return;
+  }
+  await loadSubscription();
+  await loadBillingHistory();
+}
+
+initDashboard();
+</script>
+
+</body>
+</html>

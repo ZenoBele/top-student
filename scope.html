@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scopes - Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  html {
+  scroll-behavior: smooth;
+}
+    body { font-family: 'Segoe UI', sans-serif; }
+    .glass { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .glass {
+      backdrop-filter: blur(8px); /* blur strength */
+      -webkit-backdrop-filter: blur(8px); /* Safari support */
+    }
+
+    #phraseCard {
+      transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    }
+
+    aside::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  aside {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-300 flex flex-col items-center p-8">
+
+  <!-- Sidebar -->
+  <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+  <div class="md:hidden fixed top-2 right-0 p-4 z-50">
+    <button id="menuBtn" class="text-white p-2 rounded bg-transparent focus:outline-none">
+      <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+    </button>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 md:px-6 text-white fixed top-0 z-30 h-24 md:h-24
+                 w-full md:w-3/4 md:ml-80 md:rounded-b-3xl"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff);">
+
+    <div class="flex flex-col ml-16 items-center flex-1 text-center">
+      <h2 class="text-xl md:text-2xl font-bold flex items-center justify-center gap-2">
+       My Study Scopes
+      </h2>
+	  <p class="text-gray-100 text-sm">Study with confidents.</p>
+    </div>
+
+    <!-- Right spacer -->
+    <div class="w-20 md:w-28"></div>
+  </header>
+
+<main id="mainContent" class="mt-24 min-h-screen flex-1 flex flex-col overflow-y-auto relative z-0 md:ml-64 px-6 md:px-12 space-y-8">
+  <!-- Scopes Section -->
+  <section id="scopesContent" class="w-full max-w-6xl">
+
+<div id="missedEmpty" class="w-full col-span-full flex flex-col justify-center items-center h-64">
+      <!-- Lottie container -->
+      <div id="missedAnimation" class="w-40 h-40 mb-4"></div>
+      <p class="text-gray-400 text-center font-medium"></p>
+    </div>
+
+    <!-- Grid of Scope Cards -->
+    <div id="scopesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Supabase will dynamically populate scope cards here -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="scopesEmpty" class="mt-12 text-center text-white text-lg opacity-80">
+    </div>
+  </section>
+</main>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+    const { jsPDF } = window.jspdf;
+ 
+const scopesContent = document.getElementById("scopesContent");
+
+async function checkSubscription() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Not logged in → send to dashboard
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // Fetch subscription record
+  const { data, error } = await supabase
+    .from("subscription")
+    .select("current_plan")
+    .eq("user_id", user.id)
+    .single();
+
+  if (error || !data || data.current_plan !== "premium") {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Premium Required',
+      text: 'This feature is only available for Premium members. Upgrade now to continue.',
+      confirmButtonText: 'Upgrade to Premium',
+      showCancelButton: true,
+      cancelButtonText: 'Go Back',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "Subscription.html"; // Upgrade page
+      } else {
+        window.location.href = "dashboard.html"; // Back to dashboard
+      }
+    });
+  }
+}
+
+checkSubscription();
+
+// ✅ Show SweetAlert Error
+function showError(message) {
+  Swal.fire({
+    icon: "error",
+    title: "Oops!",
+    text: message,
+    confirmButtonColor: "#2563EB",
+    background: "#fff",
+  });
+}
+
+// ✅ Generate PDF preview (fancy design)
+function generatePDF(scope) {
+  const doc = new jsPDF({ unit: "pt", format: "a4" });
+  const pageWidth = doc.internal.pageSize.getWidth();
+
+  // Watermark
+  doc.saveGraphicsState();
+  doc.setFontSize(50);
+  doc.setTextColor(230);
+  doc.setFont("helvetica", "bolditalic");
+  doc.text("Top Student", pageWidth / 2, 200, { angle: 45, align: "center" });
+  doc.restoreGraphicsState();
+
+  // Header
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(18);
+  doc.setTextColor("#5B21B6");
+  doc.text("Top Student – Study Scope", 40, 40);
+
+  // ===== Info =====
+  let y = 60;             // starting y position
+  const lineHeight = 18;  // spacing between lines
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
+  doc.setTextColor("#111111");
+
+  doc.text(`Title: ${scope.title}`, 40, y);
+  y += lineHeight;
+
+  doc.text(`Date: ${new Date(scope.created_at).toLocaleDateString()}`, 40, y);
+  y += lineHeight;
+
+  // Divider
+  doc.setDrawColor("#5B21B6");
+  doc.setLineWidth(0.5);
+  doc.line(40, y, pageWidth - 40, y);
+  y += lineHeight;
+
+  // ===== Description =====
+  const descriptionLines = doc.splitTextToSize(scope.subject || "No description provided.", pageWidth - 80);
+  doc.text(descriptionLines, 40, y);
+  y += descriptionLines.length * lineHeight + 10;
+
+  // ===== PDF link if exists =====
+  if (scope.pdf_url) {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.setTextColor("#5B21B6");
+    doc.text("Reference PDF:", 40, y);
+    y += lineHeight;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.setTextColor("#111111");
+    doc.text(scope.pdf_url, 50, y);
+    y += lineHeight + 10;
+  }
+
+  // ===== Footer =====
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(11);
+  doc.setTextColor("#444444");
+  doc.text("Stay consistent and disciplined.", 40, doc.internal.pageSize.getHeight() - 30);
+
+  // Open PDF in new tab
+  const pdfBlobUrl = doc.output("bloburl");
+  window.open(pdfBlobUrl, "_blank");
+}
+
+// ✅ Fetch Scopes
+async function fetchScopes() {
+ 
+  const grid = document.getElementById("scopesGrid");
+  const scopesEmpty = document.getElementById("scopesEmpty");
+  const loaderDiv = document.getElementById("missedEmpty");
+ 
+ try {
+    // Show loader
+    loaderDiv.style.display = "flex";
+    grid.style.opacity = 0;
+    grid.style.pointerEvents = "none";
+
+    const { data, error } = await supabase
+      .from("scopes")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    grid.innerHTML = "";
+
+    if (error) {
+      console.error(error);
+      showError("Failed to fetch scopes.");
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      // Keep loader visible, optionally show SweetAlert
+      Swal.fire({
+        icon: "info",
+        title: "No scopes found!",
+        text: "Try again later.",
+        confirmButtonColor: "#2563EB",
+        background: "#fff",
+      });
+      return;
+    }
+
+    // Hide loader and show grid
+    loaderDiv.style.display = "none";
+    grid.style.opacity = 1;
+    grid.style.pointerEvents = "auto";
+
+    scopesEmpty.classList.add("hidden");
+
+    data.forEach((scope) => {
+      const card = document.createElement("div");
+      card.className =
+        "bg-gradient-to-tr from-white to-green-100 rounded-2xl shadow-xl p-6 hover:scale-105 transform transition-all duration-300";
+
+      card.innerHTML = `<h3 class="text-xl font-semibold text-gray-800 mb-2">${scope.title}</h3>`;
+
+      const btn = document.createElement("button");
+      btn.textContent = "View PDF";
+      btn.className =
+        "mt-3 bg-green-600 text-white px-4 py-2 rounded-xl shadow hover:bg-green-700 transition";
+      btn.addEventListener("click", () => generatePDF(scope));
+
+      card.appendChild(btn);
+      grid.appendChild(card);
+    });
+  } catch (err) {
+    console.error(err);
+    showError("Something went wrong while fetching scopes.");
+  }
+}
+
+// Load scopes on page load
+fetchScopes();
+</script>
+  <script>
+    // Example Lottie animation for empty state
+    lottie.loadAnimation({
+      container: document.getElementById('missedAnimation'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'https://assets9.lottiefiles.com/packages/lf20_j1adxtyb.json' // Example animation
+    });
+</script>
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const menuIcon = document.getElementById("menuIcon");
+  const blurOverlay = document.getElementById("blurOverlay");
+  const sidebar = document.querySelector("aside");
+
+  menuBtn.addEventListener("click", () => {
+    // Toggle icon
+    menuIcon.classList.toggle("fa-bars");
+    menuIcon.classList.toggle("fa-xmark");
+
+    // Toggle sidebar
+    sidebar.classList.toggle("hidden");
+    sidebar.classList.toggle("absolute");
+    sidebar.classList.toggle("z-40");
+    sidebar.classList.toggle("h-screen");
+
+    // Toggle blur overlay
+    blurOverlay.classList.toggle("hidden");
+  });
+
+  blurOverlay.addEventListener("click", () => {
+    menuIcon.classList.add("fa-bars");
+    menuIcon.classList.remove("fa-xmark");
+    sidebar.classList.add("hidden");
+    sidebar.classList.remove("absolute", "z-40", "h-screen");
+    blurOverlay.classList.add("hidden");
+  });
+</script>
+</body>
+</html>

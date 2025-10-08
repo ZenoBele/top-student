@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Password - Top Student</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon.png">
+  <script type="module" src="js/security.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; }
+    .glass {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      transition: transform 0.3s ease-in-out;
+    }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="flex h-screen"
+      style="background: linear-gradient(60deg, white, #3e95be, white);">
+
+  <!-- Sidebar -->
+  <aside class="w-64 hidden md:flex flex-col fixed top-0 left-0 bottom-0 mt-12 mb-12 z-50 text-white overflow-y-auto rounded-3xl"
+       style="background: linear-gradient(180deg,#0a0059,#3e95be); box-shadow: 0 20px 50px rgba(0,0,0,0.9); -ms-overflow-style: none;">
+  <nav class="px-4 py-6 space-y-2">
+    <a href="dashboard.html" data-service="dashboard.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-house"></i><span>Dashboard</span>
+    </a>
+    <a href="reminder.html" data-service="reminder.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-bell"></i><span>What I Missed</span>
+    </a>
+    <a href="challenge.html" data-service="challenge.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-calendar-check"></i><span>The 30 Days Master</span>
+    </a>
+    <a href="pack.html" data-service="pack.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-book-open"></i><span>Smart Pack</span>
+    </a>
+    <a href="capability.html" data-service="capability.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chart-line"></i><span>My Capabilities</span>
+    </a>
+    <a href="scope.html" data-service="scope.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-lightbulb"></i><span>Study Scope</span>
+    </a>
+    <a href="nsfas.html" data-service="nsfas.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-piggy-bank"></i><span>NSFAS</span>
+    </a>
+    <a href="university.html" data-service="university.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-university"></i><span>University</span>
+    </a>
+    <a href="options.html" data-service="options.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-briefcase"></i><span>My Options</span>
+    </a>
+    <a href="chat.html" data-service="community.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-comments"></i><span>Community Q&A Board</span>
+    </a>
+	<a href="read.html" data-service="help.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-chalkboard"></i><span>Read With Me</span>
+    </a>
+    <a href="account.html"
+       class="flex items-center gap-3 p-2 rounded-lg transition hover:bg-white hover:text-blue-900">
+      <i class="fa-solid fa-user"></i><span>Account</span>
+    </a>
+  </nav>
+</aside>
+
+  <!-- Mobile Menu Button -->
+  <div class="md:hidden fixed top-2 right-0 p-4 z-50">
+    <button id="menuBtn" class="text-white p-2 rounded">
+      <i id="menuIcon" class="fa-solid fa-bars text-2xl"></i>
+    </button>
+  </div>
+
+  <!-- Blur Overlay -->
+  <div id="blurOverlay" class="fixed inset-0 bg-white bg-opacity-30 glass hidden z-40"></div>
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 md:px-6 text-white fixed top-0 z-30 h-24 w-full md:w-3/4 md:ml-80 md:rounded-b-3xl"
+          style="background: linear-gradient(60deg,#0a0059,#38b6ff);">
+    <div class="flex flex-col ml-16 items-center flex-1 text-center">
+      <h2 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+        Change Password
+      </h2>
+      <p class="text-gray-100 text-sm">Securely update your account password.</p>
+    </div>
+    <div class="w-20 md:w-28"></div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col overflow-y-auto relative z-0 mt-32 md:ml-64 px-6 md:px-12 space-y-8">
+    
+    <!-- Password Form Card -->
+<div class="bg-white rounded-3xl p-8 shadow-lg glass card-hover w-full max-w-3xl mx-auto">
+      <form id="passwordForm" class="space-y-6" novalidate>
+        
+        <!-- New Password -->
+        <div class="relative">
+          <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+          <input type="password" id="newPassword" required
+            placeholder="Enter new password"
+            class="w-full p-3 border border-gray-300 rounded-xl focus:ring focus:ring-blue-400 focus:outline-none" />
+          <button type="button" id="toggleNewPassword"
+            class="absolute top-9 right-3 text-gray-400 hover:text-gray-600">
+            <i class="fas fa-eye"></i>
+          </button>
+          <ul id="passwordRules" class="text-xs list-disc pl-5 mt-2 space-y-1 text-gray-500">
+            <li id="rule-length">Minimum 8 characters</li>
+            <li id="rule-uppercase">At least one uppercase letter</li>
+            <li id="rule-lowercase">At least one lowercase letter</li>
+            <li id="rule-number">At least one number</li>
+            <li id="rule-special">At least one special symbol (!@#$...)</li>
+          </ul>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="relative">
+          <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+          <input type="password" id="confirmPassword" required
+            placeholder="Confirm new password"
+            class="w-full p-3 border border-gray-300 rounded-xl focus:ring focus:ring-blue-400 focus:outline-none" />
+          <button type="button" id="toggleConfirmPassword"
+            class="absolute top-9 right-3 text-gray-400 hover:text-gray-600">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" id="passwordBtn"
+          class="w-full bg-gradient-to-r from-blue-600 to-blue-300 text-white py-3 rounded-xl hover:bg-blue-700 transition">
+          Update Password
+        </button>
+      </form>
+    </div>
+
+  </main>
+
+
+  <div id="toast-container"></div>
+
+<script type="module">
+    import { supabase } from './js/supabaseClient.js';
+
+const passwordForm = document.getElementById('passwordForm');
+const passwordBtn = document.getElementById('passwordBtn');
+const newPasswordInput = document.getElementById('newPassword');
+const confirmPasswordInput = document.getElementById('confirmPassword');
+
+const rules = {
+  length: document.getElementById('rule-length'),
+  uppercase: document.getElementById('rule-uppercase'),
+  lowercase: document.getElementById('rule-lowercase'),
+  number: document.getElementById('rule-number'),
+  special: document.getElementById('rule-special'),
+};
+
+function validatePassword(password) {
+  return {
+    length: password.length >= 8,
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    number: /[0-9]/.test(password),
+    special: /[^A-Za-z0-9]/.test(password),
+  };
+}
+
+newPasswordInput.addEventListener('input', () => {
+  const val = newPasswordInput.value;
+  const validation = validatePassword(val);
+
+  for (const [rule, passed] of Object.entries(validation)) {
+    rules[rule].classList.toggle('text-green-600', passed);
+    rules[rule].classList.toggle('text-red-600', !passed);
+  }
+});
+
+// Toggle password visibility
+function setupToggle(toggleBtnId, inputId) {
+  const toggleBtn = document.getElementById(toggleBtnId);
+  const input = document.getElementById(inputId);
+
+  toggleBtn.addEventListener('click', () => {
+    input.type = input.type === 'password' ? 'text' : 'password';
+    toggleBtn.innerHTML = input.type === 'password' 
+      ? '<i class="fas fa-eye"></i>' 
+      : '<i class="fas fa-eye-slash"></i>';
+  });
+}
+
+setupToggle('toggleNewPassword', 'newPassword');
+setupToggle('toggleConfirmPassword', 'confirmPassword');
+
+// SweetAlert wrapper
+function showAlert(message, type = 'info') {
+  const icons = {
+    success: 'success',
+    error: 'error',
+    info: 'info'
+  };
+  Swal.fire({
+    icon: icons[type] || 'info',
+    title: message,
+    timer: 2500,
+    showConfirmButton: false,
+  });
+}
+
+passwordForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  passwordBtn.disabled = true;
+  passwordBtn.innerHTML = 'Updating <span class="loader"></span>';
+
+  const newPassword = newPasswordInput.value.trim();
+  const confirmPassword = confirmPasswordInput.value.trim();
+
+  const validation = validatePassword(newPassword);
+  const allValid = Object.values(validation).every(Boolean);
+
+  if (newPassword !== confirmPassword) {
+    showAlert('Passwords do not match.', 'error');
+    resetButton();
+    return;
+  }
+
+  if (!allValid) {
+    showAlert('Password does not meet all requirements.', 'error');
+    resetButton();
+    return;
+  }
+
+  try {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+    if (error) {
+      showAlert('Failed to update password: ' + error.message, 'error');
+    } else {
+      showAlert('Password updated successfully!', 'success');
+      passwordForm.reset();
+      Object.values(rules).forEach(li => {
+        li.classList.remove('text-green-600');
+        li.classList.add('text-red-600');
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    showAlert('An unexpected error occurred.', 'error');
+  } finally {
+    resetButton();
+  }
+
+  function resetButton() {
+    passwordBtn.disabled = false;
+    passwordBtn.innerHTML = 'Update Password';
+  }
+});
+</script>
+  <script>
+    // Sidebar toggle
+    const menuBtn = document.getElementById("menuBtn");
+    const menuIcon = document.getElementById("menuIcon");
+    const blurOverlay = document.getElementById("blurOverlay");
+    const sidebar = document.querySelector("aside");
+
+    menuBtn.addEventListener("click", () => {
+      menuIcon.classList.toggle("fa-bars");
+      menuIcon.classList.toggle("fa-xmark");
+      sidebar.classList.toggle("hidden");
+      sidebar.classList.toggle("absolute");
+      sidebar.classList.toggle("z-40");
+      blurOverlay.classList.toggle("hidden");
+    });
+
+    blurOverlay.addEventListener("click", () => {
+      menuIcon.classList.add("fa-bars");
+      menuIcon.classList.remove("fa-xmark");
+      sidebar.classList.add("hidden");
+      sidebar.classList.remove("absolute", "z-40");
+      blurOverlay.classList.add("hidden");
+    });
+  </script>
+</body>
+</html>
