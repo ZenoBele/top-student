@@ -1,31 +1,30 @@
 const CACHE_NAME = "topstudent-cache-v1";
 
+// All pages, CSS, JS, images, and offline fallback
 const urlsToCache = [
-  "/", "/index.html", "/about.html", "/resources.html", "/service.html", "/contact.html",
-  "/papers.html", "/challenge.html", "/reminder.html", "/community.html",
-  "/read.html", "/rewards.html",
+  // Main pages
+  "/", "/index.html", "/about.html", "/resource.html", "/service.html", "/contact.html",
+  "/login.html", "/press.html", "/404.html", "/offline.html",
+
+  // Functional pages
+  "/papers.html", "/guides.html", "/reminder.html", "/community.html", "/read.html",
+  "/rewards.html", "/challenge.html", "/capability.html", "/scope.html", "/nsfas.html",
+  "/university.html", "/options.html",
 
   // CSS
-  "/css/index.css",
-  "/css/about.css",
-  "/css/resources.css",
-  "/css/service.css",
-  "/css/contact.css",
+  "/css/index.css", "/css/about.css", "/css/resources.css",
+  "/css/service.css", "/css/contact.css",
 
-  // JS files needed for functionality
-  "/js/security.js",
+  // JS
+  "/js/security.js", "/js/roles.js", "/js/plans.js", "/js/sw.js",
 
   // Images
-  "/images/logo.png",
-  "/images/favicon.png"
+  "/images/logo.png", "/images/favicon.png",
+
   // Add more static images if needed
 ];
 
- // Offline fallback
-  "/offline.html"
-];
-
-// Install service worker & cache files
+// Install Service Worker & cache files
 self.addEventListener("install", event => {
   event.waitUntil(
     (async () => {
@@ -47,15 +46,13 @@ self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.map(key => {
-        if (!allowList.includes(key)) {
-          return caches.delete(key);
-        }
+        if (!allowList.includes(key)) return caches.delete(key);
       }))
     )
   );
 });
 
-// Fetch: cache first, fallback to network, then offline.html
+// Fetch: cache-first, fallback to network, then offline.html
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request)
