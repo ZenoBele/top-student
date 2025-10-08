@@ -84,80 +84,6 @@
     </div>
   </div>
 
-  <!-- Module Script -->
-<script type="module">
-import { supabase } from './js/supabaseClient.js';
-
-const loginForm = document.getElementById('login-form');
-const loader = document.getElementById('loader');
-const togglePasswordBtn = document.getElementById('toggle-password');
-const passwordInput = document.getElementById('password');
-const eyeIcon = document.getElementById('eye-icon');
-
-togglePasswordBtn.addEventListener('click', () => {
-  if (passwordInput.type === 'password') {
-    passwordInput.type = 'text';
-    eyeIcon.classList.replace('ph-eye', 'ph-eye-slash');
-  } else {
-    passwordInput.type = 'password';
-    eyeIcon.classList.replace('ph-eye-slash', 'ph-eye');
-  }
-});
-
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById('email').value;
-  const password = passwordInput.value;
-
-  loader.classList.remove('hidden');
-
-  // 1️⃣ Sign in with Supabase Auth
-  const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  loader.classList.add('hidden');
-
-  if (authError) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Login Failed',
-      text: authError.message,
-    });
-    return;
-  }
-
-  // 2️⃣ Check the accounts table for is_active
-  const { data: account, error: accountError } = await supabase
-    .from('accounts')
-    .select('is_active')
-    .eq('user_id', authData.user.id)  // assuming accounts.user_id = auth.users.id
-    .single();
-
-  if (accountError || !account) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Login Failed',
-      text: 'Account not found.',
-    });
-    return;
-  }
-
-  // 3️⃣ Check is_active
-  if (!account.is_active) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Account Inactive',
-      html: `Your account is inactive. Please <a href="contact.html" class="text-blue-600 underline">contact support</a>.`,
-    });
-    return;
-  }
-
-  // 4️⃣ Success - redirect
-  window.location.href = 'dashboard.html';
-});
 </script><script type="module">
 import { supabase } from './js/supabaseClient.js';
 
@@ -231,6 +157,13 @@ loginForm.addEventListener('submit', async (e) => {
   // 4️⃣ Success - redirect
   window.location.href = 'dashboard.html';
 });
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(() => console.log('✅ Service Worker registered'))
+    .catch(err => console.error('SW failed:', err));
+}
 </script>
 </body>
 </html>
