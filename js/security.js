@@ -167,12 +167,15 @@ document.querySelectorAll("[data-service]").forEach(el => {
 
       // ⚠️ Show SweetAlert upgrade prompt
       Swal.fire({
-        icon: 'info',
-        title: 'Locked Feature',
-        text: 'Upgrade your plan to unlock this feature.',
-        confirmButtonText: 'Upgrade Now'
-      }).then(() => window.location.href = UPGRADE_PAGE);
-    }, true);
+  icon: 'info',
+  title: 'Locked Feature',
+  text: 'Upgrade your plan to unlock this feature.',
+  confirmButtonText: 'Upgrade Now',
+  showCancelButton: true,
+  cancelButtonText: 'Cancel'
+}).then((result) => {
+  if (result.isConfirmed) {
+    window.location.href = UPGRADE_PAGE;
   }
 });
 
