@@ -84,70 +84,76 @@
 
   <!-- Module Script -->
   <script type="module">
-    import { supabase } from './js/supabaseClient.js';
+import { supabase } from './js/supabaseClient.js';
+import bcrypt from 'bcryptjs'; // optional if using hashing on client (better on server)
 
-    // Elements
-    const loginForm = document.getElementById('login-form');
-  const loader = document.getElementById('loader');
-  const togglePasswordBtn = document.getElementById('toggle-password');
-  const passwordInput = document.getElementById('password');
-  const eyeIcon = document.getElementById('eye-icon');
+const loginForm = document.getElementById('login-form');
+const loader = document.getElementById('loader');
+const togglePasswordBtn = document.getElementById('toggle-password');
+const passwordInput = document.getElementById('password');
+const eyeIcon = document.getElementById('eye-icon');
 
-  // Password toggle
-  togglePasswordBtn.addEventListener('click', () => {
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      eyeIcon.classList.replace('ph-eye', 'ph-eye-slash');
-    } else {
-      passwordInput.type = 'password';
-      eyeIcon.classList.replace('ph-eye-slash', 'ph-eye');
-    }
-  });
+togglePasswordBtn.addEventListener('click', () => {
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    eyeIcon.classList.replace('ph-eye', 'ph-eye-slash');
+  } else {
+    passwordInput.type = 'password';
+    eyeIcon.classList.replace('ph-eye-slash', 'ph-eye');
+  }
+});
 
-  // Login form submit
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-    const email = document.getElementById('email').value;
-    const password = passwordInput.value;
+  const email = document.getElementById('email').value;
+  const password = passwordInput.value;
 
-    // Show loader
-    loader.classList.remove('hidden');
+  loader.classList.remove('hidden');
 
-    // Attempt login
-    const { data: signInData, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+  // Fetch user from accounts table
+  const { data: user, error } = await supabase
+    .from('accounts')
+    .select('*')
+    .eq('email', email)
+    .single(); // expect only 1 result
+
+  loader.classList.add('hidden');
+
+  if (error || !user) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Login Failed',
+      text: 'Email not found.',
     });
+    return;
+  }
 
-    loader.classList.add('hidden');
+  // Check if account is active
+  if (!user.is_active) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Account Inactive',
+      html: `Your account is inactive. Please <a href="contact.html" class="text-blue-600 underline">contact support</a>.`,
+    });
+    return;
+  }
 
-    if (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Login Failed',
-        text: error.message,
-      });
-      return;
-    }
+  // Check password
+  // If using bcrypt
+  const passwordMatch = await bcrypt.compare(password, user.password_hash);
+  if (!passwordMatch) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Login Failed',
+      text: 'Incorrect password.',
+    });
+    return;
+  }
 
-    // Check if account is active via user_metadata
-    // Make sure you set is_active in user_metadata in Supabase Auth
-    const isActive = signInData.user.user_metadata?.is_active;
-
-    if (!isActive) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Account Inactive',
-        html: `Your account is either suspended, scheduled for deletion, or inactive.<br>
-               Please <a href="contact.html" class="text-blue-600 underline">contact support</a>.`,
-      });
-      return;
-    }
-
-    // Success - redirect to dashboard
-    window.location.href = 'dashboard.html';
-  });
+  // Success - redirect
+  window.location.href = 'dashboard.html';
+});
 </script>
 </body>
 </html>
