@@ -132,7 +132,7 @@ function getGreeting(name) {
       }).then(() => window.location.href = UPGRADE_PAGE);
     }
 
-    // ✅ Universal lock for all elements with data-service (links, buttons, divs)
+// ✅ Universal lock for all elements with data-service (links, buttons, divs)
 document.querySelectorAll("[data-service]").forEach(el => {
   const service = el.dataset.service.toLowerCase();
   const allowed = SERVICE_RULES[service];
@@ -167,15 +167,18 @@ document.querySelectorAll("[data-service]").forEach(el => {
 
       // ⚠️ Show SweetAlert upgrade prompt
       Swal.fire({
-  icon: 'info',
-  title: 'Locked Feature',
-  text: 'Upgrade your plan to unlock this feature.',
-  confirmButtonText: 'Upgrade Now',
-  showCancelButton: true,
-  cancelButtonText: 'Cancel'
-}).then((result) => {
-  if (result.isConfirmed) {
-    window.location.href = UPGRADE_PAGE;
+        icon: 'info',
+        title: 'Locked Feature',
+        text: 'Upgrade your plan to unlock this feature.',
+        confirmButtonText: 'Upgrade Now',
+        showCancelButton: true,
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = UPGRADE_PAGE;
+        }
+      });
+    }, true);
   }
 });
 
