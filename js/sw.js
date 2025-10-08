@@ -1,15 +1,11 @@
 const CACHE_NAME = "topstudent-cache-v1";
 
-// Files to cache for offline / PWA
 const urlsToCache = [
-  "/",                     // Root / homepage
-  "/index.html",
-  "/about.html",
-  "/resources.html",
-  "/service.html",
-  "/contact.html",
+  "/", "/index.html", "/about.html", "/resources.html", "/service.html", "/contact.html",
+  "/papers.html", "/challenge.html", "/reminder.html", "/community.html",
+  "/read.html", "/rewards.html",
 
-  // CSS files
+  // CSS
   "/css/index.css",
   "/css/about.css",
   "/css/resources.css",
@@ -25,7 +21,11 @@ const urlsToCache = [
   // Add more static images if needed
 ];
 
-// Install SW & cache static resources
+ // Offline fallback
+  "/offline.html"
+];
+
+// Install service worker & cache files
 self.addEventListener("install", event => {
   event.waitUntil(
     (async () => {
@@ -41,7 +41,7 @@ self.addEventListener("install", event => {
   );
 });
 
-// Activate SW & clean old caches
+// Activate SW & remove old caches
 self.addEventListener("activate", event => {
   const allowList = [CACHE_NAME];
   event.waitUntil(
@@ -55,9 +55,11 @@ self.addEventListener("activate", event => {
   );
 });
 
-// Fetch handler: serve cache first, fallback to network
+// Fetch: cache first, fallback to network, then offline.html
 self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+      .catch(() => caches.match('/offline.html'))
   );
 });
