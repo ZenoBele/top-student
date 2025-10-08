@@ -281,6 +281,19 @@ h2, h3 {
 	border: 2px solid black;
 }
 
+.access-list {
+  list-style-position: inside; /* keeps icons aligned */
+  padding-left: 0;             /* remove extra left padding */
+  text-align: left;            /* force left alignment */
+}
+
+.access-list li {
+  display: flex;               /* align icon and text in one line */
+  align-items: flex-start;
+  gap: 0.5rem;                 /* space between icon and text */
+  line-height: 1.4;            /* adjust spacing for readability */
+}
+
 /* Button Styles */
 .tab-one,
 .tab-two,
