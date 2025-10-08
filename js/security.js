@@ -132,17 +132,66 @@ function getGreeting(name) {
       }).then(() => window.location.href = UPGRADE_PAGE);
     }
 
-    // ✅ Lock restricted menu items using effectivePlan
-    document.querySelectorAll("[data-service]").forEach(link => {
-      const service = link.dataset.service.toLowerCase();
-      const allowed = SERVICE_RULES[service];
-      if (allowed && !allowed.includes(effectivePlan)) {
-        link.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
-        if (!link.querySelector(".fa-lock")) {
-          link.innerHTML += ' <i class="fa-solid fa-lock text-sm ml-2"></i>';
-        }
-      }
-    });
+    // ✅ Universal lock for all elements with data-service (links, buttons, divs)
+document.querySelectorAll("[data-service]").forEach(el => {
+  const service = el.dataset.service.toLowerCase();
+  const allowed = SERVICE_RULES[service];
+
+  if (allowed && !allowed.includes(effectivePlan)) {
+    // 🔒 Visual lock styling
+    el.classList.add("opacity-50", "cursor-not-allowed", "relative", "select-none", "locked-item");
+
+    // 🔒 Add lock icon if not already there
+    if (!el.querySelector(".fa-lock")) {
+      const lockIcon = document.createElement("i");
+      lockIcon.className = "fa-solid fa-lock text-sm ml-2 text-gray-600";
+      el.appendChild(lockIcon);
+    }
+
+    // 🔒 Add transparent overlay to block clicks inside
+    if (!el.querySelector(".lock-overlay")) {
+      const overlay = document.createElement("div");
+      overlay.className = "lock-overlay absolute inset-0 z-10";
+      overlay.style.background = "transparent";
+      el.appendChild(overlay);
+    }
+
+    // 🚫 Intercept all clicks and touches
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // ✨ Shake animation
+      el.classList.add("shake");
+      setTimeout(() => el.classList.remove("shake"), 500);
+
+      // ⚠️ Show SweetAlert upgrade prompt
+      Swal.fire({
+        icon: 'info',
+        title: 'Locked Feature',
+        text: 'Upgrade your plan to unlock this feature.',
+        confirmButtonText: 'Upgrade Now'
+      }).then(() => window.location.href = UPGRADE_PAGE);
+    }, true);
+  }
+});
+
+// 🎨 Inject shake animation style (only once)
+if (!document.getElementById('lock-style')) {
+  const style = document.createElement('style');
+  style.id = 'lock-style';
+  style.textContent = `
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    .shake {
+      animation: shake 0.4s ease;
+    }
+  `;
+  document.head.appendChild(style);
+}
 
     Swal.close(); 
 
