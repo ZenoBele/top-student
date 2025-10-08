@@ -11,7 +11,7 @@ const loader = Swal.fire({
 
 const LOGIN_PAGE = 'login.html';
 const SUPPORT_PAGE = 'contact.html';
-const UPGRADE_PAGE = 'upgrade.html';
+const UPGRADE_PAGE = 'subscription.html';
 
 const SERVICE_RULES = {
   'reminder.html':   ['premium'],
