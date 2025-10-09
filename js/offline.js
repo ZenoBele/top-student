@@ -1,41 +1,42 @@
-// ⚠️ Offline detection for dynamic pages only
-(function() {
-  // List of pages that require Supabase data
-  const dynamicPages = [
-    "papers.html",
-    "challenge.html",
-    "reminder.html",
-	"pack.html",
-	"press.html",
-	"guides.html",
-	"news.html",
-	"capability.html",
-    "community.html",
-    "read.html",
-    "rewards.html"
-    // add any other dynamic pages
-  ];
+// ⚠️ Offline warning banner
+if (!navigator.onLine) {
+  const banner = document.createElement("div");
+  banner.textContent = "⚠️ You are offline. Some features won't work until you're back online.";
+  banner.style.background = "#f8d7da";
+  banner.style.color = "#721c24";
+  banner.style.padding = "10px";
+  banner.style.textAlign = "center";
+  banner.style.fontWeight = "bold";
+  banner.style.position = "fixed";
+  banner.style.top = "0";
+  banner.style.left = "0";
+  banner.style.right = "0";
+  banner.style.zIndex = "9999";
+  document.body.prepend(banner);
+}
 
-  const currentPage = window.location.pathname.split("/").pop().toLowerCase();
+// 🧠 Optional: Hide banner when back online
+window.addEventListener("online", () => {
+  const banner = document.querySelector("div[offline-banner]");
+  if (banner) banner.remove();
+});
 
-  if (dynamicPages.includes(currentPage) && !navigator.onLine) {
-    // User is offline on a dynamic page
-    const offlineMsg = document.createElement("p");
-    offlineMsg.textContent = "⚠️ You are offline. Connect to see papers and quizzes.";
-    offlineMsg.style.color = "red";
-    offlineMsg.style.textAlign = "center";
-    offlineMsg.style.fontWeight = "bold";
-    offlineMsg.style.margin = "10px";
-    document.body.prepend(offlineMsg);
+// 🧠 Optional: Show again if offline
+window.addEventListener("offline", () => {
+  if (!document.querySelector("div[offline-banner]")) {
+    const banner = document.createElement("div");
+    banner.textContent = "⚠️ You are offline. Some features won't work until you're back online.";
+    banner.setAttribute("offline-banner", "");
+    banner.style.background = "#f8d7da";
+    banner.style.color = "#721c24";
+    banner.style.padding = "10px";
+    banner.style.textAlign = "center";
+    banner.style.fontWeight = "bold";
+    banner.style.position = "fixed";
+    banner.style.top = "0";
+    banner.style.left = "0";
+    banner.style.right = "0";
+    banner.style.zIndex = "9999";
+    document.body.prepend(banner);
   }
-
-  // Reload page automatically when connection is restored
-  window.addEventListener("online", () => {
-    if (dynamicPages.includes(currentPage)) location.reload();
-  });
-
-  // Optional: log when offline
-  window.addEventListener("offline", () => {
-    if (dynamicPages.includes(currentPage)) console.log("You are offline");
-  });
-})();
+});
