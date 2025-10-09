@@ -71,6 +71,7 @@
         <option value="">Select Province</option>
         <option>Limpopo</option>
         <option>Gauteng</option>
+        <option>KwaZulu-Natal</option>
         <option>Western Cape</option>
         <option>Eastern Cape</option>
         <option>Free State</option>
@@ -105,17 +106,24 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
   );
 
+  
   const form = document.getElementById('schoolForm');
   const schoolList = document.getElementById('schoolList');
 
+  // Fetch and display all schools
   async function loadSchools() {
-    const { data, error } = await supabase.from('schools').select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase
+      .from('schools')
+      .select('*')
+      .order('created_at', { ascending: false });
+
     schoolList.innerHTML = '';
 
     if (error) {
       schoolList.innerHTML = `<p class="text-red-500">Error loading schools: ${error.message}</p>`;
       return;
     }
+
     if (!data || data.length === 0) {
       schoolList.innerHTML = '<p class="text-gray-500 italic">No schools saved yet.</p>';
       return;
@@ -123,27 +131,37 @@
 
     data.forEach((school) => {
       const card = document.createElement('div');
-      card.className = 'bg-white shadow-md p-4 rounded-lg border border-gray-200 animate-fadeIn';
-      card.innerHTML = `
+      card.className =
+        'bg-white shadow-md p-4 rounded-lg border border-gray-200 animate-fadeIn';
+
+      // Create school content
+      const content = document.createElement('div');
+      content.innerHTML = `
         <h3 class="text-xl font-bold text-blue-900">${school.name}</h3>
         <p><strong>Contact:</strong> ${school.contact || '—'}</p>
         <p><strong>Phone:</strong> ${school.phone || '—'}</p>
         <p><strong>Email:</strong> ${school.email || '—'}</p>
         <p><strong>Province:</strong> ${school.province || '—'}</p>
         <p><strong>Notes:</strong> ${school.notes || '—'}</p>
-        <button class="mt-3 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm" onclick="deleteSchool(${school.id})">
-          <i class="fas fa-trash mr-1"></i> Delete
-        </button>
       `;
+      card.appendChild(content);
+
+      // Create Delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className =
+        'mt-3 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm';
+      deleteBtn.innerHTML = '<i class="fas fa-trash mr-1"></i> Delete';
+      deleteBtn.addEventListener('click', async () => {
+        await supabase.from('schools').delete().eq('id', school.id);
+        loadSchools();
+      });
+
+      card.appendChild(deleteBtn);
       schoolList.appendChild(card);
     });
   }
 
-  async function deleteSchool(id) {
-    await supabase.from('schools').delete().eq('id', id);
-    loadSchools();
-  }
-
+  // Handle form submission
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -166,8 +184,8 @@
     }
   });
 
+  // Load schools on page load
   document.addEventListener('DOMContentLoaded', loadSchools);
 </script>
 </body>
-
 </html>
