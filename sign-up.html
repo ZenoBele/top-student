@@ -291,12 +291,5 @@ form.addEventListener('submit', async (e) => {
       defaultPlan.charAt(0).toUpperCase() + defaultPlan.slice(1) + " Account";
     updateDesign(defaultPlan);
   </script>
-  <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('js/sw.js')
-    .then(() => console.log('✅ Service Worker registered'))
-    .catch(err => console.error('SW failed:', err));
-}
-</script>
 </body>
 </html>

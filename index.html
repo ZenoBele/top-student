@@ -7,6 +7,7 @@
   <meta name="keywords" content="Top Student, Study Help, Grade 12, Exam Papers, Study Guides, South Africa, Bellshire" />
   <meta name="author" content="Top Student by Bellshire" />
   <title>Top Student Services – Study Guides, Exam Prep & University Support</title>
+  <script type="module" src="js/offline.js"></script>
   <link rel="canonical" href="https://topstudent.co.za/index.html" />
   <meta property="og:title" content="Top Student Services – Study Guides, Exam Prep & University Support" />
   <meta property="og:description" content="Access free study guides and past papers, get personalized reminders, track progress, master exam strategies, and receive expert university and NSFAS application support." />
@@ -323,13 +324,6 @@
       resourceToggle?.classList.remove('open');
     });
   });
-</script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('js/sw.js')
-      .then(() => console.log('✅ Service Worker registered'))
-      .catch(err => console.error('SW failed:', err));
-  }
 </script>
 </main>
 </body>
