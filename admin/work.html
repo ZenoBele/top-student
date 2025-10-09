@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Work - Top Student Admin Activity Log</title>
+<link rel="stylesheet" href="css/work.css" />
+</head>
+<body>
+
+<header>
+  <div class="header-top centered-header">
+    <h1>Top Student Admin</h1>
+    <h2>Welcome, Zeno Bele</h2>
+  </div>
+  <nav class="admin-nav centered-nav">
+    <ul>
+      <li><a href="admin.html">Dashboard</a></li>
+      <li class="dropdown">
+        <a href="work.html">My Work</a>
+        <ul class="dropdown-menu">
+          <li><a href="events.html">Events</a></li>
+          <li><a href="report.html">Reports</a></li>
+          <li><a href="exams.html">Exams</a></li>
+		  <li><a href="apply.html">Apply</a></li>
+		  <li><a href="carte.html">CARTE</a></li>
+        </ul>
+      </li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="user.html">User</a></li>
+      <li><a href="revenue.html">Revenue</a></li>
+    </ul>
+  </nav>
+</header>
+
+  <h1>My Work</h1>
+  <p class="subtitle">Track all your admin activities on Top Student in one place.</p>
+
+  <div class="filters">
+    <input type="text" id="searchInput" placeholder="Search by admin, action, or user" onkeyup="filterTable()" />
+    <select id="actionFilter" onchange="filterTable()">
+	  <option value="">All Actions</option>
+  <option value="view-profile">Edit User Profile</option>
+  <option value="toggle-account">Enable/Disable Account</option>
+  <option value="upgrade-downgrade">Upgrade/Downgrade</option>
+  <option value="grant-trial">Grant Trial Access</option>
+  <option value="view-login-history">user Login History</option>
+  <option value="see-activity-logs">See Activity Logs</option>
+      <option value="Login">Login</option>
+      <option value="Upgrade Account">Upgrade Account</option>
+      <option value="Add Resource">Add Resource</option>
+      <option value="Delete User">Delete User</option>
+    </select>
+    <input type="date" id="dateFilter" onchange="filterTable()" />
+  </div>
+
+  <table id="activityTable" aria-label="Admin activity logs">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Admin User</th>
+        <th>Action Type</th>
+        <th>Affected User/Item</th>
+        <th>Description</th>
+        <th>Device / IP</th>
+      </tr>
+    </thead>
+    <tbody id="logBody">
+      <tr>
+        <td>2025-05-19 12:03</td>
+        <td>admin@topstudent.com</td>
+        <td>Upgrade Account</td>
+        <td>learner123</td>
+        <td>Upgraded to Premium (6-months plan)</td>
+        <td>192.168.0.21 • Chrome on Windows</td>
+      </tr>
+      <tr>
+        <td>2025-05-19 12:04</td>
+        <td>admin@topstudent.com</td>
+        <td>Login</td>
+        <td>—</td>
+        <td>Logged into admin dashboard</td>
+        <td>192.168.0.21 • Chrome on Windows</td>
+      </tr>
+      <tr>
+        <td>2025-05-19 12:10</td>
+        <td>admin2@topstudent.com</td>
+        <td>Add Resource</td>
+        <td>Matric Maths Paper</td>
+        <td>Uploaded 2023 June Maths Paper</td>
+        <td>41.56.89.10 • Firefox on Mac</td>
+      </tr>
+      <!-- Add more log rows here -->
+    </tbody>
+  </table>
+
+  <script>
+    function filterTable() {
+      const searchValue = document.getElementById('searchInput').value.toLowerCase();
+      const actionValue = document.getElementById('actionFilter').value;
+      const dateValue = document.getElementById('dateFilter').value;
+
+      const table = document.getElementById('activityTable');
+      const tbody = table.tBodies[0];
+      const rows = tbody.getElementsByTagName('tr');
+
+      let visibleRows = 0;
+
+      for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+
+        const timestamp = cells[0].textContent.toLowerCase();
+        const adminUser = cells[1].textContent.toLowerCase();
+        const actionType = cells[2].textContent;
+        const affectedUser = cells[3].textContent.toLowerCase();
+        const description = cells[4].textContent.toLowerCase();
+
+        const dateOnly = timestamp.split(' ')[0]; // Extract date from timestamp
+
+        const matchesSearch =
+          adminUser.includes(searchValue) ||
+          actionType.toLowerCase().includes(searchValue) ||
+          affectedUser.includes(searchValue) ||
+          description.includes(searchValue);
+
+        const matchesAction = actionValue === "" || actionType === actionValue;
+        const matchesDate = dateValue === "" || dateOnly === dateValue;
+
+        if (matchesSearch && matchesAction && matchesDate) {
+          rows[i].style.display = "";
+          visibleRows++;
+        } else {
+          rows[i].style.display = "none";
+        }
+      }
+
+      // Show a "no data" row if nothing matches
+      if (visibleRows === 0) {
+        if (!document.getElementById('noDataRow')) {
+          const noDataRow = document.createElement('tr');
+          noDataRow.id = 'noDataRow';
+          noDataRow.className = 'no-data';
+          noDataRow.innerHTML = `<td colspan="6">No matching records found.</td>`;
+          tbody.appendChild(noDataRow);
+        }
+      } else {
+        const noDataRow = document.getElementById('noDataRow');
+        if (noDataRow) noDataRow.remove();
+      }
+    }
+	
+	const dropdown = document.querySelector('.dropdown');
+  const menu = dropdown.querySelector('.dropdown-menu');
+
+  let timer;
+
+  dropdown.addEventListener('mouseenter', () => {
+    clearTimeout(timer);
+    dropdown.classList.add('show');
+  });
+
+  dropdown.addEventListener('mouseleave', () => {
+    timer = setTimeout(() => {
+      dropdown.classList.remove('show');
+    }, 300);
+  });
+  </script>
+</body>
+</html>
