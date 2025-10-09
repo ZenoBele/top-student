@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Top Student - School Contacts</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  body { font-family: 'Segoe UI', sans-serif; color: #333; }
+  .header-gradient { background: linear-gradient(to right, #003366, #33aaff); }
+  @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px);} 100% { opacity: 1; transform: translateY(0);} }
+  .animate-fadeIn { animation: fadeIn 0.8s ease forwards; }
+</style>
+</head>
+
+<body class="bg-white min-h-screen">
+
+<!-- Header -->
+<header class="header-gradient p-6 text-white font-sans shadow-md">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+      <i class="fas fa-school text-2xl"></i>
+      <h1 class="text-2xl font-bold">Top Student - School Contacts</h1>
+    </div>
+    <nav>
+      <ul class="flex space-x-6 text-white font-medium">
+        <li><a href="index.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-house mr-1"></i> Home</a></li>
+		<li><a href="schools.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-clipboard-list mr-1"></i> Schools</a></li>
+        <li><a href="tsukuyomi.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-clipboard-list mr-1"></i> Work Log</a></li>
+        <li><a href="data.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-chart-line mr-1"></i> Data</a></li>
+        <li><a href="pattern.html" class="hover:bg-white hover:text-blue-800 px-3 py-2 rounded transition"><i class="fas fa-chalkboard mr-1"></i> Pattern</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Intro -->
+<div class="primary-text mt-6 p-6 text-center shadow-lg">
+  <i class="fas fa-graduation-cap text-3xl mb-2"></i>
+  <h1 class="text-3xl font-bold">School Contacts Collector</h1>
+  <p class="opacity-80 mt-1">Keep track of schools you plan to approach with your idea</p>
+</div>
+
+<!-- Add School Form -->
+<div class="w-11/12 md:w-4/5 lg:w-2/3 mx-auto mt-8 bg-blue-50 p-6 rounded-2xl shadow-md animate-fadeIn">
+  <h2 class="text-2xl mb-4 text-blue-900 font-semibold"><i class="fas fa-plus-circle mr-2"></i>Add New School</h2>
+  
+  <form id="schoolForm" class="space-y-4">
+    <div>
+      <label class="block text-gray-700 font-semibold mb-1">School Name</label>
+      <input type="text" id="schoolName" class="w-full border border-gray-300 rounded px-3 py-2" required>
+    </div>
+    <div>
+      <label class="block text-gray-700 font-semibold mb-1">Contact Person</label>
+      <input type="text" id="contactPerson" class="w-full border border-gray-300 rounded px-3 py-2">
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-gray-700 font-semibold mb-1">Phone</label>
+        <input type="text" id="phone" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+      <div>
+        <label class="block text-gray-700 font-semibold mb-1">Email</label>
+        <input type="email" id="email" class="w-full border border-gray-300 rounded px-3 py-2">
+      </div>
+    </div>
+    <div>
+      <label class="block text-gray-700 font-semibold mb-1">Province</label>
+      <select id="province" class="w-full border border-gray-300 rounded px-3 py-2">
+        <option value="">Select Province</option>
+        <option>Limpopo</option>
+        <option>Gauteng</option>
+        <option>KwaZulu-Natal</option>
+        <option>Western Cape</option>
+        <option>Eastern Cape</option>
+        <option>Free State</option>
+        <option>Mpumalanga</option>
+        <option>North West</option>
+        <option>Northern Cape</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-gray-700 font-semibold mb-1">Notes</label>
+      <textarea id="notes" rows="3" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+    </div>
+
+    <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded transition">
+      <i class="fas fa-save mr-1"></i> Save School
+    </button>
+  </form>
+</div>
+
+<!-- Display Section -->
+<div class="w-11/12 md:w-4/5 lg:w-2/3 mx-auto mt-10 mb-10">
+  <h2 class="text-2xl mb-4 text-gray-800 font-semibold"><i class="fas fa-list mr-2"></i>Saved Schools</h2>
+  <div id="schoolList" class="space-y-4"></div>
+</div>
+
+<!-- Supabase & Dashboard Logic -->
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://mlwxxtvsozhwzjxmsvbg.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sd3h4dHZzb3pod3pqeG1zdmJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTAwOTksImV4cCI6MjA2NDQ2NjA5OX0.i9KySUVeot9imnALKr79DYySocuj0_rko4nzPhPxekU'
+  );
+
+  const form = document.getElementById('schoolForm');
+  const schoolList = document.getElementById('schoolList');
+
+  async function loadSchools() {
+    const { data, error } = await supabase.from('schools').select('*').order('created_at', { ascending: false });
+    schoolList.innerHTML = '';
+
+    if (error) {
+      schoolList.innerHTML = `<p class="text-red-500">Error loading schools: ${error.message}</p>`;
+      return;
+    }
+    if (!data || data.length === 0) {
+      schoolList.innerHTML = '<p class="text-gray-500 italic">No schools saved yet.</p>';
+      return;
+    }
+
+    data.forEach((school) => {
+      const card = document.createElement('div');
+      card.className = 'bg-white shadow-md p-4 rounded-lg border border-gray-200 animate-fadeIn';
+      card.innerHTML = `
+        <h3 class="text-xl font-bold text-blue-900">${school.name}</h3>
+        <p><strong>Contact:</strong> ${school.contact || '—'}</p>
+        <p><strong>Phone:</strong> ${school.phone || '—'}</p>
+        <p><strong>Email:</strong> ${school.email || '—'}</p>
+        <p><strong>Province:</strong> ${school.province || '—'}</p>
+        <p><strong>Notes:</strong> ${school.notes || '—'}</p>
+        <button class="mt-3 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm" onclick="deleteSchool(${school.id})">
+          <i class="fas fa-trash mr-1"></i> Delete
+        </button>
+      `;
+      schoolList.appendChild(card);
+    });
+  }
+
+  async function deleteSchool(id) {
+    await supabase.from('schools').delete().eq('id', id);
+    loadSchools();
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const newSchool = {
+      name: document.getElementById('schoolName').value.trim(),
+      contact: document.getElementById('contactPerson').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      province: document.getElementById('province').value,
+      notes: document.getElementById('notes').value.trim()
+    };
+
+    const { error } = await supabase.from('schools').insert([newSchool]);
+
+    if (error) {
+      alert('Error saving school: ' + error.message);
+    } else {
+      form.reset();
+      loadSchools();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', loadSchools);
+</script>
+</body>
+</html>
