@@ -417,7 +417,7 @@ async function updateCapabilities() {
       timePercent = Math.round(ratio * 100);
       timeMsg = `Average study: ${avgHours.toFixed(1)} hrs/day`;
       if (ratio < 0.4) timeColor = 'bg-green-800';
-      else if (ratio < 0.7) timeColor = 'bg-yellow-400';
+      else if (ratio < 0.7) timeColor = 'bg-yellow-800';
       else timeColor = 'bg-purple-500';
     }
 
@@ -714,4 +714,5 @@ if (currentUser) {
 </script>
 </body>
 </html>
+
 
