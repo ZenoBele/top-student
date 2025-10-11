@@ -536,14 +536,13 @@ function closeLessonPage() {
 // 📖 Open Quiz
 // =====================
 async function openQuiz(lesson) {
-  const quizQuestions = lesson.quiz?.questions || [];
-
+  const quizQuestions = lesson.quiz.slice(0, 5); // max 5 questions
+  
   if (quizQuestions.length === 0) {
     showToast('No quiz available for this lesson.', 'info');
     return;
   }
 
-  const quizQuestions = lesson.quiz.slice(0, 5); // max 5 questions
   let userAnswers = new Array(quizQuestions.length).fill(null);
   const day = lesson.day;
 
