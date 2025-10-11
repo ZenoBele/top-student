@@ -536,7 +536,9 @@ function closeLessonPage() {
 // 📖 Open Quiz
 // =====================
 async function openQuiz(lesson) {
-  if (!lesson.quiz || !Array.isArray(lesson.quiz) || lesson.quiz.length === 0) {
+  const quizQuestions = lesson.quiz?.questions || [];
+
+  if (quizQuestions.length === 0) {
     showToast('No quiz available for this lesson.', 'info');
     return;
   }
