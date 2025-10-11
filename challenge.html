@@ -552,7 +552,7 @@ async function openQuiz(lesson) {
   const submitQuizBtn = document.getElementById('submitQuizBtn');
   const closeQuizBtn = document.getElementById('closeQuizBtn');
 
-  // Create or reset percentage badge in header (centered)
+  // Create or reset percentage badge
   let percentBadge = document.getElementById('quizPercentBadge');
   if (!percentBadge) {
     percentBadge = document.createElement('span');
@@ -577,23 +577,30 @@ async function openQuiz(lesson) {
   modalTitle.textContent = ` Quiz - Day ${day}`;
 
   // Build quiz HTML
-  modalContent.innerHTML = quizQuestions.map((q, i) => `
-    <div class="mb-6 p-4 border rounded-lg bg-gray-50 animate-fade-in">
-      <h3 class="font-semibold mb-2 text-gray-800">Q${i + 1}: ${q.question}</h3>
-      <div class="flex flex-col space-y-2">
-        ${q.options.map((opt, idx) => `
-          <label class="inline-flex items-center p-2 rounded cursor-pointer ${
-            readOnly
-              ? (idx === q.answer ? 'bg-green-200' : (userAnswers[i] === idx ? 'bg-red-200' : ''))
-              : ''
-          }">
-            <input type="radio" name="quiz-${i}" value="${idx}" class="quizOption mr-2" ${readOnly ? 'disabled' : ''} ${userAnswers[i] === idx ? 'checked' : ''}>
-            <span>${opt}</span>
-          </label>
-        `).join('')}
+  modalContent.innerHTML = quizQuestions.map((q, i) => {
+    // Find index of correct answer
+    const correctIdx = q.options.findIndex(opt => opt === q.answer);
+
+    return `
+      <div class="mb-6 p-4 border rounded-lg bg-gray-50 animate-fade-in">
+        <h3 class="font-semibold mb-2 text-gray-800">Q${i + 1}: ${q.question}</h3>
+        <div class="flex flex-col space-y-2">
+          ${q.options.map((opt, idx) => `
+            <label class="inline-flex items-center p-2 rounded cursor-pointer ${
+              readOnly
+                ? (idx === correctIdx 
+                    ? 'bg-green-200' 
+                    : (userAnswers[i] === idx ? 'bg-red-200' : ''))
+                : ''
+            }">
+              <input type="radio" name="quiz-${i}" value="${idx}" class="quizOption mr-2" ${readOnly ? 'disabled' : ''} ${userAnswers[i] === idx ? 'checked' : ''}>
+              <span>${opt}</span>
+            </label>
+          `).join('')}
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 
   quizModal.classList.remove('hidden');
 
@@ -642,12 +649,16 @@ async function openQuiz(lesson) {
       let score = 0;
       for (let i = 0; i < quizQuestions.length; i++) {
         const qDiv = modalContent.children[i];
-        const correctIdx = quizQuestions[i].answer;
+        const correctIdx = quizQuestions[i].options.findIndex(opt => opt === quizQuestions[i].answer);
 
         // Animate marking
         Array.from(qDiv.querySelectorAll('input')).forEach((input, idx) => {
           input.disabled = true;
+
+          // Highlight correct answer
           if (idx === correctIdx) input.parentElement.classList.add('bg-green-200', 'animate-pulse');
+
+          // Highlight user's wrong answer
           if (userAnswers[i] === idx && idx !== correctIdx) input.parentElement.classList.add('bg-red-200', 'animate-pulse');
         });
 
