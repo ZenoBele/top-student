@@ -416,8 +416,8 @@ async function updateCapabilities() {
       const ratio = (avgHours - minHours) / (maxHours - minHours);
       timePercent = Math.round(ratio * 100);
       timeMsg = `Average study: ${avgHours.toFixed(1)} hrs/day`;
-      if (ratio < 0.4) timeColor = 'bg-green-800';
-      else if (ratio < 0.7) timeColor = 'bg-yellow-800';
+      if (ratio < 0.4) timeColor = 'bg-green-400';
+      else if (ratio < 0.7) timeColor = 'bg-yellow-400';
       else timeColor = 'bg-purple-500';
     }
 
@@ -453,7 +453,7 @@ if (avgHours < minHours) {
 } else {
   const ratio = (avgHours - minHours) / (maxHours - minHours);
   if (ratio < 0.4) { cardColor = 'bg-yellow-400'; barColor = 'bg-yellow-100'; timeMsg = `Average study: ${avgHours.toFixed(1)} hrs/day`; }
-  else if (ratio < 0.7) { cardColor = 'bg-green-400'; barColor = 'bg-green-100'; timeMsg = `Average study: ${avgHours.toFixed(1)} hrs/day`; }
+  else if (ratio < 0.7) { cardColor = 'bg-green-400'; barColor = 'bg-green-500'; timeMsg = `Average study: ${avgHours.toFixed(1)} hrs/day`; }
   else { cardColor = 'bg-blue-500'; barColor = 'bg-blue-200'; timeMsg = `Average study: ${avgHours.toFixed(1)} hrs/day`; }
 }
 
@@ -714,5 +714,6 @@ if (currentUser) {
 </script>
 </body>
 </html>
+
 
 
