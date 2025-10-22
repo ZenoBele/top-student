@@ -797,111 +797,6 @@ let sessionRowId = null; // store inserted row id
 let liveTimer = null;
 
 // --- Track page session start ---
-async function startSessionTracking() {
-  if (!currentUser) return;
-  try {
-    const { data, error } = await supabase
-      .from('user_activity')
-      .insert([{
-        user_id: currentUser.id,
-        session_id: sessionId,
-        page_name: '30DaysMaster', // NOT NULL column
-        action: 'Studying',
-        started_at: new Date().toISOString(),
-        ended_at: new Date().toISOString(), // initial ended_at = started_at
-        metadata: { subject: currentSubject } // optional
-      }])
-      .select()
-      .single();
-
-    if (error) throw error;
-    sessionRowId = data.id; // store row id to update later
-    console.log('Session tracking started:', data);
-
-    // Start live interval
-    startLiveTimer();
-  } catch (err) {
-    console.error('Failed to start session tracking:', err);
-  }
-}
-
-// --- Live interval: update ended_at every 5 sec ---
-function startLiveTimer() {
-  if (!sessionRowId) return;
-  if (liveTimer) clearInterval(liveTimer);
-
-  liveTimer = setInterval(async () => {
-    try {
-      const { error } = await supabase
-        .from('user_activity')
-        .update({ ended_at: new Date().toISOString() })
-        .eq('id', sessionRowId);
-
-      if (error) throw error;
-      // console.log('Session updated');
-    } catch (err) {
-      console.error('Failed to update session:', err);
-    }
-  }, 5000); // update every 5 seconds
-}
-
-// --- Track page session start ---
-async function startSessionTracking() {
-  if (!currentUser) {
-    console.warn("No authenticated user; skipping session tracking.");
-    return;
-  }
-
-  try {
-    const { data, error } = await supabase
-      .from('user_activity')
-      .insert([
-        {
-          user_id: currentUser.id, // matches auth.uid() in RLS
-          session_id: sessionId,
-          page_name: '30DaysMaster', // required column
-          action: 'Studying',
-          started_at: new Date().toISOString(),
-          ended_at: new Date().toISOString(), // initial same as started_at
-          metadata: { subject: currentSubject }
-        }
-      ])
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    sessionRowId = data.id; // store row ID for later update
-    console.log('✅ Session tracking started:', data);
-
-    // Start periodic updates
-    startLiveTimer();
-  } catch (err) {
-    console.error('❌ Failed to start session tracking:', err);
-  }
-}
-
-// --- Live interval: update ended_at every 5 sec ---
-function startLiveTimer() {
-  if (!sessionRowId) return;
-  if (liveTimer) clearInterval(liveTimer);
-
-  liveTimer = setInterval(async () => {
-    try {
-      const { error } = await supabase
-        .from('user_activity')
-        .update({ ended_at: new Date().toISOString() })
-        .eq('id', sessionRowId)
-        .eq('user_id', currentUser.id); // security consistency
-
-      if (error) throw error;
-      // console.log('Session updated');
-    } catch (err) {
-      console.error('Failed to update session:', err);
-    }
-  }, 5000);
-}
-
 const SessionTracker = {
   sessionRowId: null,
   liveTimer: null,
@@ -999,6 +894,7 @@ window.addEventListener('beforeunload', () => SessionTracker.end(currentUser));
 </script>
 </body>
 </html>
+
 
 
 
