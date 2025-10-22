@@ -902,46 +902,127 @@ function startLiveTimer() {
   }, 5000);
 }
 
-// --- Track page session end on unload ---
-async function endSessionTracking() {
-  if (!currentUser || !sessionRowId) return;
-  clearInterval(liveTimer);
+// =====================
+// 🕒 Session Tracker
+// =====================
+const SessionTracker = (() => {
+  let sessionRowId = null;
+  let liveTimer = null;
+  let sessionId = (window.crypto && window.crypto.randomUUID)
+    ? window.crypto.randomUUID()
+    : generateUUID();
 
-  try {
-    const { error } = await supabase
-      .from('user_activity')
-      .update({ ended_at: new Date().toISOString() })
-      .eq('id', sessionRowId)
-      .eq('user_id', currentUser.id); // ensures only the owner updates
-
-    if (error) throw error;
-    console.log('✅ Session tracking ended');
-  } catch (err) {
-    console.error('❌ Failed to end session tracking:', err);
-  }
-}
-
-window.addEventListener('beforeunload', endSessionTracking);
-
-// --- Initialize tracking after auth & data load ---
-initAuthAndData().then(async () => {
-  try {
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error) throw error;
-
-    if (!user) {
-      console.warn('User not logged in; skipping activity tracking.');
+  // --- Track session start ---
+  async function startSessionTracking() {
+    if (!currentUser) {
+      console.warn("No authenticated user; skipping session tracking.");
       return;
     }
 
-    // Store the authenticated user
-    currentUser = user;
-    console.log('Authenticated user:', user.id);
-    startSessionTracking();
-  } catch (err) {
-    console.error('Auth check failed:', err);
+    try {
+      const { data, error } = await supabase
+        .from('user_activity')
+        .insert([{
+          user_id: currentUser.id,
+          session_id: sessionId,
+          page_name: '30DaysMaster', // required column
+          action: 'Studying',
+          started_at: new Date().toISOString(),
+          ended_at: new Date().toISOString(),
+          metadata: { subject: currentSubject }
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      sessionRowId = data.id;
+      console.log('✅ Session tracking started:', data);
+
+      startLiveTimer();
+    } catch (err) {
+      console.error('❌ Failed to start session tracking:', err);
+    }
   }
-});
+
+  // --- Periodically update ended_at ---
+  function startLiveTimer() {
+    if (!sessionRowId) return;
+    if (liveTimer) clearInterval(liveTimer);
+
+    liveTimer = setInterval(async () => {
+      try {
+        const { error } = await supabase
+          .from('user_activity')
+          .update({ ended_at: new Date().toISOString() })
+          .eq('id', sessionRowId)
+          .eq('user_id', currentUser.id);
+
+        if (error) throw error;
+      } catch (err) {
+        console.error('❌ Failed to update session:', err);
+      }
+    }, 5000);
+  }
+
+  // --- Track session end on unload ---
+  async function endSessionTracking() {
+    if (!currentUser || !sessionRowId) return;
+    clearInterval(liveTimer);
+
+    try {
+      const { error } = await supabase
+        .from('user_activity')
+        .update({ ended_at: new Date().toISOString() })
+        .eq('id', sessionRowId)
+        .eq('user_id', currentUser.id);
+
+      if (error) throw error;
+      console.log('✅ Session tracking ended');
+    } catch (err) {
+      console.error('❌ Failed to end session tracking:', err);
+    }
+  }
+
+  // --- Attach unload listener ---
+  window.addEventListener('beforeunload', endSessionTracking);
+
+  // --- Initialize tracking after auth & data load ---
+  async function init() {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error) throw error;
+
+      if (!user) {
+        console.warn('User not logged in; skipping activity tracking.');
+        return;
+      }
+
+      currentUser = user;
+      console.log('Authenticated user:', user.id);
+
+      startSessionTracking();
+    } catch (err) {
+      console.error('Auth check failed:', err);
+    }
+  }
+
+  return { init, startSessionTracking, endSessionTracking };
+})();
+
+// --- Call after auth & data setup ---
+SessionTracker.init();
+
+// ----------------------
+// Helper: fallback UUID
+// ----------------------
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
 </script>
 
 <script>
@@ -975,5 +1056,6 @@ initAuthAndData().then(async () => {
 </script>
 </body>
 </html>
+
 
 
