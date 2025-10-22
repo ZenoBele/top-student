@@ -865,7 +865,17 @@ async function endSessionTracking() {
 window.addEventListener('beforeunload', endSessionTracking);
 
 // --- Call after initAuthAndData completes ---
-initAuthAndData().then(() => {
+initAuthAndData().then(async () => {
+  // Wait for Supabase Auth to confirm the user
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    console.warn('User not logged in, skipping activity tracking.');
+    return;
+  }
+
+  // Assign to currentUser and start tracking
+  currentUser = user;
   startSessionTracking();
 });
 </script>
@@ -901,3 +911,4 @@ initAuthAndData().then(() => {
 </script>
 </body>
 </html>
+
