@@ -449,6 +449,44 @@ body {
   color: #f97316;
 }
 
+/* ===== ABOUT FOUNDER SECTION ===== */
+
+.about-founder {
+  background: #f8fafc;
+  padding: 80px 20px;
+}
+
+.about-founder .container {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+  background: white;
+  padding: 50px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+/* Title */
+.about-founder h2 {
+  font-size: 32px;
+  margin-bottom: 25px;
+  color: #1f2937;
+}
+
+/* Paragraphs */
+.about-founder p {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #4b5563;
+  margin-bottom: 20px;
+}
+
+/* Founder Name */
+.about-founder strong {
+  font-size: 20px;
+  color: #2563eb;
+}
+
 /* TESTIMONIALS SECTION */
 .testimonials-section {
   padding: 2.5rem 1.5rem;
@@ -750,4 +788,5 @@ footer {
   .footer-right ul {
     justify-content: center;
   } 
+
 }
